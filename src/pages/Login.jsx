@@ -6,7 +6,7 @@ const API = config.apiUrl;
 
 const InputField = ({ label, type, name, value, onChange, placeholder, error, children }) => (
   <div className="mb-5">
-    <label className="block mb-2 text-xs font-semibold tracking-widest text-gray-400 uppercase">{label}</label>
+    <label className="block mb-2 text-xs font-semibold tracking-wider text-gray-500 uppercase">{label}</label>
     <div className="relative">
       <input
         type={type}
@@ -14,11 +14,11 @@ const InputField = ({ label, type, name, value, onChange, placeholder, error, ch
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full px-4 py-3.5 bg-transparent border border-gray-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-white transition-all duration-300 text-sm hover:border-gray-500 pr-12"
+        className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 pr-12 text-sm font-medium text-black transition-all duration-300 focus:border-[#d4af37] focus:outline-none focus:ring-4 focus:ring-[#d4af37]/5"
       />
       {children}
     </div>
-    {error && <p className="text-red-400 text-xs mt-1.5">{error}</p>}
+    {error && <p className="text-red-500 text-xs font-semibold mt-1.5">{error}</p>}
   </div>
 );
 
@@ -83,14 +83,16 @@ const Login = () => {
 
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userEmail', loginData.email.trim());
-      localStorage.setItem('userName', data.user?.firstName || loginData.email.split('@')[0]);
+      localStorage.setItem('userName', data.user?.firstName || data.user?.first_name || data.user?.name || loginData.email.split('@')[0]);
+      localStorage.setItem('userFirstName', data.user?.firstName || data.user?.first_name || data.user?.name || '');
+      localStorage.setItem('userLastName', data.user?.lastName || data.user?.last_name || '');
       localStorage.setItem('userRole', data.user?.role || 'user');
       if (data.token) localStorage.setItem('authToken', data.token);
 
       setMessage({ text: 'Welcome back! Redirecting...', success: true });
       setTimeout(() => {
-        navigate(data.user?.role === 'admin' ? '/admin' : '/user/dashboard');
-        window.location.reload();
+        window.dispatchEvent(new Event('auth-change'));
+        navigate(data.user?.role === 'admin' ? '/admin' : '/');
       }, 1500);
     } catch (err) {
       setMessage({ text: err.message, success: false });
@@ -180,13 +182,15 @@ const Login = () => {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userEmail', signupData.email.trim());
       localStorage.setItem('userName', signupData.firstName.trim());
+      localStorage.setItem('userFirstName', signupData.firstName.trim());
+      localStorage.setItem('userLastName', signupData.lastName.trim());
       localStorage.setItem('userRole', data.user?.role || 'user');
       if (data.token) localStorage.setItem('authToken', data.token);
 
       setMessage({ text: 'Account created! Redirecting...', success: true });
       setTimeout(() => {
-        navigate('/user/dashboard');
-        window.location.reload();
+        window.dispatchEvent(new Event('auth-change'));
+        navigate('/');
       }, 1500);
     } catch (err) {
       setMessage({ text: err.message, success: false });
@@ -205,73 +209,85 @@ const Login = () => {
   };
 
   const leftPanel = (
-    <div className="relative bg-white flex flex-col justify-between p-12 overflow-hidden">
-      <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-gray-100 opacity-60" />
-      <div className="absolute -bottom-20 -left-10 w-72 h-72 rounded-full bg-gray-200 opacity-40" />
+    <div className="relative flex flex-col justify-between overflow-hidden bg-[#0c0c0e] p-12 text-white">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-44 h-44 bg-[#d4af37]/5 rounded-full blur-2xl" />
+      
       <div className="relative z-10">
-        <a href="/" className="inline-block mb-12">
-          <img src="https://res.cloudinary.com/dgyykbmt6/image/upload/v1773144048/md01_ailgiu.jpg" alt="Meda" className="w-20 h-14 object-cover rounded-lg shadow-md" />
+        <a href="/" className="inline-block mb-16">
+          <span className="text-xl font-bold tracking-[0.25em] text-[#d4af37]">LOVITO</span>
         </a>
-        <h1 className="text-4xl font-black text-black tracking-tight leading-tight mb-4">Crafted with<br />precision.</h1>
-        <p className="text-gray-500 text-sm leading-relaxed max-w-xs">Premium embroidery apparel made for those who appreciate quality and individuality.</p>
+        <h1 className="mb-4 text-5xl font-bold leading-tight tracking-tight text-white">
+          Your fit,<br /><span className="text-[#d4af37]">curated elegantly.</span>
+        </h1>
+        <p className="max-w-xs text-sm font-light leading-relaxed text-gray-400">
+          Premium styling and tailored silhouettes crafted for individuals who value exquisite details.
+        </p>
       </div>
-      <div className="relative z-10 space-y-5">
+
+      <div className="relative z-10 space-y-6">
         {[
-          { icon: '✦', title: 'Premium Quality', desc: 'Handcrafted embroidery on every piece' },
-          { icon: '✦', title: 'Custom Designs', desc: 'Personalize with your own artwork' },
-          { icon: '✦', title: 'Fast Delivery', desc: 'Shipped to your door in days' },
-        ].map(({ icon, title, desc }) => (
-          <div key={title} className="flex items-start gap-3">
-            <span className="text-black text-xs mt-1">{icon}</span>
+          { title: 'Premium Curation', desc: 'Expertly designed cuts & luxurious fits' },
+          { title: 'Chinna\'s Styling Guide', desc: 'Bespoke wear processes directly integrated' },
+          { title: 'Secure Concierge Delivery', desc: 'Expedited tracking to your doorstep' },
+        ].map(({ title, desc }) => (
+          <div key={title} className="flex items-start gap-4">
+            <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#d4af37]" />
             <div>
-              <p className="font-bold text-black text-sm">{title}</p>
-              <p className="text-gray-500 text-xs">{desc}</p>
+              <p className="font-bold text-sm text-white">{title}</p>
+              <p className="text-gray-400 text-xs font-light mt-0.5">{desc}</p>
             </div>
           </div>
         ))}
       </div>
+
+      <div className="relative z-10 border-t border-white/10 pt-6">
+        <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-widest">
+          © {new Date().getFullYear()} LOVITO ATELIER. All rights reserved.
+        </p>
+      </div>
     </div>
   );
 
-  const stepLabel = step === STEPS.FORM ? 'Create account' : step === STEPS.OTP ? 'Verify OTP' : 'Set Password';
-  const stepDesc = step === STEPS.FORM ? 'Join the Madembro community.' : step === STEPS.OTP ? `Enter the OTP sent to ${signupData.email}` : 'Choose a strong password.';
+  const stepLabel = step === STEPS.FORM ? 'Create Account' : step === STEPS.OTP ? 'Verify OTP' : 'Set Password';
+  const stepDesc = step === STEPS.FORM ? 'Join the Lovito community.' : step === STEPS.OTP ? `Enter the OTP sent to ${signupData.email}` : 'Choose a strong password.';
 
   return (
-    <div className="bg-black min-h-screen flex items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#fbfbfc] p-4">
       <style>{`
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-up { animation: fadeUp 0.5s ease forwards; }
-        input:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #000 inset !important; -webkit-text-fill-color: #fff !important; }
+        .fade-up { animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        input:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #fff inset !important; -webkit-text-fill-color: #0c0c0e !important; }
       `}</style>
 
-      <div className={`w-full max-w-4xl fade-up ${isMobile ? '' : 'grid grid-cols-2'} rounded-2xl overflow-hidden border border-gray-800 shadow-2xl`}>
+      <div className={`fade-up w-full max-w-5xl overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-xl ${isMobile ? '' : 'grid grid-cols-2 min-h-[640px]'}`}>
         {!isMobile && leftPanel}
 
-        <div className="bg-[#0a0a0a] p-8 md:p-12 flex flex-col justify-center">
+        <div className="flex flex-col justify-center bg-white p-8 md:p-14">
           {isMobile && (
             <div className="flex justify-center mb-8">
-              <img src="https://res.cloudinary.com/dgyykbmt6/image/upload/v1773144048/md01_ailgiu.jpg" alt="Meda" className="w-16 h-12 object-cover rounded-lg" />
+              <span className="text-xl font-bold tracking-[0.25em] text-[#d4af37]">LOVITO</span>
             </div>
           )}
 
           <div className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight mb-1">
-              {isLogin ? 'Sign in' : stepLabel}
+            <h2 className="mb-2 text-3xl font-bold tracking-tight text-[#0c0c0e]">
+              {isLogin ? 'Sign In' : stepLabel}
             </h2>
-            <p className="text-gray-500 text-sm">
-              {isLogin ? 'Welcome back — good to see you.' : stepDesc}
+            <p className="text-sm text-gray-500 font-light">
+              {isLogin ? 'Welcome back — enter your credentials.' : stepDesc}
             </p>
           </div>
 
           {message.text && (
-            <div className={`px-4 py-3 rounded-lg mb-6 text-sm font-medium border ${message.success ? 'bg-green-950 border-green-800 text-green-400' : 'bg-red-950 border-red-800 text-red-400'}`}>
+            <div className={`mb-6 rounded-xl border px-4 py-3 text-sm font-semibold text-center ${message.success ? 'border-emerald-150 bg-emerald-50 text-emerald-800' : 'border-red-150 bg-red-50 text-red-700'}`}>
               {message.text}
             </div>
           )}
 
           {/* ── LOGIN FORM ── */}
           {isLogin && (
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className="space-y-4">
               <InputField label="Email" type="email" name="email" value={loginData.email}
                 onChange={e => { setLoginData(p => ({ ...p, email: e.target.value })); clearError('email'); }}
                 placeholder="you@example.com" error={errors.email} />
@@ -280,21 +296,21 @@ const Login = () => {
                 onChange={e => { setLoginData(p => ({ ...p, password: e.target.value })); clearError('password'); }}
                 placeholder="••••••••" error={errors.password}>
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors text-sm">
-                  {showPassword ? '🙈' : '👁️'}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-500 hover:text-[#d4af37] transition-colors">
+                  {showPassword ? 'Hide' : 'Show'}
                 </button>
               </InputField>
 
               <button type="submit" disabled={loading}
-                className={`w-full py-4 rounded-lg font-bold text-sm tracking-widest uppercase transition-all duration-300 mt-2 ${loading ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-white text-black hover:bg-gray-100 hover:-translate-y-0.5 shadow-lg'}`}>
-                {loading ? 'Please wait...' : 'Sign In'}
+                className="mt-6 w-full py-4 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-lg disabled:opacity-50 flex items-center justify-center">
+                {loading ? 'Authenticating...' : 'Sign In'}
               </button>
             </form>
           )}
 
           {/* ── SIGNUP STEP 1: Details ── */}
           {!isLogin && step === STEPS.FORM && (
-            <form onSubmit={handleSendOtp}>
+            <form onSubmit={handleSendOtp} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <InputField label="First Name" type="text" name="firstName" value={signupData.firstName}
                   onChange={e => { setSignupData(p => ({ ...p, firstName: e.target.value })); clearError('firstName'); }}
@@ -308,7 +324,7 @@ const Login = () => {
                 placeholder="you@example.com" error={errors.email} />
 
               <button type="submit" disabled={loading}
-                className={`w-full py-4 rounded-lg font-bold text-sm tracking-widest uppercase transition-all duration-300 mt-2 ${loading ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-white text-black hover:bg-gray-100 hover:-translate-y-0.5 shadow-lg'}`}>
+                className="mt-6 w-full py-4 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-lg disabled:opacity-50 flex items-center justify-center">
                 {loading ? 'Sending OTP...' : 'Send OTP'}
               </button>
             </form>
@@ -316,33 +332,33 @@ const Login = () => {
 
           {/* ── SIGNUP STEP 2: OTP ── */}
           {!isLogin && step === STEPS.OTP && (
-            <form onSubmit={handleVerifyOtp}>
+            <form onSubmit={handleVerifyOtp} className="space-y-4">
               <div className="mb-5">
-                <label className="block mb-2 text-xs font-semibold tracking-widest text-gray-400 uppercase">Enter OTP</label>
+                <label className="block mb-2 text-xs font-semibold tracking-wider text-gray-500 uppercase">Enter OTP</label>
                 <input
                   type="text"
                   maxLength={6}
                   value={otp}
                   onChange={e => { setOtp(e.target.value.replace(/\D/g, '')); clearError('otp'); }}
                   placeholder="6-digit OTP"
-                  className="w-full px-4 py-3.5 bg-transparent border border-gray-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-white transition-all duration-300 text-sm text-center tracking-[0.5em]"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-center text-sm font-bold tracking-[0.5em] text-[#0c0c0e] focus:border-[#d4af37] focus:outline-none focus:ring-4 focus:ring-[#d4af37]/5 transition-all duration-300"
                 />
-                {errors.otp && <p className="text-red-400 text-xs mt-1.5">{errors.otp}</p>}
+                {errors.otp && <p className="text-red-500 text-xs font-semibold mt-1.5">{errors.otp}</p>}
               </div>
 
               <div className="flex items-center justify-between mb-5 text-xs">
-                <span className="text-gray-500">
+                <span className="font-semibold text-gray-400">
                   {otpTimer > 0 ? `Resend in ${otpTimer}s` : ''}
                 </span>
                 {otpTimer === 0 && (
-                  <button type="button" onClick={handleSendOtp} className="text-white underline hover:text-gray-300 transition-colors">
+                  <button type="button" onClick={handleSendOtp} className="font-bold text-[#d4af37] underline transition-colors hover:text-[#0c0c0e]">
                     Resend OTP
                   </button>
                 )}
               </div>
 
               <button type="submit" disabled={loading}
-                className={`w-full py-4 rounded-lg font-bold text-sm tracking-widest uppercase transition-all duration-300 ${loading ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-white text-black hover:bg-gray-100 hover:-translate-y-0.5 shadow-lg'}`}>
+                className="w-full py-4 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-lg disabled:opacity-50 flex items-center justify-center">
                 {loading ? 'Verifying...' : 'Verify OTP'}
               </button>
             </form>
@@ -350,13 +366,13 @@ const Login = () => {
 
           {/* ── SIGNUP STEP 3: Set Password ── */}
           {!isLogin && step === STEPS.PASSWORD && (
-            <form onSubmit={handleRegister}>
+            <form onSubmit={handleRegister} className="space-y-4">
               <InputField label="Password" type={showPassword ? 'text' : 'password'} name="password" value={passwords.password}
                 onChange={e => { setPasswords(p => ({ ...p, password: e.target.value })); clearError('password'); }}
                 placeholder="Min. 6 characters" error={errors.password}>
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors text-sm">
-                  {showPassword ? '🙈' : '👁️'}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-500 hover:text-[#d4af37] transition-colors">
+                  {showPassword ? 'Hide' : 'Show'}
                 </button>
               </InputField>
 
@@ -364,29 +380,29 @@ const Login = () => {
                 onChange={e => { setPasswords(p => ({ ...p, confirm: e.target.value })); clearError('confirm'); }}
                 placeholder="Re-enter password" error={errors.confirm}>
                 <button type="button" onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors text-sm">
-                  {showConfirm ? '🙈' : '👁️'}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-500 hover:text-[#d4af37] transition-colors">
+                  {showConfirm ? 'Hide' : 'Show'}
                 </button>
               </InputField>
 
               <button type="submit" disabled={loading}
-                className={`w-full py-4 rounded-lg font-bold text-sm tracking-widest uppercase transition-all duration-300 mt-2 ${loading ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-white text-black hover:bg-gray-100 hover:-translate-y-0.5 shadow-lg'}`}>
+                className="mt-6 w-full py-4 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-lg disabled:opacity-50 flex items-center justify-center">
                 {loading ? 'Creating Account...' : 'Create Account'}
               </button>
             </form>
           )}
 
-          <div className="mt-8 pt-6 border-t border-gray-800 flex items-center justify-between">
-            <p className="text-gray-500 text-xs">
+          <div className="mt-8 flex items-center justify-between border-t border-gray-100 pt-6">
+            <p className="text-xs text-gray-500 font-light">
               {isLogin ? "Don't have an account?" : 'Already have an account?'}
             </p>
             <button onClick={switchMode}
-              className="text-white text-xs font-bold tracking-wider uppercase border border-gray-700 px-4 py-2 rounded-full hover:border-white transition-all duration-300">
+              className="rounded-full border border-[#0c0c0e] hover:bg-[#0c0c0e] hover:text-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#0c0c0e] transition-all duration-300">
               {isLogin ? 'Sign Up' : 'Sign In'}
             </button>
           </div>
 
-          <button onClick={() => navigate('/')} className="mt-6 text-gray-600 hover:text-gray-400 text-xs transition-colors text-left">
+          <button onClick={() => navigate('/')} className="mt-6 text-left text-xs font-bold text-gray-400 hover:text-[#d4af37] transition-colors">
             ← Back to Home
           </button>
         </div>

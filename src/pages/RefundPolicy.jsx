@@ -2,83 +2,189 @@ import React from 'react';
 
 const RefundPolicy = () => {
   return (
-    <div className="bg-black min-h-screen p-4 md:p-8">
+    <div className="bg-[#fbfbfc] min-h-screen py-16 md:py-24 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
-          Refund Policy
-        </h1>
+        {/* Page Header */}
+        <div className="text-center mb-12">
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-3 block">
+            LOVITO CONCIERGE
+          </span>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#0c0c0e] mb-4">
+            Refund Policy
+          </h1>
+          <p className="text-gray-400 text-xs md:text-sm font-light tracking-wide">
+            Effective Date: May 22, 2026 • Return &amp; Exchange Guidelines
+          </p>
+        </div>
 
-        <div className="bg-gray-900 p-6 md:p-8 rounded-xl border border-gray-800 space-y-8">
-          <div className="text-gray-300 leading-relaxed text-sm md:text-base">
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Return Window</h2>
+        {/* Content Card */}
+        <div className="bg-white rounded-3xl p-8 md:p-12 border border-gray-100 shadow-[0_10px_40px_rgba(12,12,14,0.02)] space-y-12">
+          <div className="text-gray-600 leading-relaxed text-sm md:text-base font-light space-y-10">
+            
+            {/* Return Window */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                Return Window
+              </h2>
               <p>
-                We offer a 30-day return window from the date of purchase. Items must be unused, unwashed, and in original condition with all tags attached to be eligible for return.
+                We offer a dedicated <strong>30-day return window</strong> from the date of purchase. To ensure high hygienic and quality standards, all returned garments must be unused, unwashed, unaltered, and in their absolute original condition with all security tags and brand packaging fully intact.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Eligibility for Returns</h2>
-              <p className="mb-4">To be eligible for a return, your item must meet the following conditions:</p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Item must be returned within 30 days of purchase</li>
-                <li>Item must be unused and unwashed</li>
-                <li>Item must be in original condition with all tags attached</li>
-                <li>Item must include original packaging</li>
-                <li>Custom embroidered items cannot be returned unless defective</li>
+            {/* Eligibility */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                Eligibility for Returns
+              </h2>
+              <p className="mb-4">To complete a return successfully, the items must satisfy the following strict criteria:</p>
+              <ul className="space-y-3 pl-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Garments must be shipped back within 30 days of the purchase date.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Items must be entirely unworn, unperfumed, and unwashed.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>All original designer tags, sizing labels, and packaging sleeves must remain attached.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Bespoke styled collections or final-sale clearance items cannot be returned unless verified as defective upon arrival.</span>
+                </li>
               </ul>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">How to Initiate a Return</h2>
-              <p className="mb-4">To initiate a return, please follow these steps:</p>
-              <ol className="list-decimal list-inside space-y-2 ml-4">
-                <li>Contact our customer support team at returns@madembro.com</li>
-                <li>Provide your order number and reason for return</li>
-                <li>Receive a return authorization number and shipping label</li>
-                <li>Ship the item back to us in original packaging</li>
-                <li>Once received and inspected, we will process your refund</li>
-              </ol>
+            {/* Process Guide */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                How to Initiate a Return
+              </h2>
+              <p className="mb-6">Please follow our seamless, curated return process to guarantee swift reimbursement:</p>
+              
+              <div className="space-y-4">
+                <div className="flex gap-4 items-start p-4 rounded-xl bg-[#fbfbfc] border border-gray-50">
+                  <span className="bg-[#0c0c0e] text-[#fbfbfc] text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 font-serif">1</span>
+                  <div>
+                    <h4 className="font-bold text-[#0c0c0e] text-sm">Contact support</h4>
+                    <p className="text-xs text-gray-500 font-light mt-1">
+                      Email our team at <a href="mailto:returns@lovito.com" className="text-[#d4af37] underline">returns@lovito.com</a> quoting your order reference.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 items-start p-4 rounded-xl bg-[#fbfbfc] border border-gray-50">
+                  <span className="bg-[#0c0c0e] text-[#fbfbfc] text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 font-serif">2</span>
+                  <div>
+                    <h4 className="font-bold text-[#0c0c0e] text-sm">Provide details</h4>
+                    <p className="text-xs text-gray-500 font-light mt-1">
+                      Include high-resolution photographs if returning items believed to be defective or damaged during shipment.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 items-start p-4 rounded-xl bg-[#fbfbfc] border border-gray-50">
+                  <span className="bg-[#0c0c0e] text-[#fbfbfc] text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 font-serif">3</span>
+                  <div>
+                    <h4 className="font-bold text-[#0c0c0e] text-sm">Obtain RMA code &amp; label</h4>
+                    <p className="text-xs text-gray-500 font-light mt-1">
+                      Upon validation, you will receive a Return Merchandise Authorization (RMA) code and a secure shipping label.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 items-start p-4 rounded-xl bg-[#fbfbfc] border border-gray-50">
+                  <span className="bg-[#0c0c0e] text-[#fbfbfc] text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 font-serif">4</span>
+                  <div>
+                    <h4 className="font-bold text-[#0c0c0e] text-sm">Ship and wait</h4>
+                    <p className="text-xs text-gray-500 font-light mt-1">
+                      Pack items securely and dispatch them. Once inspected, your refund will be authorized.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Refund Processing</h2>
+            {/* Refund Processing */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                Refund Processing
+              </h2>
               <p>
-                Refunds will be processed within 7-10 business days after we receive and inspect your returned item. The refund will be credited to your original payment method. Please note that it may take an additional 3-5 business days for the refund to appear in your account depending on your bank.
+                Approved returns will be processed within <strong>7-10 business days</strong> after we receive and inspect the packages. The refund will be credited directly to your original payment method. Depending on your banking institution, it may require an additional 3-5 business days for the funds to reflect in your account statements.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Shipping Costs</h2>
+            {/* Shipping Costs */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                Shipping Costs
+              </h2>
               <p>
-                Original shipping costs are non-refundable. If you receive a defective or damaged item, we will provide a prepaid return shipping label. For other returns, customers are responsible for return shipping costs.
+                Original delivery costs are non-refundable. For returns due to style preference or size adjustment, return shipping expenses are the responsibility of the client. If an item is verified as defective or damaged upon delivery, Lovito will cover all shipping costs and supply a pre-paid shipping label.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Defective or Damaged Items</h2>
+            {/* Defective or Damaged */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                Defective or Damaged Items
+              </h2>
               <p>
-                If you receive a defective or damaged item, please contact us immediately with photos of the damage. We will provide a replacement or full refund at no cost to you, including return shipping.
+                If you receive a flawed or damaged garment, please notify our styling concierge team immediately at <a href="mailto:returns@lovito.com" className="text-[#d4af37] underline hover:text-[#0c0c0e] transition-colors">returns@lovito.com</a> with photographs. We will prioritize dispatching a brand-new replacement item or executing a full refund.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Non-Returnable Items</h2>
-              <p className="mb-4">The following items cannot be returned:</p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Custom embroidered items (unless defective)</li>
-                <li>Items that have been worn, washed, or altered</li>
-                <li>Items without original tags or packaging</li>
-                <li>Items purchased on clearance or final sale</li>
+            {/* Non-Returnable */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                Non-Returnable Items
+              </h2>
+              <p className="mb-4">The following items are completely ineligible for return or exchange:</p>
+              <ul className="space-y-3 pl-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Items returned after the 30-day window.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Garments that have been worn, washed, customized, or altered in any manner.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Items missing original designer tags or packaging.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Products purchased under final clearance, special promotional sales, or designer drops.</span>
+                </li>
               </ul>
             </section>
 
+            {/* Contact Section */}
             <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Contact Us</h2>
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                Contact Returns Concierge
+              </h2>
               <p>
-                For any questions about our refund policy, please contact us at returns@madembro.com or call our customer support team.
+                For further inquiries, formal requests, or detailed clarifications regarding this Refund Policy, please email us at{' '}
+                <a href="mailto:returns@lovito.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  returns@lovito.com
+                </a>
+                .
               </p>
             </section>
+
           </div>
         </div>
       </div>

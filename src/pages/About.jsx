@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { FiAward, FiCompass, FiShield, FiUsers } from 'react-icons/fi';
 
 const About = () => {
   const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
@@ -10,297 +12,180 @@ const About = () => {
   }, []);
 
   const values = [
-    { icon: '✨', title: 'Quality', description: 'Premium materials and expert craftsmanship in every piece' },
-    { icon: '🎨', title: 'Creativity', description: 'Custom designs that express your unique style' },
-    { icon: '💚', title: 'Sustainability', description: 'Eco-friendly practices and ethical production' },
-    { icon: '🤝', title: 'Community', description: 'Building connections through shared passion' }
+    { icon: <FiAward className="text-[#d4af37] w-6 h-6" />, title: 'Quality Standards', description: 'Fine fabrics and flawless tailoring in every garment drop.' },
+    { icon: <FiCompass className="text-[#d4af37] w-6 h-6" />, title: 'Creative Styling', description: 'Bespoke wear processes designed by Chinna to fit you gracefully.' },
+    { icon: <FiShield className="text-[#d4af37] w-6 h-6" />, title: 'Conscious Production', description: 'Small-batch manufacturing focusing on zero-waste and ethical standards.' },
+    { icon: <FiUsers className="text-[#d4af37] w-6 h-6" />, title: 'Lovito Community', description: 'Inspiring contemporary fashion and aesthetic street coordination.' }
   ];
 
   const team = [
-    { name: 'Sarah Johnson', role: 'Founder & Creative Director', image: '👩‍💼' },
-    { name: 'Michael Chen', role: 'Head of Production', image: '👨‍💼' },
-    { name: 'Emma Davis', role: 'Customer Experience Lead', image: '👩‍💼' },
-    { name: 'James Wilson', role: 'Design Specialist', image: '👨‍💼' }
+    { name: 'Sarah Johnson', role: 'Founder & Creative Director', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&q=75&w=300&h=300&fit=crop&crop=faces' },
+    { name: 'Michael Chen', role: 'Head of Production', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&q=75&w=300&h=300&fit=crop&crop=faces' },
+    { name: 'Emma Davis', role: 'Customer Experience Lead', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&q=75&w=300&h=300&fit=crop&crop=faces' },
+    { name: 'James Wilson', role: 'Design Specialist', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&q=75&w=300&h=300&fit=crop&crop=faces' }
   ];
 
   return (
-    <div style={{ backgroundColor: '#000', minHeight: '100vh', color: '#fff' }}>
+    <div className="bg-[#fbfbfc] min-h-screen text-[#0c0c0e]">
       {/* Hero Section */}
-      <section style={{
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)',
-        textAlign: 'center',
-        borderBottom: '2px solid #333'
-      }}>
-        <h1 style={{
-          fontSize: 'clamp(32px, 8vw, 56px)',
-          fontWeight: 'bold',
-          marginBottom: '20px'
-        }}>
-          About MADEMBRO
-        </h1>
-        <p style={{
-          fontSize: 'clamp(16px, 3vw, 20px)',
-          color: '#ccc',
-          maxWidth: '600px',
-          margin: '0 auto'
-        }}>
-          Crafting premium embroidered clothing since 2018. We believe in quality, creativity, and community.
-        </p>
+      <section className="relative py-24 md:py-32 px-8 text-center bg-[#0c0c0e] overflow-hidden">
+        {/* Background image overlay */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&q=75&w=1600&fit=crop"
+            alt="Atelier Banner"
+            className="w-full h-full object-cover opacity-35 scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0c0c0e]/80 via-[#0c0c0e]/60 to-[#0c0c0e]" />
+        </div>
+        <div className="max-w-3xl mx-auto relative z-10">
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-4 block">LOVITO ATELIER</span>
+          <h1 className="text-4xl md:text-7xl font-bold tracking-tight text-white mb-6">
+            About LOVITO
+          </h1>
+          <p className="text-base md:text-xl text-gray-300 font-light max-w-xl mx-auto leading-relaxed">
+            Crafting premium modern garments since 2018. We believe in tailored structures, effortless drapes, and a vibrant community.
+          </p>
+        </div>
       </section>
 
       {/* Our Story */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)'
-      }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-          gap: '40px',
-          alignItems: 'center'
-        }}>
+      <section className="max-w-7xl mx-auto px-8 py-20">
+        <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-12 items-center`}>
           <div>
-            <h2 style={{
-              fontSize: 'clamp(28px, 6vw, 40px)',
-              fontWeight: 'bold',
-              marginBottom: '20px'
-            }}>
+            <span className="text-xs font-bold text-[#d4af37] uppercase tracking-[0.2em] block mb-2">OUR ORIGINS</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0c0c0e] mb-6">
               Our Story
             </h2>
-            <p style={{
-              fontSize: '16px',
-              lineHeight: '1.8',
-              color: '#ccc',
-              marginBottom: '16px'
-            }}>
-              MADEMBRO started as a passion project in a small studio. What began with a single embroidery machine and a dream has grown into a thriving custom apparel business serving thousands of satisfied customers worldwide.
+            <p className="text-sm md:text-base text-gray-600 font-light leading-relaxed mb-4">
+              LOVITO started as a passion project in a small boutique studio. What began with a single sewing machine and a dream has grown into a thriving premium online apparel destination serving fashion-forward individuals worldwide.
             </p>
-            <p style={{
-              fontSize: '16px',
-              lineHeight: '1.8',
-              color: '#ccc',
-              marginBottom: '16px'
-            }}>
-              We're dedicated to creating high-quality, custom embroidered clothing that tells your story. Every piece is crafted with attention to detail and a commitment to excellence.
+            <p className="text-sm md:text-base text-gray-600 font-light leading-relaxed mb-4">
+              We are dedicated to creating high-quality garments that tell your story. Every piece is crafted with micro-attention to detail and a commitment to silhouette excellence.
             </p>
-            <p style={{
-              fontSize: '16px',
-              lineHeight: '1.8',
-              color: '#ccc'
-            }}>
-              Today, we continue to innovate and expand our offerings while maintaining the same passion and quality that started it all.
+            <p className="text-sm md:text-base text-gray-600 font-light leading-relaxed">
+              Today, under the creative styling direction of Chinna, we continue to expand our fits while maintaining the same premium standards that started it all.
             </p>
           </div>
-          <div style={{
-            backgroundColor: '#1a1a1a',
-            borderRadius: '12px',
-            padding: '40px',
-            textAlign: 'center',
-            border: '2px solid #333'
-          }}>
-            <div style={{ fontSize: '80px', marginBottom: '20px' }}>🧵</div>
-            <h3 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>
-              6+ Years
-            </h3>
-            <p style={{ color: '#ccc' }}>Of Excellence in Embroidery</p>
+          
+          <div className="relative rounded-3xl overflow-hidden min-h-[360px] shadow-lg group border border-gray-100 flex items-end">
+            <img
+              src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&q=75&w=800&fit=crop"
+              alt="Crafting Premium Garments"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0e]/90 via-[#0c0c0e]/40 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-8 text-white text-left z-10">
+              <span className="text-xs font-bold text-[#d4af37] uppercase tracking-wider block mb-1">ESTABLISHED 2018</span>
+              <h3 className="text-2xl font-bold mb-2">6+ Years of Tailoring</h3>
+              <p className="text-sm text-gray-300 font-light leading-relaxed">
+                Meticulous pattern making, high-density stitching, and premium finishing.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Our Values */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)',
-        borderTop: '2px solid #333'
-      }}>
-        <h2 style={{
-          fontSize: 'clamp(28px, 6vw, 40px)',
-          fontWeight: 'bold',
-          marginBottom: '50px',
-          textAlign: 'center'
-        }}>
-          Our Values
-        </h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
-          gap: '30px'
-        }}>
+      <section className="max-w-7xl mx-auto px-8 py-20 border-t border-gray-100">
+        <div className="text-center mb-16">
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.2em] block mb-2">LOVITO CULTURE</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0c0c0e]">Our Values</h2>
+        </div>
+        <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-8`}>
           {values.map((value, idx) => (
-            <div key={idx} style={{
-              backgroundColor: '#1a1a1a',
-              borderRadius: '12px',
-              padding: '30px',
-              border: '2px solid #333',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => {
-              if (!isMobile) {
-                e.currentTarget.style.borderColor = '#fff';
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(255, 255, 255, 0.1)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!isMobile) {
-                e.currentTarget.style.borderColor = '#333';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }
-            }}>
-              <div style={{ fontSize: '40px', marginBottom: '15px' }}>{value.icon}</div>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>
-                {value.title}
-              </h3>
-              <p style={{ color: '#ccc', lineHeight: '1.6' }}>
-                {value.description}
-              </p>
+            <div key={idx} className="bg-white p-8 rounded-2xl border border-gray-100 hover:border-[#d4af37]/35 shadow-sm hover:shadow-xl transition-all duration-300 flex gap-5 items-start">
+              <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 shrink-0">
+                {value.icon}
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-[#0c0c0e] mb-2">{value.title}</h3>
+                <p className="text-sm text-gray-500 font-light leading-relaxed">{value.description}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Our Team */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)',
-        borderTop: '2px solid #333'
-      }}>
-        <h2 style={{
-          fontSize: 'clamp(28px, 6vw, 40px)',
-          fontWeight: 'bold',
-          marginBottom: '50px',
-          textAlign: 'center'
-        }}>
-          Meet Our Team
-        </h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
-          gap: '24px'
-        }}>
+      {/* Luxury Widescreen Banner */}
+      <section className="relative py-48 px-8 overflow-hidden my-12">
+        <img
+          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&q=75&w=1200&fit=crop"
+          alt="Luxury Apparel Showcase"
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+        <div className="relative z-10 max-w-4xl mx-auto text-center text-white">
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-4 block">DESIGNED TO EXCELLENCE</span>
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-6 leading-tight">
+            "Simplicity is the keynote of all true elegance."
+          </h2>
+          <p className="text-sm md:text-base text-gray-300 font-light max-w-lg mx-auto leading-relaxed">
+            Under Chinna's creative direction, we curate pieces that emphasize shape, material composition, and comfort.
+          </p>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="bg-white py-16 border-y border-gray-100">
+        <div className={`max-w-7xl mx-auto px-8 grid ${isMobile ? 'grid-cols-2 gap-8' : 'grid-cols-4'} gap-6 text-center`}>
+          {[
+            { value: '10K+', desc: 'Sophisticated Customers' },
+            { value: '50K+', desc: 'Garments Shipped' },
+            { value: '98%', desc: 'Satisfaction Rating' },
+            { value: '24/7', desc: 'Atelier Concierge' }
+          ].map((stat, idx) => (
+            <div key={idx}>
+              <div className="text-3xl md:text-4xl font-bold text-[#0c0c0e] mb-1">{stat.value}</div>
+              <p className="text-xs text-gray-400 font-semibold uppercase tracking-widest">{stat.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="max-w-7xl mx-auto px-8 py-20">
+        <div className="text-center mb-16">
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.2em] block mb-2">THE CREATIVE MINDS</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0c0c0e]">Meet Our Team</h2>
+        </div>
+        <div className={`grid ${isMobile ? 'grid-cols-2 gap-6' : 'grid-cols-4'} gap-6`}>
           {team.map((member, idx) => (
-            <div key={idx} style={{
-              backgroundColor: '#1a1a1a',
-              borderRadius: '12px',
-              padding: '30px',
-              textAlign: 'center',
-              border: '2px solid #333',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              if (!isMobile) {
-                e.currentTarget.style.borderColor = '#fff';
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(255, 255, 255, 0.1)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!isMobile) {
-                e.currentTarget.style.borderColor = '#333';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }
-            }}>
-              <div style={{ fontSize: '60px', marginBottom: '15px' }}>{member.image}</div>
-              <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>
-                {member.name}
-              </h3>
-              <p style={{ color: '#ccc', fontSize: '14px' }}>
-                {member.role}
-              </p>
+            <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-100 text-center shadow-sm group hover:shadow-md transition-all duration-300">
+              <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border border-gray-100 group-hover:border-[#d4af37] transition-all duration-300">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <h3 className="text-base font-bold text-[#0c0c0e] mb-1">{member.name}</h3>
+              <p className="text-xs text-gray-400 font-medium">{member.role}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section style={{
-        backgroundColor: '#1a1a1a',
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)',
-        borderTop: '2px solid #333',
-        borderBottom: '2px solid #333'
-      }}>
-        <div style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
-          gap: '30px',
-          textAlign: 'center'
-        }}>
-          <div>
-            <div style={{ fontSize: '40px', fontWeight: 'bold', marginBottom: '10px' }}>10K+</div>
-            <p style={{ color: '#ccc' }}>Happy Customers</p>
-          </div>
-          <div>
-            <div style={{ fontSize: '40px', fontWeight: 'bold', marginBottom: '10px' }}>50K+</div>
-            <p style={{ color: '#ccc' }}>Items Shipped</p>
-          </div>
-          <div>
-            <div style={{ fontSize: '40px', fontWeight: 'bold', marginBottom: '10px' }}>98%</div>
-            <p style={{ color: '#ccc' }}>Satisfaction Rate</p>
-          </div>
-          <div>
-            <div style={{ fontSize: '40px', fontWeight: 'bold', marginBottom: '10px' }}>24/7</div>
-            <p style={{ color: '#ccc' }}>Customer Support</p>
-          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)',
-        textAlign: 'center'
-      }}>
-        <h2 style={{
-          fontSize: 'clamp(28px, 6vw, 40px)',
-          fontWeight: 'bold',
-          marginBottom: '20px'
-        }}>
-          Ready to Create Something Amazing?
+      <section className="max-w-3xl mx-auto px-8 py-20 text-center border-t border-gray-100">
+        <h2 className="text-2xl md:text-3xl font-bold text-[#0c0c0e] mb-4">
+          Ready to Elevate Your Fit?
         </h2>
-        <p style={{
-          fontSize: '16px',
-          color: '#ccc',
-          marginBottom: '30px'
-        }}>
-          Explore our collection and bring your vision to life with custom embroidery.
+        <p className="text-sm md:text-base text-gray-500 font-light mb-8 max-w-md mx-auto">
+          Explore our seasonal drops curated directly under Chinna's custom wearing guides.
         </p>
-        <a href="/tshirts" style={{ textDecoration: 'none' }}>
-          <button style={{
-            backgroundColor: '#fff',
-            color: '#000',
-            padding: '12px 32px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            borderRadius: '25px',
-            border: 'none',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = '#f0f0f0';
-            e.target.style.transform = 'translateY(-2px)';
-            e.target.style.boxShadow = '0 8px 20px rgba(255, 255, 255, 0.2)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = '#fff';
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = 'none';
-          }}>
-            Shop Now
+        <Link to="/tshirts">
+          <button className="px-8 py-3.5 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-full text-sm hover:shadow-lg transition-all duration-300">
+            Shop Lovito Now
           </button>
-        </a>
+        </Link>
       </section>
     </div>
   );
 };
 
 export default About;
+

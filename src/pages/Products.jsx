@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useFetch } from '../hooks/useFetch';
+import { getProductImage } from '../utils/productImages';
 
 const FALLBACK_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
@@ -50,7 +52,7 @@ function Products() {
       setSelectedSize((product.sizes?.length > 0 ? product.sizes : FALLBACK_SIZES)[0] || '');
       setCurrentImageIndex(0);
     }
-  }, [product?.id]);
+  }, [product]);
 
   // update images when color changes
   const getImagesForColor = (color) => {
@@ -61,7 +63,8 @@ function Products() {
         .map(n => colorImages[color][`image${n}`])
         .filter(Boolean);
     }
-    return product.image_url ? [product.image_url] : [];
+    const fallbackImage = getProductImage(product);
+    return fallbackImage ? [fallbackImage] : [];
   };
 
   const handleColorChange = (color) => {
@@ -79,7 +82,7 @@ function Products() {
       size: selectedSize,
       color: selectedColor,
       quantity,
-      image: images[0] || product.image_url
+      image: images[0] || getProductImage(product)
     });
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
@@ -110,7 +113,7 @@ function Products() {
   );
 
   const images = getImagesForColor(selectedColor);
-  const currentImage = images[currentImageIndex] || product.image_url || '';
+  const currentImage = images[currentImageIndex] || getProductImage(product) || '';
   const sizes = product.sizes?.length > 0 ? product.sizes : FALLBACK_SIZES;
   const colors = product.colors || [];
   const features = product.features || [];
@@ -345,10 +348,11 @@ function Products() {
                     <div className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-white transition-all duration-300">
                       <div className="relative">
                         <img
-                          src={p.image_url || ''}
+                          src={getProductImage(p) || ''}
                           alt={p.name}
                           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                           onError={(e) => { e.target.style.display = 'none'; }}
+                          loading="lazy"
                         />
                         {relDiscount > 0 && (
                           <span className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded font-bold">

@@ -1,34 +1,42 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { FaSearch, FaTrash, FaWhatsapp } from 'react-icons/fa';
 import { useFetch } from '../../hooks/useFetch';
 import config from '../../config';
+import './admin.css';
+import { buildWhatsAppOrderUrl, formatCurrency, formatDate, getCustomerEmail, getCustomerName, getCustomerPhone, parseOrderItems } from './adminUtils';
 
-const STATUS_COLORS = {
-  pending:    'bg-yellow-900 text-yellow-300',
-  processing: 'bg-blue-900 text-blue-300',
-  shipped:    'bg-indigo-900 text-indigo-300',
-  delivered:  'bg-green-900 text-green-300',
-  cancelled:  'bg-red-900 text-red-300',
+const STATUS_META = {
+  pending: 'admin-badge-yellow',
+  processing: 'admin-badge-blue',
+  shipped: 'admin-badge-purple',
+  delivered: 'admin-badge-green',
+  cancelled: 'admin-badge-red',
 };
+
+const statuses = ['all', 'pending', 'processing', 'shipped', 'delivered', 'cancelled'];
 
 const Orders = () => {
   const { data: orders = [], loading, refetch } = useFetch('/orders/admin', { auth: true });
   const [message, setMessage] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [search, setSearch] = useState('');
 
   const updateStatus = async (id, status) => {
     try {
       const token = localStorage.getItem('authToken');
       const res = await fetch(`${config.apiUrl}/orders/admin/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ status })
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ status }),
       });
       if (res.ok) {
         refetch();
-        setMessage('Status updated');
+        setMessage('Order status updated.');
         setTimeout(() => setMessage(''), 2500);
       }
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const deleteOrder = async (id) => {
@@ -37,138 +45,193 @@ const Orders = () => {
       const token = localStorage.getItem('authToken');
       const res = await fetch(`${config.apiUrl}/orders/admin/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         refetch();
-        setMessage('Order deleted');
+        setMessage('Order deleted.');
         setTimeout(() => setMessage(''), 2500);
       }
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const filtered = filterStatus === 'all' ? orders : orders.filter(o => o.status === filterStatus);
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return orders
+      .filter((order) => filterStatus === 'all' || order.status === filterStatus)
+      .filter((order) => {
+        if (!q) return true;
+        return [
+          order.id,
+          getCustomerName(order),
+          getCustomerEmail(order),
+          getCustomerPhone(order),
+          order.payment_method,
+        ].some((value) => String(value || '').toLowerCase().includes(q));
+      })
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  }, [orders, filterStatus, search]);
+
+  const metrics = useMemo(() => {
+    const revenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
+    const pending = orders.filter((order) => order.status === 'pending').length;
+    const delivered = orders.filter((order) => order.status === 'delivered').length;
+    return [
+      { label: 'Total Orders', value: orders.length },
+      { label: 'Order Revenue', value: formatCurrency(revenue) },
+      { label: 'Pending', value: pending },
+      { label: 'Delivered', value: delivered },
+    ];
+  }, [orders]);
 
   return (
-    <div className="bg-black min-h-screen p-6">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Manage Orders</h1>
+    <div className="admin-shell">
+      <div className="admin-container">
+        <div className="admin-page-header">
+          <div>
+            <p className="admin-eyebrow">Fulfillment desk</p>
+            <h1 className="admin-title">Orders</h1>
+            <p className="admin-subtitle">Review orders, update fulfillment status, and message customers instantly on WhatsApp.</p>
+          </div>
+        </div>
 
-        {message && (
-          <div className="bg-green-900 border border-green-700 text-green-300 px-4 py-3 rounded mb-4">{message}</div>
-        )}
-
-        <div className="flex gap-2 flex-wrap mb-5">
-          {['all', 'pending', 'processing', 'shipped', 'delivered', 'cancelled'].map(s => (
-            <button key={s} onClick={() => setFilterStatus(s)}
-              className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition-colors capitalize ${
-                filterStatus === s ? 'bg-white text-black border-white' : 'bg-transparent text-gray-400 border-gray-700 hover:border-white hover:text-white'
-              }`}>
-              {s === 'all' ? 'All Orders' : s}
-            </button>
+        <div className="admin-stat-grid">
+          {metrics.map((metric) => (
+            <div className="admin-card admin-stat" key={metric.label}>
+              <p className="admin-stat-label">{metric.label}</p>
+              <p className="admin-stat-value">{metric.value}</p>
+            </div>
           ))}
         </div>
 
+        {message && <div className="admin-card" style={{ marginTop: 16, color: '#86efac' }}>{message}</div>}
+
+        <div className="admin-toolbar">
+          <div className="admin-tabs">
+            {statuses.map((status) => (
+              <button
+                key={status}
+                onClick={() => setFilterStatus(status)}
+                className={`admin-tab ${filterStatus === status ? 'admin-tab-active' : ''}`}
+              >
+                {status === 'all' ? 'All Orders' : status}
+              </button>
+            ))}
+          </div>
+          <label style={{ position: 'relative' }}>
+            <FaSearch style={{ color: '#777', left: 14, position: 'absolute', top: 13 }} />
+            <input
+              type="text"
+              placeholder="Search orders..."
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              className="admin-search"
+              style={{ paddingLeft: 40 }}
+            />
+          </label>
+        </div>
+
         {loading ? (
-          <p className="text-center text-gray-400 py-10">Loading...</p>
+          <div className="admin-panel admin-empty">Loading orders...</div>
         ) : filtered.length === 0 ? (
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-10 text-center text-gray-400">No orders found</div>
+          <div className="admin-panel admin-empty">No orders found.</div>
         ) : (
-          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-x-auto">
-            <table className="w-full border-collapse">
+          <div className="admin-panel admin-table-wrap">
+            <table className="admin-table">
               <thead>
-                <tr className="border-b border-gray-800">
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Order ID</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Customer</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Phone</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Total</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Payment</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Date</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Status</th>
-                  <th className="px-4 py-3 text-center text-sm font-semibold text-gray-400">Actions</th>
+                <tr>
+                  <th>Order</th>
+                  <th>Customer</th>
+                  <th>Total</th>
+                  <th>Payment</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((order, i) => (
-                  <React.Fragment key={order.id}>
-                    <tr className={`border-b border-gray-800 ${i % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/50'}`}>
-                      <td className="px-4 py-3 font-bold text-white">
-                        #{order.id}
-                      </td>
-                      <td className="px-4 py-3">
-                        <p className="text-white font-medium text-sm">{order.customer_name}</p>
-                        <p className="text-gray-500 text-xs">{order.customer_email}</p>
-                      </td>
-                      <td className="px-4 py-3 text-gray-400 text-sm">{order.customer_phone || '—'}</td>
-                      <td className="px-4 py-3 text-white font-bold">₹{order.total}</td>
-                      <td className="px-4 py-3 text-gray-400 text-sm capitalize">{order.payment_method}</td>
-                      <td className="px-4 py-3 text-gray-400 text-sm">
-                        {new Date(order.created_at).toLocaleDateString('en-IN')}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`text-xs font-semibold px-2 py-1 rounded-full capitalize ${STATUS_COLORS[order.status] || 'bg-gray-800 text-gray-400'}`}>
-                          {order.status}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <div className="flex items-center justify-center gap-2">
-                          <select value={order.status} onChange={e => updateStatus(order.id, e.target.value)}
-                            className="px-2 py-1 bg-gray-800 border border-gray-700 text-white rounded text-xs cursor-pointer focus:outline-none focus:border-white">
-                            {['pending', 'processing', 'shipped', 'delivered', 'cancelled'].map(s => (
-                              <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
-                            ))}
-                          </select>
-                          <button onClick={() => deleteOrder(order.id)}
-                            className="px-2 py-1 bg-red-700 text-white rounded text-xs hover:bg-red-600 transition-colors">
-                            🗑️
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    {/* Product Items - always visible */}
-                    <tr className="border-b border-gray-800 bg-black/40">
-                      <td colSpan="8" className="px-6 py-4">
-                        <div className="flex flex-wrap gap-3">
-                          {(Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]')).map((item, idx) => (
-                            <div key={idx} className="flex gap-3 bg-gray-900 border border-gray-700 rounded-xl p-3 min-w-[260px]">
-                              {item.image && (
-                                <img
-                                  src={item.image}
-                                  alt={item.name}
-                                  className="w-16 h-16 object-cover rounded-lg flex-shrink-0 border border-gray-700"
-                                  onError={e => e.target.style.display = 'none'}
-                                />
-                              )}
-                              <div className="flex flex-col justify-between">
-                                <p className="text-white font-semibold text-sm">{item.name}</p>
-                                <div className="flex flex-wrap gap-2 mt-1">
-                                  {item.size && (
-                                    <span className="bg-gray-800 text-gray-300 text-xs px-2 py-0.5 rounded-full border border-gray-700">
-                                      Size: {item.size}
-                                    </span>
-                                  )}
-                                  {item.color && (
-                                    <span className="bg-gray-800 text-gray-300 text-xs px-2 py-0.5 rounded-full border border-gray-700">
-                                      Color: {item.color}
-                                    </span>
-                                  )}
-                                  {item.quantity && (
-                                    <span className="bg-gray-800 text-gray-300 text-xs px-2 py-0.5 rounded-full border border-gray-700">
-                                      Qty: {item.quantity}
-                                    </span>
-                                  )}
+                {filtered.map((order) => {
+                  const whatsAppUrl = buildWhatsAppOrderUrl(order);
+                  const items = parseOrderItems(order.items);
+                  return (
+                    <React.Fragment key={order.id}>
+                      <tr>
+                        <td className="admin-strong">#{order.id}</td>
+                        <td>
+                          <div className="admin-strong">{getCustomerName(order)}</div>
+                          <div className="admin-muted">{getCustomerEmail(order)}</div>
+                          <div className="admin-muted">{getCustomerPhone(order) || 'No phone'}</div>
+                        </td>
+                        <td className="admin-strong">{formatCurrency(order.total)}</td>
+                        <td className="admin-muted">{order.payment_method || 'Not set'}</td>
+                        <td>{formatDate(order.created_at)}</td>
+                        <td>
+                          <span className={`admin-badge ${STATUS_META[order.status] || 'admin-badge-blue'}`}>
+                            {order.status || 'pending'}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="admin-actions">
+                            <select
+                              value={order.status || 'pending'}
+                              onChange={(event) => updateStatus(order.id, event.target.value)}
+                              className="admin-search"
+                              style={{ minWidth: 140, padding: '9px 10px' }}
+                            >
+                              {statuses.slice(1).map((status) => (
+                                <option key={status} value={status}>{status.charAt(0).toUpperCase() + status.slice(1)}</option>
+                              ))}
+                            </select>
+                            <a
+                              className="admin-btn admin-btn-whatsapp"
+                              href={whatsAppUrl || undefined}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={(event) => {
+                                if (!whatsAppUrl) event.preventDefault();
+                              }}
+                            >
+                              <FaWhatsapp /> Notify
+                            </a>
+                            <button onClick={() => deleteOrder(order.id)} className="admin-btn admin-btn-danger">
+                              <FaTrash />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan="7">
+                          <div className="admin-order-items">
+                            {items.map((item, index) => (
+                              <div key={`${order.id}-${item.name}-${index}`} className="admin-order-item">
+                                {item.image && (
+                                  <img
+                                    src={item.image}
+                                    alt={item.name}
+                                    className="admin-order-image"
+                                    onError={(event) => { event.currentTarget.style.display = 'none'; }}
+                                  />
+                                )}
+                                <div>
+                                  <div className="admin-strong">{item.name}</div>
+                                  <div className="admin-muted">
+                                    Qty {item.quantity || 1}
+                                    {item.size ? ` · Size ${item.size}` : ''}
+                                    {item.color ? ` · ${item.color}` : ''}
+                                  </div>
+                                  <div className="admin-muted">{formatCurrency(item.price)} each</div>
                                 </div>
-                                <p className="text-white font-bold text-sm mt-1">₹{item.price} <span className="text-gray-500 font-normal text-xs">each</span></p>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-                        <p className="text-xs text-gray-500 mt-3">📍 {order.shipping_address}</p>
-                      </td>
-                    </tr>
-                  </React.Fragment>
-                ))}
+                            ))}
+                          </div>
+                          <p className="admin-muted" style={{ marginTop: 12 }}>Shipping: {order.shipping_address || 'Not available'}</p>
+                        </td>
+                      </tr>
+                    </React.Fragment>
+                  );
+                })}
               </tbody>
             </table>
           </div>

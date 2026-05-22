@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useFetch, invalidateCache } from '../../hooks/useFetch';
+import { FaEdit, FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
+import { useFetch } from '../../hooks/useFetch';
 import config from '../../config';
+import './admin.css';
+import { formatCurrency } from './adminUtils';
+import { getProductImage } from '../../utils/productImages';
 
 const API_BASE_URL = config.apiUrl;
 
@@ -9,77 +13,172 @@ const Products = () => {
   const { data: products = [], loading, refetch } = useFetch('/admin/products', { auth: true });
   const [message, setMessage] = useState('');
   const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('all');
+  const [status, setStatus] = useState('all');
 
   const deleteProduct = async (id) => {
     if (!window.confirm('Delete this product?')) return;
     const token = localStorage.getItem('authToken');
     const res = await fetch(`${API_BASE_URL}/admin/products/${id}`, {
       method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
     if (res.ok) {
-      setMessage('Product deleted');
+      setMessage('Product deleted.');
       refetch();
       setTimeout(() => setMessage(''), 3000);
     }
   };
 
-  const filtered = products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+  const categories = useMemo(() => {
+    const values = products.map((product) => product.category).filter(Boolean);
+    return ['all', ...Array.from(new Set(values))];
+  }, [products]);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return products.filter((product) => {
+      const matchesSearch = !q || [product.name, product.category, product.description]
+        .some((value) => String(value || '').toLowerCase().includes(q));
+      const matchesCategory = category === 'all' || product.category === category;
+      const matchesStatus = status === 'all' || (status === 'active' ? product.active : !product.active);
+      return matchesSearch && matchesCategory && matchesStatus;
+    });
+  }, [products, search, category, status]);
+
+  const totalInventory = products.reduce((sum, product) => sum + Number(product.stock || 0), 0);
+  const lowStock = products.filter((product) => Number(product.stock || 0) <= 5).length;
+  const activeProducts = products.filter((product) => product.active).length;
 
   return (
-    <div className="bg-black min-h-screen p-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Manage Products</h1>
-          <Link to="/admin/products/add">
-            <button className="px-5 py-2 bg-white text-black rounded-lg font-semibold hover:bg-gray-200 transition-colors">➕ Add Product</button>
+    <div className="admin-shell">
+      <div className="admin-container">
+        <div className="admin-page-header">
+          <div>
+            <p className="admin-eyebrow">Catalog studio</p>
+            <h1 className="admin-title">Products</h1>
+            <p className="admin-subtitle">Manage product visibility, inventory, categories, pricing, color imagery, and edit flow.</p>
+          </div>
+          <Link to="/admin/products/add" className="admin-btn admin-btn-primary">
+            <FaPlus /> Add Product
           </Link>
         </div>
 
-        {message && <div className="bg-green-900 border border-green-700 text-green-300 px-4 py-3 rounded mb-4">{message}</div>}
+        <div className="admin-stat-grid">
+          <div className="admin-card admin-stat">
+            <p className="admin-stat-label">Products</p>
+            <p className="admin-stat-value">{products.length}</p>
+          </div>
+          <div className="admin-card admin-stat">
+            <p className="admin-stat-label">Active</p>
+            <p className="admin-stat-value">{activeProducts}</p>
+          </div>
+          <div className="admin-card admin-stat">
+            <p className="admin-stat-label">Inventory Units</p>
+            <p className="admin-stat-value">{totalInventory}</p>
+          </div>
+          <div className="admin-card admin-stat">
+            <p className="admin-stat-label">Low Stock</p>
+            <p className="admin-stat-value">{lowStock}</p>
+          </div>
+        </div>
 
-        <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)}
-          className="w-full px-4 py-2 bg-gray-900 border border-gray-700 text-white rounded-lg text-sm mb-5 focus:outline-none focus:border-white placeholder-gray-500" />
+        {message && <div className="admin-card" style={{ marginTop: 16, color: '#86efac' }}>{message}</div>}
+
+        <div className="admin-toolbar">
+          <label style={{ position: 'relative' }}>
+            <FaSearch style={{ color: '#777', left: 14, position: 'absolute', top: 13 }} />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              className="admin-search"
+              style={{ paddingLeft: 40 }}
+            />
+          </label>
+          <div className="admin-actions">
+            <select value={category} onChange={(event) => setCategory(event.target.value)} className="admin-search" style={{ minWidth: 170 }}>
+              {categories.map((item) => (
+                <option key={item} value={item}>{item === 'all' ? 'All categories' : item}</option>
+              ))}
+            </select>
+            <select value={status} onChange={(event) => setStatus(event.target.value)} className="admin-search" style={{ minWidth: 150 }}>
+              <option value="all">All statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
 
         {loading ? (
-          <p className="text-center text-gray-400 py-10">Loading...</p>
+          <div className="admin-panel admin-empty">Loading products...</div>
         ) : filtered.length === 0 ? (
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-10 text-center text-gray-400">
-            No products found. <Link to="/admin/products/add" className="text-white underline">Add one</Link>
-          </div>
+          <div className="admin-panel admin-empty">No products found.</div>
         ) : (
-          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-x-auto">
-            <table className="w-full border-collapse">
+          <div className="admin-panel admin-table-wrap">
+            <table className="admin-table">
               <thead>
-                <tr className="border-b border-gray-800">
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Name</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Price</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Category</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Stock</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-400">Status</th>
-                  <th className="px-4 py-3 text-center text-sm font-semibold text-gray-400">Actions</th>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Category</th>
+                  <th>Stock</th>
+                  <th>Sizes</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((p, i) => (
-                  <tr key={p.id} className={`border-b border-gray-800 ${i % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/50'}`}>
-                    <td className="px-4 py-3 text-white font-medium">{p.name}</td>
-                    <td className="px-4 py-3 text-gray-300">₹{p.price}</td>
-                    <td className="px-4 py-3 text-gray-300 capitalize">{p.category || '—'}</td>
-                    <td className="px-4 py-3 text-gray-300">{p.stock}</td>
-                    <td className="px-4 py-3">
-                      <span className={`text-xs font-semibold px-2 py-1 rounded-full ${p.active ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'}`}>
-                        {p.active ? 'Active' : 'Inactive'}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-center space-x-2">
-                      <Link to={`/admin/products/edit/${p.id}`}>
-                        <button className="px-3 py-1 bg-white text-black rounded text-xs hover:bg-gray-200 transition-colors">✏️ Edit</button>
-                      </Link>
-                      <button onClick={() => deleteProduct(p.id)} className="px-3 py-1 bg-red-700 text-white rounded text-xs hover:bg-red-600 transition-colors">🗑️ Delete</button>
-                    </td>
-                  </tr>
-                ))}
+                {filtered.map((product) => {
+                  const image = getProductImage(product);
+                  return (
+                    <tr key={product.id}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          {image && (
+                            <img
+                              src={image}
+                              alt={product.name}
+                              className="admin-order-image"
+                              onError={(event) => { event.currentTarget.style.display = 'none'; }}
+                            />
+                          )}
+                          <div>
+                            <div className="admin-strong">{product.name}</div>
+                            <div className="admin-muted">{(product.description || '').slice(0, 70)}{product.description?.length > 70 ? '...' : ''}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="admin-strong">{formatCurrency(product.price)}</div>
+                        {product.original_price && <div className="admin-muted">MRP {formatCurrency(product.original_price)}</div>}
+                      </td>
+                      <td className="admin-muted">{product.category || 'Not set'}</td>
+                      <td>
+                        <span className={`admin-badge ${Number(product.stock || 0) <= 5 ? 'admin-badge-red' : 'admin-badge-green'}`}>
+                          {product.stock || 0} units
+                        </span>
+                      </td>
+                      <td className="admin-muted">{Array.isArray(product.sizes) && product.sizes.length ? product.sizes.join(', ') : 'All'}</td>
+                      <td>
+                        <span className={`admin-badge ${product.active ? 'admin-badge-green' : 'admin-badge-red'}`}>
+                          {product.active ? 'Active' : 'Inactive'}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="admin-actions">
+                          <Link to={`/admin/products/edit/${product.id}`} className="admin-btn admin-btn-secondary">
+                            <FaEdit /> Edit
+                          </Link>
+                          <button onClick={() => deleteProduct(product.id)} className="admin-btn admin-btn-danger">
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

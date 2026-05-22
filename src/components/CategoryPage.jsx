@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
+import { getProductImage } from '../utils/productImages';
 
 const PLACEHOLDER = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Crect fill="%23333" width="300" height="300"/%3E%3Ctext x="50%25" y="50%25" font-size="14" fill="%23999" text-anchor="middle" dy=".3em"%3ENo Image%3C/text%3E%3C/svg%3E';
 
@@ -9,10 +10,11 @@ const ProductCard = ({ product }) => (
     <div className="bg-gray-900 rounded-xl overflow-hidden border-2 border-gray-800 hover:border-white transition-all duration-300 hover:-translate-y-2 cursor-pointer h-full">
       <div className="overflow-hidden h-64">
         <img
-          src={product.image_url || PLACEHOLDER}
+          src={getProductImage(product) || PLACEHOLDER}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           onError={(e) => { e.target.src = PLACEHOLDER; }}
+          loading="lazy"
         />
       </div>
       <div className="p-4">

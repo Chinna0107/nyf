@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useFetch, invalidateCache } from '../../hooks/useFetch';
+import { useFetch } from '../../hooks/useFetch';
 import config from '../../config';
 
 const API_BASE_URL = config.apiUrl;

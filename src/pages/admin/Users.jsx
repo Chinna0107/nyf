@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import config from '../../config';
-import { useFetch, invalidateCache } from '../../hooks/useFetch';
+import { useFetch } from '../../hooks/useFetch';
 
 const API_BASE_URL = config.apiUrl;
 

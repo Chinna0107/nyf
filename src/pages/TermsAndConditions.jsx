@@ -2,83 +2,150 @@ import React from 'react';
 
 const TermsAndConditions = () => {
   return (
-    <div className="bg-black min-h-screen p-4 md:p-8">
+    <div className="bg-[#fbfbfc] min-h-screen py-16 md:py-24 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
-          Terms & Conditions
-        </h1>
+        {/* Page Header */}
+        <div className="text-center mb-12">
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-3 block">
+            LOVITO CONCIERGE
+          </span>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#0c0c0e] mb-4">
+            Terms &amp; Conditions
+          </h1>
+          <p className="text-gray-400 text-xs md:text-sm font-light tracking-wide">
+            Effective Date: May 22, 2026 • Legal Terms of Service
+          </p>
+        </div>
 
-        <div className="bg-gray-900 p-6 md:p-8 rounded-xl border border-gray-800 space-y-8">
-          <div className="text-gray-300 leading-relaxed text-sm md:text-base">
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">1. Agreement to Terms</h2>
+        {/* Content Card */}
+        <div className="bg-white rounded-3xl p-8 md:p-12 border border-gray-100 shadow-[0_10px_40px_rgba(12,12,14,0.02)] space-y-12">
+          <div className="text-gray-600 leading-relaxed text-sm md:text-base font-light space-y-10">
+            
+            {/* 1. Agreement */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                1. Agreement to Terms
+              </h2>
               <p>
-                By accessing and using the Madembro website and services, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                By accessing, browsing, or using the <strong>Lovito</strong> website, custom digital showrooms, and bespoke styling services, you fully accept and agree to comply with and be bound by the comprehensive terms, conditions, and provisions outlined in this agreement. If you do not agree to abide by these terms of service, you are kindly advised to suspend your use of our platform immediately.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">2. Use License</h2>
+            {/* 2. Use License */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                2. Use License
+              </h2>
               <p className="mb-4">
-                Permission is granted to temporarily download one copy of the materials (information or software) on Madembro's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+                Permission is granted to temporarily download one copy of the digital materials, product styling grids, or platform elements on Lovito&rsquo;s website for personal, non-commercial, and transitory viewing purposes only. Under this restricted license, you are prohibited from:
               </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Modifying or copying the materials</li>
-                <li>Using the materials for any commercial purpose or for any public display</li>
-                <li>Attempting to decompile or reverse engineer any software contained on the website</li>
-                <li>Removing any copyright or other proprietary notations from the materials</li>
-                <li>Transferring the materials to another person or "mirroring" the materials on any other server</li>
+              <ul className="space-y-3 pl-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Modifying, copying, or duplicating any creative materials or layout coordinates.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Utilizing any site components for commercial purposes or public display.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Attempting to decompile or reverse-engineer the underlying storefront software.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Removing copyrights, proprietary annotations, or watermarks from any style imagery.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#d4af37] mt-0.5">•</span>
+                  <span>Transferring Lovito materials to another individual or &ldquo;mirroring&rdquo; the visual assets on independent servers.</span>
+                </li>
               </ul>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">3. Disclaimer</h2>
+            {/* 3. Disclaimer */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                3. Disclaimer
+              </h2>
               <p>
-                The materials on Madembro's website are provided on an 'as is' basis. Madembro makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+                The materials, fabrics, descriptions, styling guides, and virtual showcases on Lovito&rsquo;s website are provided on an &ldquo;as is&rdquo; basis. Lovito makes no warranties, expressed or implied, and hereby disclaims all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular design coordinate, or non-infringement of intellectual property.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">4. Limitations</h2>
+            {/* 4. Limitations */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                4. Limitations of Liability
+              </h2>
               <p>
-                In no event shall Madembro or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Madembro's website.
+                In no event shall Lovito, its parent designers, manufacturing partners, or specialized suppliers be held liable for any damages (including, without limitation, loss of business data, potential profits, or order interruption) arising out of the use, or the inability to use, the styling digital assets on Lovito&rsquo;s storefront.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">5. Accuracy of Materials</h2>
+            {/* 5. Accuracy */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                5. Accuracy of Materials
+              </h2>
               <p>
-                The materials appearing on Madembro's website could include technical, typographical, or photographic errors. Madembro does not warrant that any of the materials on its website are accurate, complete, or current. Madembro may make changes to the materials contained on its website at any time without notice.
+                The digital media appearing on Lovito&rsquo;s online platform could theoretically contain technical, typographical, or photographic variations. Lovito does not guarantee that all online catalog imagery or coordinates are perfectly matching live apparel down to exact weave tolerances. We reserve the right to revise materials at any given time without prior notice.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">6. Links</h2>
+            {/* 6. Links */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                6. Links &amp; Third Parties
+              </h2>
               <p>
-                Madembro has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by Madembro of the site. Use of any such linked website is at the user's own risk.
+                Lovito has not reviewed all external web environments linked to its styling domains and is not responsible for the contents of any such affiliated platform. The presence of any outgoing reference links does not imply active endorsement. Navigating external links is entirely at the client's own risk.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">7. Modifications</h2>
+            {/* 7. Modifications */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                7. Modifications to Service
+              </h2>
               <p>
-                Madembro may revise these terms of service for its website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.
+                Lovito reserves the exclusive right to edit, update, or completely overhaul these terms of service for its storefront at any time without prior notifications. By continuing to interact with the platform, you agree to remain bound by the most recent active version of these terms.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">8. Governing Law</h2>
+            {/* 8. Governing Law */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                8. Governing Law
+              </h2>
               <p>
-                These terms and conditions are governed by and construed in accordance with the laws of India, and you irrevocably submit to the exclusive jurisdiction of the courts in that location.
+                These comprehensive Terms and Conditions are governed by, and construed in absolute accordance with, the national laws of India. You irrevocably submit to the exclusive jurisdiction of the judicial courts in that sovereign territory.
               </p>
             </section>
 
+            {/* 9. Contact Info */}
             <section>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4">9. Contact Information</h2>
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                9. Contact Concierge
+              </h2>
               <p>
-                If you have any questions about these Terms and Conditions, please contact us at support@madembro.com
+                For further inquiries, formal requests, or detailed clarifications regarding these Terms and Conditions, please email us at{' '}
+                <a href="mailto:support@lovito.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  support@lovito.com
+                </a>
+                .
               </p>
             </section>
+
           </div>
         </div>
       </div>

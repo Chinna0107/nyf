@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFetch } from '../../hooks/useFetch';
-import config from '../../config';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -14,8 +13,7 @@ const UserDashboard = () => {
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (!isLoggedIn || !userEmail) navigate('/login');
-    else console.log('User Email:', userEmail);
-  }, []);
+  }, [navigate, userEmail]);
 
   const handleLogout = () => {
     localStorage.clear();

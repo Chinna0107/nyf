@@ -8,8 +8,15 @@ export const useFetch = (endpoint, { auth = false, deps = [] } = {}) => {
   const [data, setData] = useState(() => cache.get(endpoint) ?? undefined);
   const [loading, setLoading] = useState(!cache.has(endpoint));
   const [error, setError] = useState(null);
+  const depsKey = JSON.stringify(deps);
 
   const fetchData = useCallback(async () => {
+    if (!endpoint) {
+      setData([]);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -34,7 +41,7 @@ export const useFetch = (endpoint, { auth = false, deps = [] } = {}) => {
     if (!cache.has(endpoint)) {
       fetchData();
     }
-  }, [endpoint, ...deps]);
+  }, [endpoint, fetchData, depsKey]);
 
   const refetch = () => {
     cache.delete(endpoint);

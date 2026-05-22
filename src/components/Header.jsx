@@ -1,36 +1,66 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
+import logoUrl from "../assets/logo.png";
+import {
+  FiChevronDown,
+  FiChevronRight,
+  FiHome,
+  FiInfo,
+  FiLogOut,
+  FiMapPin,
+  FiMenu,
+  FiPackage,
+  FiPhone,
+  FiSettings,
+  FiShoppingBag,
+  FiTag,
+  FiUser,
+  FiX,
+} from "react-icons/fi";
+
+const productLinks = [
+  { label: "T-Shirts", href: "/tshirts" },
+  { label: "Shirts", href: "/shirts" },
+  { label: "Track Pants", href: "/trackpants" },
+  { label: "Pants", href: "/pants" },
+  { label: "Sweatshirts & Hoodies", href: "/sweatshirts" }
+];
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true");
+  const [accountOpen, setAccountOpen] = useState(false);
   const { cartItems } = useCart();
-  const cartCount = cartItems.length;
   const navigate = useNavigate();
   const mobileMenuRef = useRef(null);
   const menuBtnRef = useRef(null);
+  const productsRef = useRef(null);
+  const accountRef = useRef(null);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
-
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
-  }, []);
+  const syncAuth = () => {
+    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+  };
 
   useEffect(() => {
-    const check = () => {
-      setIsMobile(window.innerWidth <= 900);
-      if (window.innerWidth > 900) setIsOpen(false);
+    const handleResize = () => {
+      if (window.innerWidth > 920) setIsOpen(false);
     };
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Close menu when clicking outside
+  useEffect(() => {
+    window.addEventListener("storage", syncAuth);
+    window.addEventListener("auth-change", syncAuth);
+    return () => {
+      window.removeEventListener("storage", syncAuth);
+      window.removeEventListener("auth-change", syncAuth);
+    };
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -42,570 +72,292 @@ const Header = () => {
       ) {
         setIsOpen(false);
       }
+
+      if (productsRef.current && !productsRef.current.contains(event.target)) {
+        setProductsOpen(false);
+      }
+
+      if (accountRef.current && !accountRef.current.contains(event.target)) {
+        setAccountOpen(false);
+      }
     };
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
+  const closeMenu = () => {
+    setIsOpen(false);
+    setProductsOpen(false);
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userName');
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userFirstName");
+    localStorage.removeItem("userLastName");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("authToken");
     setIsLoggedIn(false);
-    navigate('/');
+    setAccountOpen(false);
+    window.dispatchEvent(new Event("auth-change"));
+    navigate("/");
   };
 
-  const userName = localStorage.getItem('userName') || 'User';
-
-  const styles = {
-    header: {
-      width: "100%",
-      position: "sticky",
-      top: 0,
-      zIndex: 1000,
-      background: "#000",
-      borderBottom: "1px solid #1a1a1a",
-      fontFamily: "Arial, sans-serif",
-      color: "#fff"
-    },
-
-    promoBar: {
-      background: "linear-gradient(90deg, #166534, #22c55e)",
-      color: "white",
-      textAlign: "center",
-      padding: isMobile ? "8px 10px" : "10px",
-      fontSize: isMobile ? "12px" : "14px",
-      fontWeight: 600,
-      letterSpacing: "0.5px"
-    },
-
-    promoLink: {
-      marginLeft: "10px",
-      color: "#fff",
-      fontWeight: "bold",
-      textDecoration: "underline",
-      cursor: "pointer"
-    },
-
-    shell: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: isMobile ? "space-between" : "space-between",
-      padding: isMobile ? "12px 16px" : "16px 40px",
-      gap: isMobile ? "0" : "0"
-    },
-
-    brand: {
-      display: "flex",
-      alignItems: "center",
-      gap: isMobile ? "0" : "12px",
-      cursor: "pointer",
-      textDecoration: "none",
-      position: isMobile ? "absolute" : "relative",
-      left: isMobile ? "45%" : "auto",
-      transform: isMobile ? "translateX(-50%)" : "none",
-      justifyContent: isMobile ? "center" : "flex-start"
-    },
-
-    logo: {
-      width: isMobile ? "80px" : "140px",
-      height: isMobile ? "56px" : "100px",
-      borderRadius: "8px",
-      objectFit: "cover",
-      boxShadow: "0 4px 12px rgba(212, 175, 55, 0.2)"
-    },
-
-    brandName: {
-      fontWeight: "700",
-      fontSize: isMobile ? "0" : "22px",
-      color: "#fff",
-      letterSpacing: "1px",
-      display: isMobile ? "none" : "block"
-    },
-
-    brandTag: {
-      fontSize: isMobile ? "0" : "12px",
-      color: "#aaa",
-      fontWeight: 500,
-      display: isMobile ? "none" : "block"
-    },
-
-    nav: {
-      display: isMobile ? "none" : "flex",
-      gap: "32px",
-      fontWeight: "600",
-      alignItems: "center",
-      marginLeft: "60px"
-    },
-
-    navLink: {
-      textDecoration: "none",
-      color: "#fff",
-      fontSize: "15px",
-      fontWeight: "600",
-      letterSpacing: "0.5px",
-      transition: "all 0.3s ease",
-      position: "relative",
-      padding: "8px 0"
-    },
-
-    actions: {
-      display: "none"
-    },
-
-    search: {
-      display: isMobile ? "none" : "flex",
-      alignItems: "center",
-      background: "#0a0a0a",
-      padding: "10px 16px",
-      borderRadius: "25px",
-      color: "white",
-      border: "1px solid #333",
-      transition: "all 0.3s ease",
-      width: "200px"
-    },
-
-    searchInput: {
-      border: "none",
-      background: "transparent",
-      outline: "none",
-      marginLeft: "8px",
-      color: "white",
-      width: "100%",
-      fontSize: "14px"
-    },
-
-    iconBtn: {
-      border: "1px solid #333",
-      background: "#0a0a0a",
-      padding: "10px",
-      borderRadius: "50%",
-      cursor: "pointer",
-      color: "white",
-      position: "relative",
-      transition: "all 0.3s ease",
-      fontSize: "18px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      width: "40px",
-      height: "40px",
-    },
-
-    cartBadge: {
-      position: "absolute",
-      top: "-8px",
-      right: "-8px",
-      background: "#fff",
-      color: "#000",
-      borderRadius: "50%",
-      width: "22px",
-      height: "22px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontSize: "12px",
-      fontWeight: "700",
-      border: "2px solid #000"
-    },
-
-    userBtn: {
-      background: "#fff",
-      border: "none",
-      color: "#000",
-      padding: "10px 16px",
-      borderRadius: "25px",
-      cursor: "pointer",
-      fontWeight: "600",
-      fontSize: "14px",
-      transition: "all 0.3s ease",
-      display: "flex",
-      alignItems: "center",
-      gap: "8px"
-    },
-
-    logoutBtn: {
-      background: "#8b0000",
-      border: "none",
-      color: "#fff",
-      padding: "10px 16px",
-      borderRadius: "25px",
-      cursor: "pointer",
-      fontWeight: "600",
-      fontSize: "14px",
-      transition: "all 0.3s ease"
-    },
-
-    menuBtn: {
-      display: isMobile ? "flex" : "none",
-      flexDirection: "column",
-      gap: "5px",
-      border: "none",
-      background: "transparent",
-      cursor: "pointer",
-      order: -1
-    },
-
-    menuLine: {
-      width: "24px",
-      height: "3px",
-      background: "#efeeec",
-      transition: "all 0.3s ease"
-    },
-
-    mobilePanel: {
-      display: isOpen ? "block" : "none",
-      background: "linear-gradient(135deg, #0b0b0b 0%, #1a1a1a 100%)",
-      borderTop: "2px solid #e3e1da",
-      padding: "20px",
-      maxHeight: "calc(100vh - 250px)",
-      overflowY: "auto",
-      position: "relative",
-      animation: "slideDown 0.3s ease"
-    },
-
-    closeBtn: {
-      position: "absolute",
-      top: "15px",
-      right: "15px",
-      background: "transparent",
-      border: "none",
-      color: "#dddbd4",
-      fontSize: "28px",
-      cursor: "pointer",
-      fontWeight: "bold",
-      transition: "all 0.3s ease",
-      width: "40px",
-      height: "40px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
-    },
-
-    mobileNav: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "12px",
-      marginBottom: "20px",
-      marginTop: "30px"
-    },
-
-    mobileLink: {
-      textDecoration: "none",
-      color: "#ccc",
-      fontSize: "16px",
-      fontWeight: "600",
-      padding: "12px",
-      borderRadius: "8px",
-      transition: "all 0.3s ease",
-      display: "block"
-    },
-
-    mobileCTA: {
-      width: "100%",
-      background: "#fff",
-      color: "#000",
-      border: "none",
-      padding: "12px",
-      borderRadius: "25px",
-      fontWeight: "600",
-      cursor: "pointer",
-      marginBottom: "10px"
-    },
-
-    mobileActions: {
-      display: "flex",
-      gap: "10px",
-      alignItems: "center",
-      marginBottom: "16px",
-      flexWrap: "wrap",
-      marginTop: "20px",
-      paddingTop: "20px",
-      borderTop: "1px solid #333"
-    },
-
-    mobileIconRow: {
-      display: "flex",
-      gap: "10px"
-    }
-  };
+  const userName = localStorage.getItem("userName") || "User";
+  const userEmail = localStorage.getItem("userEmail") || "";
+  const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
+  const cartCount = cartItems.length;
+  const accountLinks = [
+    { label: "My Orders", href: "/my-orders", icon: <FiPackage size={16} /> },
+    { label: "Order Tracking", href: "/order-tracking", icon: <FiMapPin size={16} /> },
+    { label: "Profile", href: "/profile", icon: <FiSettings size={16} /> },
+  ];
 
   return (
-    <header style={styles.header}>
-      <div style={styles.promoBar}>
-        🎉 Limited drop: stitched essentials for spring.
-        <a href="/" style={styles.promoLink}>
-          Shop new arrivals →
-        </a>
+    <header className="site-header">
+      {/* Click-to-close Backdrop Overlay */}
+      {isOpen && (
+        <div 
+          className="mobile-backdrop"
+          onClick={closeMenu}
+        />
+      )}
+
+      <div className="header-promo">
+        New stitched drops are live. <Link to="/tshirts">Shop T-Shirts</Link>
       </div>
 
-      <div style={styles.shell}>
-        <button 
+      <div className="header-shell">
+        <button
           ref={menuBtnRef}
-          style={styles.menuBtn} 
-          onClick={toggleMenu}
-          onMouseEnter={(e) => {
-            e.currentTarget.querySelectorAll('span').forEach(line => {
-              line.style.background = "#eeece5";
-            });
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.querySelectorAll('span').forEach(line => {
-              line.style.background = "#e9e7de";
-            });
-          }}
+          className="menu-button-icon"
+          type="button"
+          aria-label="Toggle navigation"
+          onClick={() => setIsOpen((open) => !open)}
         >
-          <span style={styles.menuLine}></span>
-          <span style={styles.menuLine}></span>
-          <span style={styles.menuLine}></span>
+          {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
 
-        <a href="/" style={{ ...styles.brand, textDecoration: "none" }} onClick={closeMenu}>
-          <img
-            src="https://res.cloudinary.com/dgyykbmt6/image/upload/v1773901975/WhatsApp_Image_2026-03-08_at_13.19.58-removebg-preview_gmwyqb.png"
-            alt="Meda"
-            style={styles.logo}
-          />
-          <div>
-            <div style={styles.brandName}>MADEMBRO</div>
-            <div style={styles.brandTag}>Custom embroidery studio</div>
+        <Link className="brand-link" to="/" onClick={closeMenu}>
+          <img src={logoUrl} alt="Lovito" className="brand-logo" />
+          <div className="brand-copy">
+            <span className="brand-name">LOVITO</span>
+            <span className="brand-tag">Premium Fashion & Styling</span>
           </div>
-        </a>
+        </Link>
 
-        <nav style={styles.nav}>
-          <a 
-            href="/" 
-            style={styles.navLink}
-            onMouseEnter={(e) => e.target.style.color = "#ccc"}
-            onMouseLeave={(e) => e.target.style.color = "#fff"}
-          >
+        <nav className="desktop-nav" aria-label="Main navigation">
+          <NavLink to="/" className="nav-link">
             Home
-          </a>
-          <a 
-            href="/tshirts" 
-            style={styles.navLink}
-            onMouseEnter={(e) => e.target.style.color = "#ccc"}
-            onMouseLeave={(e) => e.target.style.color = "#fff"}
-          >
-            T-Shirts
-          </a>
-          <a 
-            href="/sweatshirts" 
-            style={styles.navLink}
-            onMouseEnter={(e) => e.target.style.color = "#ccc"}
-            onMouseLeave={(e) => e.target.style.color = "#fff"}
-          >
-            Sweatshirts
-          </a>
-          <a 
-            href="/hoodies" 
-            style={styles.navLink}
-            onMouseEnter={(e) => e.target.style.color = "#ccc"}
-            onMouseLeave={(e) => e.target.style.color = "#fff"}
-          >
-            Hoodies
-          </a>
-          <a 
-            href="/custom" 
-            style={styles.navLink}
-            onMouseEnter={(e) => e.target.style.color = "#ccc"}
-            onMouseLeave={(e) => e.target.style.color = "#fff"}
-          >
-            Custom
-          </a>
+          </NavLink>
+
+          <div className="nav-dropdown" ref={productsRef}>
+            <button
+              className="nav-link dropdown-trigger"
+              type="button"
+              onClick={() => setProductsOpen((open) => !open)}
+              onMouseEnter={() => setProductsOpen(true)}
+            >
+              Products
+              <FiChevronDown size={14} className="dropdown-arrow" />
+            </button>
+            <div
+              className={`dropdown-menu ${productsOpen ? "show" : ""}`}
+              onMouseLeave={() => setProductsOpen(false)}
+            >
+              {productLinks.map((item) => (
+                <Link key={item.href} to={item.href} onClick={closeMenu}>
+                  {item.label}
+                  <FiChevronRight size={12} />
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <NavLink to="/about" className="nav-link">
+            About Us
+          </NavLink>
+          <NavLink to="/custom" className="nav-link">
+            Dress up with Chinna
+          </NavLink>
+          <NavLink to="/contact" className="nav-link">
+            Contact
+          </NavLink>
         </nav>
 
-        <div style={styles.search}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "#ececea";
-            e.currentTarget.style.background = "#1a1a1a";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "#333";
-            e.currentTarget.style.background = "#0a0a0a";
-          }}
-        >
-          🔍
-          <input
-            type="search"
-            placeholder="Search products..."
-            style={styles.searchInput}
-          />
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <a href="/cart" style={{ textDecoration: "none" }}>
-            <button 
-              style={styles.iconBtn}
-              onMouseEnter={(e) => {
-                e.target.style.borderColor = "#e7e4db";
-                e.target.style.background = "#1a1a1a";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.borderColor = "#333";
-                e.target.style.background = "#0a0a0a";
-              }}
-            >
-              👜
-              {cartCount > 0 && <div style={styles.cartBadge}>{cartCount}</div>}
-            </button>
-          </a>
+        <div className="header-actions">
+          <Link className="cart-link" to="/cart" aria-label="Cart">
+            <FiShoppingBag size={16} />
+            Bag
+            {cartCount > 0 && <span>{cartCount}</span>}
+          </Link>
 
           {isLoggedIn ? (
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <span style={{ fontSize: "14px", color: "#d4af37", fontWeight: "600" }}>
-                👤 {userName}
-              </span>
+            <div className="account-menu" ref={accountRef}>
               <button
-                onClick={handleLogout}
-                style={styles.logoutBtn}
-                onMouseEnter={(e) => {
-                  e.target.style.background = "#a00000";
-                  e.target.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = "#8b0000";
-                  e.target.style.transform = "translateY(0)";
-                }}
+                type="button"
+                className="account-trigger"
+                onClick={() => setAccountOpen((open) => !open)}
+                aria-expanded={accountOpen}
+                aria-haspopup="menu"
               >
-                Logout
+                <span className="account-avatar">{userInitial}</span>
+                <span className="account-trigger-copy">
+                  <span className="account-name">{userName}</span>
+                  <span className="account-label">Account</span>
+                </span>
+                <FiChevronDown className={`account-chevron ${accountOpen ? "open" : ""}`} size={15} />
               </button>
+              <div className={`account-dropdown ${accountOpen ? "show" : ""}`} role="menu">
+                <div className="account-dropdown-head">
+                  <span className="account-avatar large">{userInitial}</span>
+                  <div>
+                    <p>{userName}</p>
+                    <span>{userEmail || "Lovito member"}</span>
+                  </div>
+                </div>
+                <div className="account-dropdown-links">
+                  {accountLinks.map((item) => (
+                    <Link key={item.href} to={item.href} onClick={() => setAccountOpen(false)}>
+                      {item.icon}
+                      <span>{item.label}</span>
+                      <FiChevronRight size={13} />
+                    </Link>
+                  ))}
+                </div>
+                <button type="button" className="account-dropdown-logout" onClick={handleLogout}>
+                  <FiLogOut size={16} />
+                  Logout
+                </button>
+              </div>
             </div>
           ) : (
-            <button
-              onClick={() => navigate('/login')}
-              style={styles.userBtn}
-              onMouseEnter={(e) => {
-                e.target.style.transform = "translateY(-2px)";
-                e.target.style.boxShadow = "0 6px 20px rgba(255,255,255, 0.2)";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = "translateY(0)";
-                e.target.style.boxShadow = "none";
-              }}
-            >
-              👤 Login
+            <button type="button" className="login-button" onClick={() => navigate("/login")}>
+              Login
             </button>
           )}
         </div>
       </div>
 
-      <div ref={mobileMenuRef} style={styles.mobilePanel}>
-        <nav style={styles.mobileNav}>
-          <a 
-            href="/" 
-            style={styles.mobileLink}
-            onClick={closeMenu}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#222";
-              e.target.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#ccc";
-            }}
-          >
-            Home
-          </a>
-          <a 
-            href="/tshirts" 
-            style={styles.mobileLink}
-            onClick={closeMenu}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#222";
-              e.target.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#ccc";
-            }}
-          >
-            T-Shirts
-          </a>
-          <a 
-            href="/sweatshirts" 
-            style={styles.mobileLink}
-            onClick={closeMenu}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#222";
-              e.target.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#ccc";
-            }}
-          >
-            Sweatshirts
-          </a>
-          <a 
-            href="/hoodies" 
-            style={styles.mobileLink}
-            onClick={closeMenu}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#222";
-              e.target.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#ccc";
-            }}
-          >
-            Hoodies
-          </a>
-          <a 
-            href="/custom" 
-            style={styles.mobileLink}
-            onClick={closeMenu}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#222";
-              e.target.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "transparent";
-              e.target.style.color = "#ccc";
-            }}
-          >
-            Custom Embroidery
-          </a>
-        </nav>
-
-        <div style={styles.mobileActions}>
-          <a href="/cart" style={{ textDecoration: "none", flex: 1 }} onClick={closeMenu}>
-            <button style={{ ...styles.iconBtn, width: "100%", justifyContent: "center" }}>
-              👜 Bag {cartCount > 0 && `(${cartCount})`}
-            </button>
-          </a>
-          {!isLoggedIn && (
-            <button
-              onClick={() => {
-                navigate('/login');
-                closeMenu();
-              }}
-              style={{ ...styles.mobileCTA, flex: 1 }}
-            >
-              👤 Login
-            </button>
-          )}
+      {/* Sliding Mobile Menu Panel */}
+      <div ref={mobileMenuRef} className={`mobile-panel ${isOpen ? "open" : ""}`}>
+        <div className="mobile-panel-header">
+          <span className="mobile-brand-title">
+            <img src={logoUrl} alt="Lovito" />
+            LOVITO
+          </span>
+          <button type="button" className="mobile-close-btn" onClick={closeMenu}>
+            <FiX size={24} />
+          </button>
         </div>
 
-        {isLoggedIn && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px", paddingTop: "10px" }}>
-            <span style={{ fontSize: "14px", color: "#d4af37", fontWeight: "600", textAlign: "center" }}>
-              👤 {userName}
-            </span>
-            <button
-              onClick={() => {
-                handleLogout();
-                closeMenu();
-              }}
-              style={{ ...styles.mobileCTA, background: "#8b0000", color: "#fff" }}
-            >
-              Logout
-            </button>
+        <div className="mobile-panel-body">
+          {/* Section 1: Categories */}
+          <div className="mobile-section">
+            <h4 className="mobile-section-title">Shop Collection</h4>
+            <div className="mobile-section-links">
+              {productLinks.map((item) => (
+                <Link key={item.href} to={item.href} onClick={closeMenu} className="mobile-drawer-link">
+                  <span className="flex items-center gap-3">
+                    <FiTag size={16} className="text-[#d4af37]" />
+                    {item.label}
+                  </span>
+                  <FiChevronRight size={14} className="link-arrow" />
+                </Link>
+              ))}
+            </div>
           </div>
-        )}
+
+          {/* Section 2: Explore */}
+          <div className="mobile-section">
+            <h4 className="mobile-section-title">Explore Atelier</h4>
+            <div className="mobile-section-links">
+              <NavLink to="/" onClick={closeMenu} className="mobile-drawer-link">
+                <span className="flex items-center gap-3">
+                  <FiHome size={16} className="text-gray-400" />
+                  Home
+                </span>
+                <FiChevronRight size={14} className="link-arrow" />
+              </NavLink>
+              <NavLink to="/about" onClick={closeMenu} className="mobile-drawer-link">
+                <span className="flex items-center gap-3">
+                  <FiInfo size={16} className="text-gray-400" />
+                  About Us
+                </span>
+                <FiChevronRight size={14} className="link-arrow" />
+              </NavLink>
+              <NavLink to="/custom" onClick={closeMenu} className="mobile-drawer-link">
+                <span className="flex items-center gap-3">
+                  <FiUser size={16} className="text-gray-400" />
+                  Dress up with Chinna
+                </span>
+                <FiChevronRight size={14} className="link-arrow" />
+              </NavLink>
+              <NavLink to="/contact" onClick={closeMenu} className="mobile-drawer-link">
+                <span className="flex items-center gap-3">
+                  <FiPhone size={16} className="text-gray-400" />
+                  Contact
+                </span>
+                <FiChevronRight size={14} className="link-arrow" />
+              </NavLink>
+            </div>
+          </div>
+
+          {/* Section 3: Bag & Account */}
+          <div className="mobile-section mobile-footer-section">
+            <Link to="/cart" onClick={closeMenu} className="mobile-bag-pill">
+              <FiShoppingBag size={18} />
+              Bag {cartCount > 0 ? `(${cartCount})` : "(0)"}
+            </Link>
+
+            {isLoggedIn ? (
+              <div className="mobile-user-box">
+                <div className="mobile-user-info">
+                  <span className="account-avatar">{userInitial}</span>
+                  <span>
+                    {userName}
+                    {userEmail && <small>{userEmail}</small>}
+                  </span>
+                </div>
+                <div className="mobile-account-links">
+                  {accountLinks.map((item) => (
+                    <Link key={item.href} to={item.href} onClick={closeMenu} className="mobile-drawer-link">
+                      <span className="flex items-center gap-3">
+                        {item.icon}
+                        {item.label}
+                      </span>
+                      <FiChevronRight size={14} className="link-arrow" />
+                    </Link>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="mobile-drawer-logout"
+                  onClick={() => {
+                    handleLogout();
+                    closeMenu();
+                  }}
+                >
+                  <FiLogOut size={16} />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="mobile-drawer-login"
+                onClick={() => {
+                  navigate("/login");
+                  closeMenu();
+                }}
+              >
+                Login to Atelier
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </header>
   );

@@ -33,6 +33,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState('');
 
   const [form, setForm] = useState({
     firstName: '', lastName: '', email: '', phone: '',
@@ -67,7 +68,11 @@ const Checkout = () => {
     if (!form.firstName.trim()) e.firstName = 'Required';
     if (!form.lastName.trim())  e.lastName  = 'Required';
     if (!form.email.trim())     e.email     = 'Required';
-    if (!form.phone.trim())     e.phone     = 'Required';
+    if (!form.phone.trim()) {
+      e.phone = 'Required';
+    } else if (form.phone.replace(/[^\d]/g, '').length < 10) {
+      e.phone = 'Enter a valid phone number';
+    }
     if (!form.address.trim())   e.address   = 'Required';
     if (!form.city.trim())      e.city      = 'Required';
     if (!form.state.trim())     e.state     = 'Required';
@@ -90,6 +95,7 @@ const Checkout = () => {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
+    setSubmitError('');
 
     const orderPayload = {
       customer_name:   `${form.firstName} ${form.lastName}`,
@@ -102,12 +108,13 @@ const Checkout = () => {
                      : paymentMethod === 'netbanking' ? { bank: form.bank }
                      : {},
       items: cart.map(item => ({
-        product_id: item.productId,
+        product_id: item.productId || item.id,
         name:       item.name,
         size:       item.size,
         color:      item.color,
         quantity:   item.quantity,
         price:      parseFloat(item.price),
+        image:      item.image,
       })),
       subtotal: parseFloat(subtotal.toFixed(2)),
       tax:      parseFloat(tax.toFixed(2)),
@@ -129,16 +136,16 @@ const Checkout = () => {
 
       if (res.ok) {
         const data = await res.json();
-        setOrderId(data.order_id || data.id || Math.random().toString(36).substr(2, 9).toUpperCase());
+        setOrderId(data.order_id || data.id || data.order?.id || 'Created');
+        clearCart();
+        setOrderPlaced(true);
       } else {
-        // still show success even if backend is down during dev
-        setOrderId(Math.random().toString(36).substr(2, 9).toUpperCase());
+        const data = await res.json().catch(() => ({}));
+        setSubmitError(data.message || 'Could not create your order. Please try again.');
       }
     } catch {
-      setOrderId(Math.random().toString(36).substr(2, 9).toUpperCase());
+      setSubmitError('Could not connect to the order server. Please try again.');
     } finally {
-      clearCart();
-      setOrderPlaced(true);
       setLoading(false);
     }
   };
@@ -180,6 +187,11 @@ const Checkout = () => {
 
         <div className={`grid ${isMobile ? 'grid-cols-1' : 'lg:grid-cols-3'} gap-6 md:gap-8`}>
           <form onSubmit={handlePlaceOrder} className="lg:col-span-2 space-y-6">
+            {submitError && (
+              <div className="bg-red-950 border border-red-800 text-red-200 rounded-xl px-4 py-3 text-sm">
+                {submitError}
+              </div>
+            )}
 
             {/* Shipping */}
             <div className="bg-gray-900 rounded-xl p-6 border border-gray-800">

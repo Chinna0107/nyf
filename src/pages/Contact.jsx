@@ -8,7 +8,7 @@ const Contact = () => {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   React.useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -28,146 +28,58 @@ const Contact = () => {
     e.preventDefault();
     setSubmitted(true);
     setFormData({ name: '', email: '', subject: '', message: '' });
-    setTimeout(() => setSubmitted(false), 3000);
+    setTimeout(() => setSubmitted(false), 4000);
   };
 
   const contactInfo = [
-    { icon: '📍', title: 'Address', content: '123 Embroidery Lane, Creative City, CC 12345' },
-    { icon: '📞', title: 'Phone', content: '+1 (555) 123-4567' },
-    { icon: '✉️', title: 'Email', content: 'hello@madembro.com' },
-    { icon: '🕐', title: 'Hours', content: 'Mon-Fri: 9AM-6PM, Sat: 10AM-4PM' }
+    { icon: '📍', title: 'Atelier Address', content: '123 Lovito Boulevard, Design District, LV 90021' },
+    { icon: '📞', title: 'Styling Assistance', content: '+91 81798 60935' },
+    { icon: '✉️', title: 'General Inquiries', content: 'hello@lovito.com' },
+    { icon: '🕐', title: 'Atelier Hours', content: 'Mon-Fri: 10AM-7PM, Sat: 11AM-5PM' }
   ];
-
-  const faqs = [
-    {
-      question: 'How long does custom embroidery take?',
-      answer: 'Standard orders take 5-7 business days. Rush orders available for additional fee.'
-    },
-    {
-      question: 'What is your return policy?',
-      answer: 'We offer 30-day returns on all items in original condition. Custom orders are non-refundable.'
-    },
-    {
-      question: 'Do you offer bulk orders?',
-      answer: 'Yes! We offer special pricing for bulk orders. Contact us for a custom quote.'
-    },
-    {
-      question: 'What materials do you use?',
-      answer: 'We use premium quality cotton, cotton blends, and fleece materials from trusted suppliers.'
-    },
-    {
-      question: 'Can I track my order?',
-      answer: 'Yes, you\'ll receive a tracking number via email once your order ships.'
-    },
-    {
-      question: 'Do you ship internationally?',
-      answer: 'Yes, we ship to most countries. International shipping rates apply.'
-    }
-  ];
-
-  const [expandedFaq, setExpandedFaq] = useState(null);
 
   return (
-    <div style={{ backgroundColor: '#000', minHeight: '100vh', color: '#fff' }}>
-      {/* Hero Section */}
-      <section style={{
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)',
-        textAlign: 'center',
-        borderBottom: '2px solid #333'
-      }}>
-        <h1 style={{
-          fontSize: 'clamp(32px, 8vw, 56px)',
-          fontWeight: 'bold',
-          marginBottom: '20px'
-        }}>
-          Get in Touch
-        </h1>
-        <p style={{
-          fontSize: 'clamp(16px, 3vw, 20px)',
-          color: '#ccc',
-          maxWidth: '600px',
-          margin: '0 auto'
-        }}>
-          Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-        </p>
+    <div className="bg-[#fbfbfc] min-h-screen text-[#0c0c0e]">
+      {/* Premium Hero Section */}
+      <section className="relative py-20 px-8 text-center bg-white border-b border-gray-100">
+        <div className="max-w-3xl mx-auto">
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-3 block">LOVITO ATELIER</span>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-[#0c0c0e] mb-6">
+            Get in Touch
+          </h1>
+          <p className="text-base md:text-lg text-gray-500 font-light max-w-xl mx-auto leading-relaxed">
+            Have questions about a tailored fit or private styling? Drop us a line. Our atelier concierge will respond as soon as possible.
+          </p>
+        </div>
       </section>
 
-      {/* Contact Info Cards */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)'
-      }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
-          gap: '24px',
-          marginBottom: '60px'
-        }}>
+      {/* Info cards */}
+      <section className="max-w-7xl mx-auto px-8 py-16">
+        <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-4'} gap-6`}>
           {contactInfo.map((info, idx) => (
-            <div key={idx} style={{
-              backgroundColor: '#1a1a1a',
-              borderRadius: '12px',
-              padding: '30px',
-              textAlign: 'center',
-              border: '2px solid #333',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              if (!isMobile) {
-                e.currentTarget.style.borderColor = '#fff';
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(255, 255, 255, 0.1)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!isMobile) {
-                e.currentTarget.style.borderColor = '#333';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }
-            }}>
-              <div style={{ fontSize: '40px', marginBottom: '15px' }}>{info.icon}</div>
-              <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
-                {info.title}
-              </h3>
-              <p style={{ color: '#ccc', fontSize: '14px' }}>
-                {info.content}
-              </p>
+            <div key={idx} className="bg-white p-8 rounded-2xl border border-gray-100 hover:border-[#d4af37]/35 shadow-sm hover:shadow-xl transition-all duration-300 text-center flex flex-col items-center justify-between min-h-[220px]">
+              <div>
+                <div className="text-3xl mb-4 bg-gray-50 w-14 h-14 rounded-full flex items-center justify-center border border-gray-100">{info.icon}</div>
+                <h3 className="text-base font-bold text-[#0c0c0e] mb-2">{info.title}</h3>
+              </div>
+              <p className="text-sm text-gray-500 leading-normal">{info.content}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Contact Form & Map */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)',
-        borderTop: '2px solid #333'
-      }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-          gap: '40px'
-        }}>
-          {/* Form */}
-          <div>
-            <h2 style={{
-              fontSize: 'clamp(24px, 5vw, 32px)',
-              fontWeight: 'bold',
-              marginBottom: '30px'
-            }}>
+      {/* Form and Map Grid */}
+      <section className="max-w-7xl mx-auto px-8 pb-24 border-t border-gray-100 pt-16">
+        <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-12`}>
+          
+          {/* Contact form */}
+          <div className="bg-white p-8 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#0c0c0e] mb-8">
               Send us a Message
             </h2>
-            <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontWeight: '600',
-                  fontSize: '14px'
-                }}>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block mb-2 text-xs font-semibold text-gray-500 uppercase tracking-widest">
                   Name
                 </label>
                 <input
@@ -176,35 +88,13 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    backgroundColor: '#1a1a1a',
-                    border: '2px solid #333',
-                    borderRadius: '8px',
-                    color: '#fff',
-                    fontSize: '14px',
-                    transition: 'all 0.3s ease',
-                    boxSizing: 'border-box'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#fff';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(255, 255, 255, 0.1)';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#333';
-                    e.target.style.boxShadow = 'none';
-                  }}
+                  placeholder="Your full name"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-[#0c0c0e] placeholder-gray-400 focus:border-[#d4af37] focus:outline-none focus:ring-4 focus:ring-[#d4af37]/5 transition-all duration-300"
                 />
               </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontWeight: '600',
-                  fontSize: '14px'
-                }}>
+              <div>
+                <label className="block mb-2 text-xs font-semibold text-gray-500 uppercase tracking-widest">
                   Email
                 </label>
                 <input
@@ -213,35 +103,13 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    backgroundColor: '#1a1a1a',
-                    border: '2px solid #333',
-                    borderRadius: '8px',
-                    color: '#fff',
-                    fontSize: '14px',
-                    transition: 'all 0.3s ease',
-                    boxSizing: 'border-box'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#fff';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(255, 255, 255, 0.1)';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#333';
-                    e.target.style.boxShadow = 'none';
-                  }}
+                  placeholder="you@example.com"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-[#0c0c0e] placeholder-gray-400 focus:border-[#d4af37] focus:outline-none focus:ring-4 focus:ring-[#d4af37]/5 transition-all duration-300"
                 />
               </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontWeight: '600',
-                  fontSize: '14px'
-                }}>
+              <div>
+                <label className="block mb-2 text-xs font-semibold text-gray-500 uppercase tracking-widest">
                   Subject
                 </label>
                 <input
@@ -250,35 +118,13 @@ const Contact = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    backgroundColor: '#1a1a1a',
-                    border: '2px solid #333',
-                    borderRadius: '8px',
-                    color: '#fff',
-                    fontSize: '14px',
-                    transition: 'all 0.3s ease',
-                    boxSizing: 'border-box'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#fff';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(255, 255, 255, 0.1)';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#333';
-                    e.target.style.boxShadow = 'none';
-                  }}
+                  placeholder="Styling inquiry / General support"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-[#0c0c0e] placeholder-gray-400 focus:border-[#d4af37] focus:outline-none focus:ring-4 focus:ring-[#d4af37]/5 transition-all duration-300"
                 />
               </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontWeight: '600',
-                  fontSize: '14px'
-                }}>
+              <div>
+                <label className="block mb-2 text-xs font-semibold text-gray-500 uppercase tracking-widest">
                   Message
                 </label>
                 <textarea
@@ -286,195 +132,54 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  rows="5"
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    backgroundColor: '#1a1a1a',
-                    border: '2px solid #333',
-                    borderRadius: '8px',
-                    color: '#fff',
-                    fontSize: '14px',
-                    transition: 'all 0.3s ease',
-                    boxSizing: 'border-box',
-                    fontFamily: 'inherit',
-                    resize: 'vertical'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#fff';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(255, 255, 255, 0.1)';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#333';
-                    e.target.style.boxShadow = 'none';
-                  }}
+                  rows="4"
+                  placeholder="How can we assist you with your fit?"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-[#0c0c0e] placeholder-gray-400 focus:border-[#d4af37] focus:outline-none focus:ring-4 focus:ring-[#d4af37]/5 transition-all duration-300 resize-none"
                 />
               </div>
 
               <button
                 type="submit"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  backgroundColor: '#fff',
-                  color: '#000',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#f0f0f0';
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.boxShadow = '0 8px 20px rgba(255, 255, 255, 0.2)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#fff';
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = 'none';
-                }}
+                className="w-full py-4 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
               >
                 Send Message
               </button>
 
               {submitted && (
-                <div style={{
-                  marginTop: '20px',
-                  padding: '16px',
-                  backgroundColor: '#22c55e',
-                  borderRadius: '8px',
-                  textAlign: 'center',
-                  color: '#000',
-                  fontWeight: '600'
-                }}>
-                  ✓ Message sent successfully! We'll get back to you soon.
+                <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-800 text-sm font-semibold text-center animate-pulse">
+                  ✓ Concierge message forwarded. We will connect back with you within 24 hours.
                 </div>
               )}
             </form>
           </div>
 
-          {/* Info */}
-          <div>
-            <h2 style={{
-              fontSize: 'clamp(24px, 5vw, 32px)',
-              fontWeight: 'bold',
-              marginBottom: '30px'
-            }}>
-              Why Contact Us?
-            </h2>
-            <div style={{
-              backgroundColor: '#1a1a1a',
-              borderRadius: '12px',
-              padding: '30px',
-              border: '2px solid #333'
-            }}>
-              <div style={{ marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
-                  📧 Customer Support
-                </h3>
-                <p style={{ color: '#ccc', lineHeight: '1.6' }}>
-                  Have questions about your order? Our support team is here to help.
-                </p>
-              </div>
-              <div style={{ marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
-                  🎨 Custom Orders
-                </h3>
-                <p style={{ color: '#ccc', lineHeight: '1.6' }}>
-                  Interested in bulk orders or special projects? Let's discuss your needs.
-                </p>
-              </div>
-              <div style={{ marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
-                  🤝 Partnerships
-                </h3>
-                <p style={{ color: '#ccc', lineHeight: '1.6' }}>
-                  Looking to collaborate? We'd love to explore partnership opportunities.
-                </p>
-              </div>
-              <div>
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
-                  💡 Feedback
-                </h3>
-                <p style={{ color: '#ccc', lineHeight: '1.6' }}>
-                  Your feedback helps us improve. Share your thoughts and suggestions.
-                </p>
-              </div>
+          {/* Value Proposition Column */}
+          <div className="flex flex-col justify-center space-y-8">
+            <div>
+              <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.2em] block mb-2">OUR STANDARDS</span>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#0c0c0e] mb-4">Why connect with us?</h2>
+              <p className="text-sm md:text-base text-gray-500 font-light leading-relaxed">
+                At Lovito, custom fit and aesthetic details are our identity. We offer dedicated bespoke assistance to ensure every client stands out gracefully.
+              </p>
+            </div>
+            
+            <div className="space-y-6">
+              {[
+                { icon: '👑', title: 'Styling Consultation', text: 'Reach out to schedule structured coordinate fitting with our head directors.' },
+                { icon: '🧵', title: 'Bespoke Alteration Queries', text: 'Need a custom sleeve, chest length adjustment, or custom embroidery details? Ask away.' },
+                { icon: '📦', title: 'Secure Expedited Returns', text: 'Questions on tracking shipments or initiating premium exchanges?' }
+              ].map((item, idx) => (
+                <div key={idx} className="flex gap-4 p-5 rounded-2xl bg-white border border-gray-100">
+                  <span className="text-2xl">{item.icon}</span>
+                  <div>
+                    <h4 className="text-sm font-bold text-[#0c0c0e] mb-1">{item.title}</h4>
+                    <p className="text-xs text-gray-500 leading-normal">{item.text}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* FAQ Section */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)',
-        borderTop: '2px solid #333'
-      }}>
-        <h2 style={{
-          fontSize: 'clamp(28px, 6vw, 40px)',
-          fontWeight: 'bold',
-          marginBottom: '50px',
-          textAlign: 'center'
-        }}>
-          Frequently Asked Questions
-        </h2>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          {faqs.map((faq, idx) => (
-            <div key={idx} style={{
-              marginBottom: '16px',
-              backgroundColor: '#1a1a1a',
-              borderRadius: '8px',
-              border: '2px solid #333',
-              overflow: 'hidden'
-            }}>
-              <button
-                onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
-                style={{
-                  width: '100%',
-                  padding: '20px',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  color: '#fff',
-                  textAlign: 'left',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
-              >
-                <span>{faq.question}</span>
-                <span style={{
-                  transform: expandedFaq === idx ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.3s ease'
-                }}>
-                  ▼
-                </span>
-              </button>
-              {expandedFaq === idx && (
-                <div style={{
-                  padding: '0 20px 20px 20px',
-                  borderTop: '1px solid #333',
-                  color: '#ccc',
-                  lineHeight: '1.6'
-                }}>
-                  {faq.answer}
-                </div>
-              )}
-            </div>
-          ))}
         </div>
       </section>
     </div>

@@ -165,6 +165,9 @@ const ProductForm = () => {
               <label className={labelCls}>Category</label>
               <select name="category" value={formData.category} onChange={handleChange} className={inputCls}>
                 <option value="tshirts">T-Shirts</option>
+                <option value="shirts">Shirts</option>
+                <option value="track pants">Track Pants</option>
+                <option value="pants">Pants</option>
                 <option value="sweatshirts">Sweatshirts</option>
                 <option value="hoodies">Hoodies</option>
                 <option value="custom">Custom Embroidery</option>
