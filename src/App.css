@@ -10,7 +10,8 @@ body {
   background-color: #fbfbfc;
   color: #0c0c0e;
   font-family: 'Space Grotesk', sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
+  padding-top: 110px;
 }
 
 /* Global text colors */
@@ -60,8 +61,11 @@ input::placeholder, textarea::placeholder {
 
 /* Header Promotion */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 1000;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px) saturate(180%);
@@ -507,19 +511,27 @@ input::placeholder, textarea::placeholder {
 /* Menu Toggle Button (Mobile) */
 .menu-button-icon {
   display: none;
-  background: transparent;
-  border: none;
+  background: rgba(15, 23, 42, 0.03);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 12px;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
   color: #0c0c0e;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1001;
 }
 
 .menu-button-icon:active {
-  transform: scale(0.9);
+  transform: scale(0.92);
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.menu-button-icon:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.3);
+  color: #d4af37;
 }
 
 /* Mobile Backdrop */
@@ -529,10 +541,11 @@ input::placeholder, textarea::placeholder {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 1500;
+  cursor: pointer;
   animation: fadeIn 0.3s ease-out;
 }
 
@@ -540,24 +553,34 @@ input::placeholder, textarea::placeholder {
 .mobile-panel {
   position: fixed;
   top: 0;
-  right: -340px;
+  right: 0;
   width: 320px;
+  max-width: 85vw;
   height: 100vh;
-  background: rgba(12, 12, 14, 0.98);
+  background: rgba(12, 12, 14, 0.95);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   z-index: 2000;
   display: flex;
   flex-direction: column;
   box-shadow: -10px 0 40px rgba(0, 0, 0, 0.35);
-  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
-  overflow: hidden;
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .mobile-panel.open {
-  right: 0;
-  display: flex !important;
+  transform: translateX(0);
+  visibility: visible;
+}
+
+@media (min-width: 921px) {
+  .mobile-panel {
+    display: none !important;
+  }
 }
 
 .mobile-panel-header {
@@ -633,27 +656,30 @@ input::placeholder, textarea::placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
-  color: rgba(255, 255, 255, 0.8) !important;
+  padding: 14px 12px;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.85) !important;
   font-weight: 500;
   font-size: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .mobile-drawer-link:hover {
-  color: #ffffff !important;
-  padding-left: 6px;
+  color: #d4af37 !important;
+  background: rgba(212, 175, 55, 0.08);
+  padding-left: 18px;
+  border-bottom-color: transparent !important;
 }
 
 .mobile-drawer-link .link-arrow {
   color: rgba(255, 255, 255, 0.3);
-  transition: transform 0.3s;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s;
 }
 
 .mobile-drawer-link:hover .link-arrow {
-  color: #ffffff;
-  transform: translateX(3px);
+  color: #d4af37;
+  transform: translateX(4px);
 }
 
 .mobile-bag-pill {
@@ -749,6 +775,10 @@ input::placeholder, textarea::placeholder {
 
 /* Responsiveness adjustments */
 @media (max-width: 920px) {
+  body {
+    padding-top: 90px;
+  }
+
   .header-shell {
     grid-template-columns: auto 1fr auto;
     padding: 14px 20px;
