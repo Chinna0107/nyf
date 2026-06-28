@@ -28,7 +28,7 @@ const TermsAndConditions = () => {
                 1. Agreement to Terms
               </h2>
               <p>
-                By accessing, browsing, or using the <strong>NYF TOTH</strong> website, custom digital showrooms, and bespoke styling services, you fully accept and agree to comply with and be bound by the comprehensive terms, conditions, and provisions outlined in this agreement. If you do not agree to abide by these terms of service, you are kindly advised to suspend your use of our platform immediately.
+                By accessing, browsing, or using the <strong>NYF TOTH</strong> website, custom digital showrooms, and bespoke styling services, you fully accept and agree to comply with and be bound by the comprehensive terms, conditions, and provisions outlined in this agreement. All transactions on our platform are processed in Indian Rupees (INR) through Razorpay. If you do not agree to abide by these terms of service, you are kindly advised to suspend your use of our platform immediately.
               </p>
             </section>
 
@@ -131,11 +131,24 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* 9. Contact Info */}
+            {/* 9. Merchant Details */}
+            <section className="border-b border-gray-50 pb-8">
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
+                9. Merchant Details &amp; Operating Address
+              </h2>
+              <p>
+                NYF TOTH is operated from India. For any operational, shipping, or physical correspondence, our operating address is: 
+                <br/><strong>[Insert physical operating address here, required for Razorpay]</strong>. 
+                All payment processing is handled strictly under Indian jurisdictions via Razorpay in INR.
+              </p>
+            </section>
+
+            {/* 10. Contact Info */}
             <section>
               <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
                 <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
-                9. Contact Concierge
+                10. Contact Concierge
               </h2>
               <p>
                 For further inquiries, formal requests, or detailed clarifications regarding these Terms and Conditions, please email us at{' '}

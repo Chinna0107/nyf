@@ -40,7 +40,7 @@ const ShippingPolicy = () => {
                       Reliable and fully tracked delivery to all major locations across the territory.
                     </p>
                   </div>
-                  <span className="text-[#0c0c0e] font-bold text-sm mt-4">$10.00 <span className="text-xs text-gray-400 font-normal">(Free over $100)</span></span>
+                  <span className="text-[#0c0c0e] font-bold text-sm mt-4">₹100 <span className="text-xs text-gray-400 font-normal">(Free over ₹2000)</span></span>
                 </div>
 
                 <div className="bg-[#fbfbfc] p-6 rounded-2xl border border-gray-50 flex flex-col justify-between">
@@ -51,7 +51,7 @@ const ShippingPolicy = () => {
                       Accelerated dispatch and premium scheduling for urgent drop delivery.
                     </p>
                   </div>
-                  <span className="text-[#0c0c0e] font-bold text-sm mt-4">$20.00</span>
+                  <span className="text-[#0c0c0e] font-bold text-sm mt-4">₹250</span>
                 </div>
 
                 <div className="bg-[#fbfbfc] p-6 rounded-2xl border border-gray-50 flex flex-col justify-between">
@@ -62,7 +62,7 @@ const ShippingPolicy = () => {
                       Priority next-day morning delivery for immediate wardrobe requirements.
                     </p>
                   </div>
-                  <span className="text-[#0c0c0e] font-bold text-sm mt-4">$35.00</span>
+                  <span className="text-[#0c0c0e] font-bold text-sm mt-4">₹500</span>
                 </div>
 
                 <div className="bg-[#fbfbfc] p-6 rounded-2xl border border-[#d4af37]/30 flex flex-col justify-between">
@@ -70,7 +70,7 @@ const ShippingPolicy = () => {
                     <span className="text-xs font-bold text-[#d4af37] tracking-widest uppercase">COMPLIMENTARY</span>
                     <h3 className="text-lg font-bold text-[#0c0c0e] mt-1 mb-2">Free Standard Shipping</h3>
                     <p className="text-xs text-gray-500 font-light leading-relaxed">
-                      Automatically applied at checkout on all orders exceeding $100.
+                      Automatically applied at checkout on all orders exceeding ₹2000.
                     </p>
                   </div>
                   <span className="text-[#d4af37] font-bold text-sm mt-4">FREE</span>
@@ -82,10 +82,10 @@ const ShippingPolicy = () => {
             <section className="border-b border-gray-50 pb-8">
               <h2 className="text-xl md:text-2xl font-serif font-bold text-[#0c0c0e] mb-4 flex items-center gap-3">
                 <span className="w-1.5 h-6 bg-[#d4af37] rounded-full inline-block"></span>
-                Processing Time
+                Processing &amp; Delivery Time
               </h2>
               <p>
-                All ready-to-wear orders are processed and readied for dispatch within <strong>1-2 business days</strong>. Order processing is suspended during weekends and official public holidays. When custom styled coordinate orders are ready, you will receive a tracking link via email instantly.
+                All ready-to-wear orders are processed and readied for dispatch within <strong>1-2 business days</strong>. The minimum delivery time is <strong>2 business days</strong> and the maximum delivery time is <strong>10 business days</strong> depending on the shipping method and destination. Order processing is suspended during weekends and official public holidays. When custom styled coordinate orders are ready, you will receive a tracking link via email instantly.
               </p>
             </section>
 
@@ -152,8 +152,8 @@ const ShippingPolicy = () => {
               </h2>
               <p>
                 For large volume orders exceeding 10 garments, please consult directly with our logistics team at{' '}
-                <a href="mailto:sales@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  sales@nyftothcloth@gmail.com
+                <a href="mailto:nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  nyftothcloth@gmail.com
                 </a>
                 . We will arrange bespoke courier rates, tailored dispatch configurations, and personalized packaging coordinates.
               </p>
@@ -167,8 +167,8 @@ const ShippingPolicy = () => {
               </h2>
               <p>
                 For further inquiries, formal requests, or detailed clarifications regarding this Shipping Policy, please email us at{' '}
-                <a href="mailto:shipping@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  shipping@nyftothcloth@gmail.com
+                <a href="mailto:nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  nyftothcloth@gmail.com
                 </a>
                 .
               </p>

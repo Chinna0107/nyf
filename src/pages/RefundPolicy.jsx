@@ -73,7 +73,7 @@ const RefundPolicy = () => {
                   <div>
                     <h4 className="font-bold text-[#0c0c0e] text-sm">Contact support</h4>
                     <p className="text-xs text-gray-500 font-light mt-1">
-                      Email our team at <a href="mailto:returns@nyftothcloth@gmail.com" className="text-[#d4af37] underline">returns@nyftothcloth@gmail.com</a> quoting your order reference.
+                      Email our team at <a href="mailto:nyftothcloth@gmail.com" className="text-[#d4af37] underline">nyftothcloth@gmail.com</a> quoting your order reference.
                     </p>
                   </div>
                 </div>
@@ -117,7 +117,7 @@ const RefundPolicy = () => {
                 Refund Processing
               </h2>
               <p>
-                Approved returns will be processed within <strong>7-10 business days</strong> after we receive and inspect the packages. The refund will be credited directly to your original payment method. Depending on your banking institution, it may require an additional 3-5 business days for the funds to reflect in your account statements.
+                Approved returns will be processed and the refund will be credited directly to your original payment method within <strong>5-7 working days</strong>. Depending on your banking institution or UPI provider (via Razorpay), it may require these 5-7 working days for the funds to successfully reflect in your account statements.
               </p>
             </section>
 
@@ -139,7 +139,7 @@ const RefundPolicy = () => {
                 Defective or Damaged Items
               </h2>
               <p>
-                If you receive a flawed or damaged garment, please notify our styling concierge team immediately at <a href="mailto:returns@nyftothcloth@gmail.com" className="text-[#d4af37] underline hover:text-[#0c0c0e] transition-colors">returns@nyftothcloth@gmail.com</a> with photographs. We will prioritize dispatching a brand-new replacement item or executing a full refund.
+                If you receive a flawed or damaged garment, please notify our styling concierge team immediately at <a href="mailto:nyftothcloth@gmail.com" className="text-[#d4af37] underline hover:text-[#0c0c0e] transition-colors">nyftothcloth@gmail.com</a> with photographs. We will prioritize dispatching a brand-new replacement item or executing a full refund.
               </p>
             </section>
 
@@ -178,8 +178,8 @@ const RefundPolicy = () => {
               </h2>
               <p>
                 For further inquiries, formal requests, or detailed clarifications regarding this Refund Policy, please email us at{' '}
-                <a href="mailto:returns@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  returns@nyftothcloth@gmail.com
+                <a href="mailto:nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  nyftothcloth@gmail.com
                 </a>
                 .
               </p>

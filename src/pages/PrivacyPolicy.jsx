@@ -63,7 +63,7 @@ const PrivacyPolicy = () => {
                   <div className="text-[#d4af37] text-2xl mb-3">💳</div>
                   <h4 className="font-bold text-[#0c0c0e] mb-2 text-sm uppercase tracking-wider">Payment Details</h4>
                   <p className="text-xs text-gray-500 font-light leading-relaxed">
-                    Secure tokens processed through industry-standard PCI-compliant payment gateways. We never store raw credit card info.
+                    Secure tokens processed through industry-standard PCI-compliant payment gateways including Razorpay. All transactions are processed in INR. We never store raw credit card or UPI info on our servers.
                   </p>
                 </div>
               </div>
@@ -117,8 +117,8 @@ const PrivacyPolicy = () => {
               </h2>
               <p>
                 As a valued member of the NYF TOTH community, you retain full rights to access, amend, restrict, or purge your personal data. If you wish to retrieve your profile details or request removal from our servers, please coordinate directly with our legal desk at{' '}
-                <a href="mailto:privacy@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  privacy@nyftothcloth@gmail.com
+                <a href="mailto:nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  nyftothcloth@gmail.com
                 </a>.
               </p>
             </section>
@@ -131,8 +131,8 @@ const PrivacyPolicy = () => {
               </h2>
               <p>
                 For further inquiries, formal requests, or detailed clarifications regarding this Privacy Policy, please email us at{' '}
-                <a href="mailto:privacy@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  privacy@nyftothcloth@gmail.com
+                <a href="mailto:nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  nyftothcloth@gmail.com
                 </a>
                 .
               </p>

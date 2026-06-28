@@ -89,7 +89,11 @@ function Footer() {
           <div className="flex flex-col gap-4 font-light text-sm text-gray-400">
             <div className="flex items-start gap-3">
               <FaMapMarkerAlt className="text-[#d4af37] mt-1 shrink-0" size={14} />
-              <span className="leading-relaxed">nyftothcloth@gmail.com</span>
+              <span className="leading-relaxed">Kavali</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <FaPhoneAlt className="text-[#d4af37] shrink-0" size={13} />
+              <a href="tel:+911234567899" className="text-white hover:text-[#d4af37] no-underline transition-colors">1234567899</a>
             </div>
             <div className="flex items-center gap-3">
               <FaPhoneAlt className="text-[#d4af37] shrink-0" size={13} />
@@ -97,7 +101,7 @@ function Footer() {
             </div>
             <div className="flex items-center gap-3">
               <FaEnvelope className="text-[#d4af37] shrink-0" size={13} />
-              <a href="mailto:tejaharsha233@gmail.com" className="text-white hover:text-[#d4af37] no-underline transition-colors">tejaharsha233@gmail.com</a>
+              <a href="mailto:nyftothcloth@gmail.com" className="text-white hover:text-[#d4af37] no-underline transition-colors">nyftothcloth@gmail.com</a>
             </div>
             <div className="flex items-start gap-3">
               <FaRegClock className="text-[#d4af37] mt-0.5 shrink-0" size={14} />
