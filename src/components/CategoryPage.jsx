@@ -29,7 +29,33 @@ const CategoryPage = ({ category, title }) => {
   const { data: all = [], loading } = useFetch('/admin/public/products');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const products = (all || []).filter(p => p.category?.toLowerCase() === category.toLowerCase());
+  const products = (all || []).filter(p => {
+    const pCat = (p.category || '').toLowerCase();
+    const cat = category.toLowerCase();
+    
+    // 1. Direct or sub-category match (e.g. 'male-tshirts' exact match, or 'tshirts' matches 'male-tshirts')
+    if (pCat === cat || pCat.endsWith('-' + cat)) {
+      return true;
+    }
+    
+    // 2. Fallback check for legacy 'tshirts' products
+    if (pCat === 'tshirts' || pCat === 'tshirt') {
+      const val = `${p.category || ''} ${p.name || ''}`.toLowerCase();
+      if (cat === 'male-tshirts') {
+        return (val.includes('male') && !val.includes('female')) || 
+               (val.includes('men') && !val.includes('women')) || 
+               (val.includes('man') && !val.includes('woman'));
+      }
+      if (cat === 'female-tshirts') {
+        return val.includes('female') || val.includes('women') || val.includes('woman') || val.includes('ladies');
+      }
+      if (cat === 'oversized-tshirts') {
+        return val.includes('oversized');
+      }
+    }
+    
+    return false;
+  });
   const filtered = products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (

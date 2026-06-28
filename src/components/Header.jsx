@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import logoUrl from "../assets/logo.png";
+import logoUrl from "../assets/logo1.jpeg";
 import {
   FiChevronDown,
   FiChevronRight,
@@ -20,11 +20,9 @@ import {
 } from "react-icons/fi";
 
 const productLinks = [
-  { label: "T-Shirts", href: "/tshirts" },
-  { label: "Shirts", href: "/shirts" },
-  { label: "Track Pants", href: "/trackpants" },
-  { label: "Pants", href: "/pants" },
-  { label: "Sweatshirts & Hoodies", href: "/sweatshirts" }
+  { label: "Male T-Shirts", href: "/tshirts?category=male" },
+  { label: "Female T-Shirts", href: "/tshirts?category=female" },
+  { label: "Oversized T-Shirts", href: "/tshirts?category=oversized" }
 ];
 
 const Header = () => {
@@ -141,9 +139,9 @@ const Header = () => {
         </button>
 
         <Link className="brand-link" to="/" onClick={closeMenu}>
-          <img src={logoUrl} alt="Lovito" className="brand-logo" />
+          <img src={logoUrl} alt="NYF TOTH" className="brand-logo" />
           <div className="brand-copy">
-            <span className="brand-name">LOVITO</span>
+            <span className="brand-name">NYF TOTH</span>
             <span className="brand-tag">Premium Fashion & Styling</span>
           </div>
         </Link>
@@ -180,7 +178,7 @@ const Header = () => {
             About Us
           </NavLink>
           <NavLink to="/custom" className="nav-link">
-            Dress up with Chinna
+            Dress up with Harsha valeti
           </NavLink>
           <NavLink to="/contact" className="nav-link">
             Contact
@@ -215,7 +213,7 @@ const Header = () => {
                   <span className="account-avatar large">{userInitial}</span>
                   <div>
                     <p>{userName}</p>
-                    <span>{userEmail || "Lovito member"}</span>
+                    <span>{userEmail || "NYF TOTH member"}</span>
                   </div>
                 </div>
                 <div className="account-dropdown-links">
@@ -245,8 +243,8 @@ const Header = () => {
       <div ref={mobileMenuRef} className={`mobile-panel ${isOpen ? "open" : ""}`}>
         <div className="mobile-panel-header">
           <span className="mobile-brand-title">
-            <img src={logoUrl} alt="Lovito" />
-            LOVITO
+            <img src={logoUrl} alt="NYF TOTH" />
+            NYF TOTH
           </span>
           <button type="button" className="mobile-close-btn" onClick={closeMenu}>
             <FiX size={24} />
@@ -291,7 +289,7 @@ const Header = () => {
               <NavLink to="/custom" onClick={closeMenu} className="mobile-drawer-link">
                 <span className="flex items-center gap-3">
                   <FiUser size={16} className="text-gray-400" />
-                  Dress up with Chinna
+                  Dress up with Harsha valeti
                 </span>
                 <FiChevronRight size={14} className="link-arrow" />
               </NavLink>

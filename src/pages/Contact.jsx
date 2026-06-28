@@ -26,16 +26,23 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const whatsappNumber = '8686265252';
+    const text = `*New Contact Inquiry*\n\n*Name:* ${formData.name}\n*Email:* ${formData.email}\n*Subject:* ${formData.subject}\n\n*Message:*\n${formData.message}`;
+    const encodedText = encodeURIComponent(text);
+    const whatsappUrl = `https://wa.me/91${whatsappNumber}?text=${encodedText}`;
+    
+    window.open(whatsappUrl, '_blank');
+
     setSubmitted(true);
     setFormData({ name: '', email: '', subject: '', message: '' });
     setTimeout(() => setSubmitted(false), 4000);
   };
 
   const contactInfo = [
-    { icon: '📍', title: 'Atelier Address', content: '123 Lovito Boulevard, Design District, LV 90021' },
-    { icon: '📞', title: 'Styling Assistance', content: '+91 81798 60935' },
-    { icon: '✉️', title: 'General Inquiries', content: 'hello@lovito.com' },
-    { icon: '🕐', title: 'Atelier Hours', content: 'Mon-Fri: 10AM-7PM, Sat: 11AM-5PM' }
+    { icon: '📍', title: 'Address', content: 'Contact us via email or WhatsApp for any queries' },
+    { icon: '📞', title: 'Phone', content: '+91 86862 65252' },
+    { icon: '✉️', title: 'Email', content: 'tejaharsha233@gmail.com' },
+    { icon: '🕐', title: 'Hours', content: 'Mon-Fri: 10AM-7PM, Sat: 11AM-5PM' }
   ];
 
   return (
@@ -43,12 +50,12 @@ const Contact = () => {
       {/* Premium Hero Section */}
       <section className="relative py-20 px-8 text-center bg-white border-b border-gray-100">
         <div className="max-w-3xl mx-auto">
-          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-3 block">LOVITO ATELIER</span>
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-3 block">NYF TOTH</span>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-[#0c0c0e] mb-6">
             Get in Touch
           </h1>
           <p className="text-base md:text-lg text-gray-500 font-light max-w-xl mx-auto leading-relaxed">
-            Have questions about a tailored fit or private styling? Drop us a line. Our atelier concierge will respond as soon as possible.
+            Have questions about our T-shirts or need assistance? Drop us a line. Our team will respond as soon as possible.
           </p>
         </div>
       </section>
@@ -147,7 +154,7 @@ const Contact = () => {
 
               {submitted && (
                 <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-800 text-sm font-semibold text-center animate-pulse">
-                  ✓ Concierge message forwarded. We will connect back with you within 24 hours.
+                  ✓ Message sent. Our team will connect back with you within 24 hours.
                 </div>
               )}
             </form>
@@ -159,7 +166,7 @@ const Contact = () => {
               <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.2em] block mb-2">OUR STANDARDS</span>
               <h2 className="text-2xl md:text-3xl font-bold text-[#0c0c0e] mb-4">Why connect with us?</h2>
               <p className="text-sm md:text-base text-gray-500 font-light leading-relaxed">
-                At Lovito, custom fit and aesthetic details are our identity. We offer dedicated bespoke assistance to ensure every client stands out gracefully.
+                At NYF TOTH, quality T-shirts and customer satisfaction are our identity. We offer dedicated assistance to ensure every client stands out gracefully.
               </p>
             </div>
             

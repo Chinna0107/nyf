@@ -74,11 +74,12 @@ function Products() {
 
   const handleAddToCart = () => {
     const images = getImagesForColor(selectedColor);
+    const currentPrice = (product.size_prices && product.size_prices[selectedSize]) ? product.size_prices[selectedSize] : product.price;
     addToCart({
       id: `${product.id}-${selectedSize}-${selectedColor}`,
       productId: product.id,
       name: product.name,
-      price: product.price,
+      price: currentPrice,
       size: selectedSize,
       color: selectedColor,
       quantity,
@@ -117,8 +118,9 @@ function Products() {
   const sizes = product.sizes?.length > 0 ? product.sizes : FALLBACK_SIZES;
   const colors = product.colors || [];
   const features = product.features || [];
-  const discount = product.original_price && product.original_price > product.price
-    ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
+  const currentPrice = (product.size_prices && product.size_prices[selectedSize]) ? product.size_prices[selectedSize] : product.price;
+  const discount = product.original_price && product.original_price > currentPrice
+    ? Math.round(((product.original_price - currentPrice) / product.original_price) * 100)
     : 0;
 
   return (
@@ -225,8 +227,8 @@ function Products() {
 
             {/* Price */}
             <div className="flex items-center gap-3">
-              <span className="text-4xl font-bold text-white">₹{product.price}</span>
-              {product.original_price && product.original_price > product.price && (
+              <span className="text-4xl font-bold text-white">₹{currentPrice}</span>
+              {product.original_price && product.original_price > currentPrice && (
                 <>
                   <span className="text-xl text-gray-500 line-through">₹{product.original_price}</span>
                   <span className="text-green-400 text-sm font-bold">Save {discount}%</span>

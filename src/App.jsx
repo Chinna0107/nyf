@@ -20,11 +20,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import RefundPolicy from './pages/RefundPolicy'
 import ShippingPolicy from './pages/ShippingPolicy'
 import TShirts from './pages/TShirts'
-import Sweatshirts from './pages/Sweatshirts'
-import Hoodies from './pages/Hoodies'
-import Shirts from './pages/Shirts'
-import TrackPants from './pages/TrackPants'
-import Pants from './pages/Pants'
+
 import CustomEmbroidery from './pages/CustomEmbroidery'
 import OurStory from './pages/OurStory'
 import Contact from './pages/Contact'
@@ -60,11 +56,7 @@ function App() {
         <Route path='/refund-policy' element={<RefundPolicy />} />
         <Route path='/shipping-policy' element={<ShippingPolicy />} />
         <Route path='/tshirts' element={<TShirts />} />
-        <Route path='/shirts' element={<Shirts />} />
-        <Route path='/trackpants' element={<TrackPants />} />
-        <Route path='/pants' element={<Pants />} />
-        <Route path='/sweatshirts' element={<Sweatshirts />} />
-        <Route path='/hoodies' element={<Hoodies />} />
+
         <Route path='/custom' element={<CustomEmbroidery />} />
         <Route path='/our-story' element={<OurStory />} />
         <Route path='/about' element={<About />} />

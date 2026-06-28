@@ -15,8 +15,8 @@ const ProductForm = () => {
 
   const [formData, setFormData] = useState({
     name: '', description: '', price: '', original_price: '',
-    category: 'tshirts', stock: '', active: true,
-    sizes: [], colors: [], features: []
+    category: 'male-tshirts', stock: '', active: true,
+    sizes: [], colors: [], features: [], size_prices: {}
   });
   const [newColor, setNewColor] = useState('');
   const [colorImages, setColorImages] = useState({});
@@ -33,12 +33,13 @@ const ProductForm = () => {
         description: data.description || '',
         price: data.price,
         original_price: data.original_price || '',
-        category: data.category || 'tshirts',
+        category: data.category || 'male-tshirts',
         stock: data.stock,
         active: data.active,
         sizes: data.sizes || [],
         colors: data.colors || [],
-        features: data.features || []
+        features: data.features || [],
+        size_prices: data.size_prices || {}
       });
       setColorImages(data.color_images || {});
     }).finally(() => setLoading(false));
@@ -76,6 +77,29 @@ const ProductForm = () => {
       ...prev,
       [color]: { ...prev[color], [`image${num}`]: url }
     }));
+  };
+
+  const handleFileUpload = async (color, num, file) => {
+    if (!file) return;
+    const token = localStorage.getItem('authToken');
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/upload`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData
+      });
+      if (res.ok) {
+        const data = await res.json();
+        handleColorImageChange(color, num, data.url);
+      } else {
+        alert('Upload failed');
+      }
+    } catch (err) {
+      alert('Upload error');
+    }
   };
 
   const addFeature = () => {
@@ -164,13 +188,9 @@ const ProductForm = () => {
             <div>
               <label className={labelCls}>Category</label>
               <select name="category" value={formData.category} onChange={handleChange} className={inputCls}>
-                <option value="tshirts">T-Shirts</option>
-                <option value="shirts">Shirts</option>
-                <option value="track pants">Track Pants</option>
-                <option value="pants">Pants</option>
-                <option value="sweatshirts">Sweatshirts</option>
-                <option value="hoodies">Hoodies</option>
-                <option value="custom">Custom Embroidery</option>
+                <option value="male-tshirts">Male T-Shirts</option>
+                <option value="female-tshirts">Female T-Shirts</option>
+                <option value="oversized-tshirts">Oversized T-Shirts</option>
               </select>
             </div>
             <div>
@@ -181,18 +201,39 @@ const ProductForm = () => {
           </div>
 
           <div className="border-t border-gray-800 pt-5">
-            <label className={labelCls}>Available Sizes</label>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {SIZES.map(size => (
-                <button key={size} type="button" onClick={() => toggleSize(size)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
-                    formData.sizes.includes(size)
-                      ? 'bg-white text-black border-white'
-                      : 'bg-transparent text-gray-400 border-gray-700 hover:border-white hover:text-white'
-                  }`}>
-                  {size}
-                </button>
-              ))}
+            <label className={labelCls}>Available Sizes & Pricing</label>
+            <p className="text-gray-500 text-xs mb-2">Toggle a size to enable it. Optionally enter a specific price for that size.</p>
+            <div className="flex flex-col gap-3 mt-2">
+              <div className="flex flex-wrap gap-2">
+                {SIZES.map(size => (
+                  <button key={size} type="button" onClick={() => toggleSize(size)}
+                    className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
+                      formData.sizes.includes(size)
+                        ? 'bg-white text-black border-white'
+                        : 'bg-transparent text-gray-400 border-gray-700 hover:border-white hover:text-white'
+                    }`}>
+                    {size}
+                  </button>
+                ))}
+              </div>
+              
+              {formData.sizes.length > 0 && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
+                  {formData.sizes.map(size => (
+                    <div key={size} className="bg-gray-800 p-2 rounded-lg border border-gray-700">
+                      <label className="block text-xs font-semibold text-gray-400 mb-1">Price for {size}</label>
+                      <input type="number" 
+                        value={formData.size_prices[size] || ''} 
+                        onChange={e => setFormData(prev => ({ 
+                          ...prev, 
+                          size_prices: { ...prev.size_prices, [size]: e.target.value === '' ? '' : Number(e.target.value) } 
+                        }))}
+                        className="w-full px-2 py-1 bg-black border border-gray-700 text-white rounded text-sm focus:outline-none focus:border-white" 
+                        placeholder={formData.price || 'Base'} />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -253,10 +294,8 @@ const ProductForm = () => {
                       {[1, 2, 3].map(num => (
                         <div key={num}>
                           <label className="block text-xs font-semibold text-gray-500 mb-1">Image {num}</label>
-                          <input type="url"
-                            value={colorImages[color]?.[`image${num}`] || ''}
-                            onChange={e => handleColorImageChange(color, num, e.target.value)}
-                            placeholder="https://..."
+                          <input type="file" accept="image/*"
+                            onChange={e => handleFileUpload(color, num, e.target.files[0])}
                             className="w-full px-3 py-2 bg-black border border-gray-700 text-white rounded-lg text-xs focus:outline-none focus:border-white placeholder-gray-600" />
                           {colorImages[color]?.[`image${num}`] && (
                             <img src={colorImages[color][`image${num}`]} alt={`${color} ${num}`}

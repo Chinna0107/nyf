@@ -14,7 +14,7 @@ const Profile = () => {
         <div className="mb-8">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#d4af37]">Account</p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-[#0c0c0e]">Profile</h1>
-          <p className="mt-2 text-sm text-gray-500">Manage the details connected to your Lovito account.</p>
+          <p className="mt-2 text-sm text-gray-500">Manage the details connected to your NYF TOTH account.</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-[320px_1fr]">

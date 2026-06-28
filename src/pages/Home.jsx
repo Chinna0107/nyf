@@ -7,9 +7,9 @@ import { useFetch } from '../hooks/useFetch';
 import { getProductImage } from '../utils/productImages';
 
 const fallbackHeroImages = [
-  { url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&q=75&w=1600&h=800&fit=crop', title: 'Summer Essentials', subtitle: 'Exquisite linen fabrics & clean aesthetics' },
-  { url: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&q=75&w=1600&h=800&fit=crop', title: 'Tailored Luxury', subtitle: 'Experience Lovito premium apparel drops' },
-  { url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&q=75&w=1600&h=800&fit=crop', title: 'Street Elegance', subtitle: 'Curated styling guides designed for you' },
+  { url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&q=75&w=1600&h=800&fit=crop', title: 'Summer T-Shirt Collection', subtitle: 'Premium cotton tees for every occasion' },
+  { url: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&q=75&w=1600&h=800&fit=crop', title: 'New Drops', subtitle: 'Explore NYF TOTH latest T-shirt designs' },
+  { url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&q=75&w=1600&h=800&fit=crop', title: 'Oversized Essentials', subtitle: 'Bold fits designed for statement style' },
 ];
 
 const fallbackProductImage =
@@ -41,7 +41,7 @@ const ProductCard = ({ product }) => (
           loading="lazy"
         />
         <div className="absolute top-4 left-4 bg-[#0c0c0e] text-[#fbfbfc] text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
-          {product.category || 'Lovito Premium'}
+          {product.category || 'NYF TOTH'}
         </div>
       </div>
       <div className="p-5 flex flex-col flex-grow justify-between bg-white">
@@ -71,7 +71,7 @@ const CategoryBanner = ({ title, subtitle, bgImage, linkTo }) => (
     <img src={bgImage} alt={title} className="w-full h-full object-cover" loading="lazy" />
     <div className="absolute inset-0 bg-gradient-to-r from-[#0c0c0e]/80 via-[#0c0c0e]/30 to-transparent" />
     <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-16 text-white">
-      <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#d4af37] mb-2">LOVITO COLLECTION</span>
+      <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#d4af37] mb-2">NYF TOTH COLLECTION</span>
       <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-3">{title}</h2>
       <p className="text-sm md:text-base text-gray-200 max-w-md font-medium mb-5">{subtitle}</p>
       <Link to={linkTo} className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-white/10 backdrop-filter backdrop-blur-md border border-white/20 px-6 py-2.5 rounded-full hover:bg-[#d4af37] hover:border-[#d4af37] hover:text-[#0c0c0e] transition-all duration-300 w-fit">
@@ -136,19 +136,42 @@ const Home = () => {
     return val.includes('tshirt') || val.includes('t-shirt') || val.includes('tee') || p.category?.toLowerCase() === 'tshirts';
   });
 
-  const shirtProducts = products.filter(p => {
-    const val = `${p.category || ''} ${p.name || ''}`.toLowerCase();
-    return (val.includes('shirt') && !val.includes('tshirt') && !val.includes('t-shirt') && !val.includes('sweatshirt')) || p.category?.toLowerCase() === 'shirts';
+  const maleTshirtProducts = products.filter(p => {
+    const pCat = (p.category || '').toLowerCase();
+    if (pCat === 'male-tshirts') return true;
+    if (pCat === 'female-tshirts' || pCat === 'oversized-tshirts') return false;
+    
+    // Fallback for legacy / seed products
+    const val = `${p.category || ''} ${p.name || ''} ${p.subcategory || ''}`.toLowerCase();
+    const isTshirt = val.includes('tshirt') || val.includes('t-shirt') || val.includes('tee') || pCat === 'tshirts';
+    const isMale = (val.includes('male') && !val.includes('female')) || 
+                   (val.includes('men') && !val.includes('women')) || 
+                   (val.includes('man') && !val.includes('woman'));
+    return isTshirt && isMale;
   });
 
-  const trackpantProducts = products.filter(p => {
-    const val = `${p.category || ''} ${p.name || ''}`.toLowerCase();
-    return val.includes('track') || p.category?.toLowerCase() === 'track pants' || p.category?.toLowerCase() === 'trackpants';
+  const femaleTshirtProducts = products.filter(p => {
+    const pCat = (p.category || '').toLowerCase();
+    if (pCat === 'female-tshirts') return true;
+    if (pCat === 'male-tshirts' || pCat === 'oversized-tshirts') return false;
+
+    // Fallback for legacy / seed products
+    const val = `${p.category || ''} ${p.name || ''} ${p.subcategory || ''}`.toLowerCase();
+    const isTshirt = val.includes('tshirt') || val.includes('t-shirt') || val.includes('tee') || pCat === 'tshirts';
+    const isFemale = val.includes('female') || val.includes('women') || val.includes('woman') || val.includes('ladies');
+    return isTshirt && isFemale;
   });
 
-  const pantProducts = products.filter(p => {
-    const val = `${p.category || ''} ${p.name || ''}`.toLowerCase();
-    return (val.includes('pant') && !val.includes('track')) || p.category?.toLowerCase() === 'pants';
+  const oversizedTshirtProducts = products.filter(p => {
+    const pCat = (p.category || '').toLowerCase();
+    if (pCat === 'oversized-tshirts') return true;
+    if (pCat === 'male-tshirts' || pCat === 'female-tshirts') return false;
+
+    // Fallback for legacy / seed products
+    const val = `${p.category || ''} ${p.name || ''} ${p.subcategory || ''}`.toLowerCase();
+    const isTshirt = val.includes('tshirt') || val.includes('t-shirt') || val.includes('tee') || pCat === 'tshirts';
+    const isOversized = val.includes('oversized');
+    return isTshirt && isOversized;
   });
 
   const heroBanners = banners.length > 0 
@@ -157,20 +180,20 @@ const Home = () => {
 
   const faqs = [
     {
-      question: 'How do I care for my premium Lovito pieces?',
-      answer: 'For premium garments, we recommend machine washing in cold water inside-out on a gentle cycle, or dry cleaning. Hang dry to maintain fit structure and luxury soft hand-feel.'
+      question: 'How do I care for my NYF TOTH T-shirts?',
+      answer: 'We recommend machine washing inside-out in cold water on a gentle cycle. Hang dry to maintain the fit and fabric quality.'
     },
     {
-      question: 'Can I request personal styling with Chinna?',
-      answer: 'Yes! Navigate to our "Dress Up with Chinna" tab to access bespoke styled coordinates. You can explore custom styling options matching your silhouettes.'
+      question: 'What sizes do you offer?',
+      answer: 'We offer sizes from S to 3XL across our Male, Female, and Oversized collections. Check the size guide on each product page.'
     },
     {
-      question: 'What is Lovito\'s sizing fit like?',
-      answer: 'Our fits run relaxed/boxy reflecting contemporary streetwear standards. We suggest choosing your normal size for a draped aesthetic, or sizing down for a closer fit.'
+      question: 'What is NYF TOTH\'s sizing like?',
+      answer: 'Our regular fits are true to size. Oversized T-shirts run 2-3 sizes larger for a relaxed, boxy silhouette.'
     },
     {
-      question: 'How long does shipment dispatch take?',
-      answer: 'Orders are processed immediately and dispatch within 2-3 business days. Delivery details and secure tracking IDs will be forwarded to your registered email.'
+      question: 'How long does shipping take?',
+      answer: 'Orders are dispatched within 2-3 business days. You will receive tracking details via email and WhatsApp.'
     }
   ];
 
@@ -199,7 +222,7 @@ const Home = () => {
                     <div className="max-w-7xl mx-auto w-full px-8 md:px-16 flex justify-start">
                       <div className="max-w-2xl text-left">
                         <span className="inline-flex rounded-full bg-[#d4af37] px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#0c0c0e] mb-5">
-                          LUXURY DROP
+                          NEW DROP
                         </span>
                         <h1 className="text-4xl md:text-7xl font-bold tracking-tight text-white leading-none mb-6">
                           {slide.title}
@@ -212,7 +235,7 @@ const Home = () => {
                             Shop Summer T-Shirts
                           </Link>
                           <Link to="/custom" className="bg-white/10 backdrop-filter backdrop-blur-md border border-white/20 text-white px-8 py-3.5 rounded-full font-semibold text-sm hover:bg-[#d4af37] hover:border-[#d4af37] hover:text-[#0c0c0e] transition-all duration-300 transform hover:-translate-y-0.5">
-                            Dress Up with Chinna
+                            Style Guide
                           </Link>
                         </div>
                       </div>
@@ -228,9 +251,9 @@ const Home = () => {
       {/* Brand Aesthetic Statement */}
       <section className="bg-white py-12 border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-8 text-center">
-          <p className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-4">LOVITO ATELIER</p>
+          <p className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-4">NYF TOTH</p>
           <p className="text-xl md:text-3xl text-[#0c0c0e] font-light leading-relaxed">
-            Beautifully crafted basics designed to celebrate relaxed structures, heavy knit silhouettes, and clean premium aesthetics.
+            Premium quality T-shirts designed for men, women, and oversized fits. Crafted with heavy cotton, clean aesthetics, and bold street-ready silhouettes.
           </p>
         </div>
       </section>
@@ -238,48 +261,37 @@ const Home = () => {
       {/* Main Categories & rails */}
       <section className="max-w-7xl mx-auto px-8 py-16 md:py-24">
         
-        {/* 2 & 3. T-Shirts Banner & Rail */}
+        {/* Male T-Shirts Banner & Rail */}
         <div className="mb-20">
           <CategoryBanner
-            title="T-Shirts Series"
-            subtitle="Boxy heavy cotton tees tailored with subtle textures and luxury dropped-shoulder fitting."
+            title="Male T-Shirts"
+            subtitle="Classic and modern fits crafted for men with premium heavy cotton."
             bgImage="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=1200&fit=crop"
-            linkTo="/tshirts"
+            linkTo="/tshirts?category=male"
           />
-          <ProductScroller items={tshirtProducts} emptyText="No T-Shirts are available from the backend yet." />
+          <ProductScroller items={maleTshirtProducts} emptyText="No Male T-Shirts are available from the backend yet." />
         </div>
 
-        {/* 4 & 5. Shirts Banner & Rail */}
+        {/* Female T-Shirts Banner & Rail */}
         <div className="mb-20">
           <CategoryBanner
-            title="Resort & Oxford Shirts"
-            subtitle="Tailored structures, clean button-down collars, and lightweight resort-ready styling layers."
+            title="Female T-Shirts"
+            subtitle="Elegant and trendy tees designed for women with soft premium fabrics."
             bgImage="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=1200&fit=crop"
-            linkTo="/shirts"
+            linkTo="/tshirts?category=female"
           />
-          <ProductScroller items={shirtProducts} emptyText="No Shirts are available from the backend yet." />
+          <ProductScroller items={femaleTshirtProducts} emptyText="No Female T-Shirts are available from the backend yet." />
         </div>
 
-        {/* 6 & 7. Track Pants Banner & Rail */}
+        {/* Oversized T-Shirts Banner & Rail */}
         <div className="mb-20">
           <CategoryBanner
-            title="Heavyweight Track Pants"
-            subtitle="Premium athletic structures designed with custom drawstrings, heavy elastic cuffs, and plush comfort."
+            title="Oversized T-Shirts"
+            subtitle="Bold, boxy, drop-shoulder fits for the ultimate street statement."
             bgImage="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&fit=crop"
-            linkTo="/trackpants"
+            linkTo="/tshirts?category=oversized"
           />
-          <ProductScroller items={trackpantProducts} emptyText="No Track Pants are available from the backend yet." />
-        </div>
-
-        {/* 8 & 9. Pants Banner & Rail */}
-        <div className="mb-20">
-          <CategoryBanner
-            title="Tailored Trouser Pants"
-            subtitle="Minimal pleats, structured cotton-twill chinos, and soft linen drapes built to fit elegantly."
-            bgImage="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=1200&fit=crop"
-            linkTo="/pants"
-          />
-          <ProductScroller items={pantProducts} emptyText="No Pants are available from the backend yet." />
+          <ProductScroller items={oversizedTshirtProducts} emptyText="No Oversized T-Shirts are available from the backend yet." />
         </div>
 
       </section>

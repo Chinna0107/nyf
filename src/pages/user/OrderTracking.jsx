@@ -43,7 +43,7 @@ const OrderTracking = () => {
             <div>
               <h1 className="text-4xl font-bold tracking-tight md:text-6xl">Order Tracking</h1>
               <p className="mt-4 max-w-2xl text-sm leading-6 text-gray-300">
-                Follow your Lovito order from confirmation to delivery with a clean, real-time status view.
+                Follow your NYF TOTH order from confirmation to delivery with a clean, real-time status view.
               </p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/8 p-4 backdrop-blur">
@@ -171,7 +171,7 @@ const OrderTracking = () => {
                 <FiPackage className="mb-4 text-3xl text-[#d4af37]" />
                 <h3 className="text-lg font-bold text-white">Need support?</h3>
                 <p className="mt-2 text-sm leading-6 text-gray-300">
-                  Keep your order ID ready and contact Lovito support for delivery changes or fulfillment questions.
+                  Keep your order ID ready and contact NYF TOTH support for delivery changes or fulfillment questions.
                 </p>
                 <Link to="/contact" className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#0c0c0e] hover:bg-[#d4af37]">
                   Contact support <FiArrowRight />

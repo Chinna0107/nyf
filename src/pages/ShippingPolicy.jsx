@@ -7,7 +7,7 @@ const ShippingPolicy = () => {
         {/* Page Header */}
         <div className="text-center mb-12">
           <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-3 block">
-            LOVITO CONCIERGE
+            NYF TOTH CONCIERGE
           </span>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#0c0c0e] mb-4">
             Shipping Policy
@@ -28,7 +28,7 @@ const ShippingPolicy = () => {
                 Shipping Methods &amp; Costs
               </h2>
               <p className="mb-6">
-                We offer multiple premium shipping configurations to accommodate your schedule. Every package is handled with the utmost care, wrapped in signature Lovito linen bags and secure boxing:
+                We offer multiple premium shipping configurations to accommodate your schedule. Every package is handled with the utmost care, wrapped in signature NYF TOTH linen bags and secure boxing:
               </p>
               
               <div className="grid sm:grid-cols-2 gap-4">
@@ -107,7 +107,7 @@ const ShippingPolicy = () => {
                 Tracking Your Order
               </h2>
               <p>
-                As soon as your shipment leaves the Lovito atelier, a dispatch email containing a live tracking link and code is issued. We highly recommend using these details to monitor delivery timelines and coordinate drop-off arrangements directly.
+                As soon as your shipment leaves the NYF TOTH atelier, a dispatch email containing a live tracking link and code is issued. We highly recommend using these details to monitor delivery timelines and coordinate drop-off arrangements directly.
               </p>
             </section>
 
@@ -118,7 +118,7 @@ const ShippingPolicy = () => {
                 Delivery Confirmation
               </h2>
               <p>
-                Due to the premium value of our styled collections, all Lovito deliveries require a direct physical signature upon receipt. If you are not present during delivery attempts, courier services will leave detailed notices and reschedule alternate slots or arrange nearby storage pickups.
+                Due to the premium value of our styled collections, all NYF TOTH deliveries require a direct physical signature upon receipt. If you are not present during delivery attempts, courier services will leave detailed notices and reschedule alternate slots or arrange nearby storage pickups.
               </p>
             </section>
 
@@ -152,8 +152,8 @@ const ShippingPolicy = () => {
               </h2>
               <p>
                 For large volume orders exceeding 10 garments, please consult directly with our logistics team at{' '}
-                <a href="mailto:sales@lovito.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  sales@lovito.com
+                <a href="mailto:sales@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  sales@nyftothcloth@gmail.com
                 </a>
                 . We will arrange bespoke courier rates, tailored dispatch configurations, and personalized packaging coordinates.
               </p>
@@ -167,8 +167,8 @@ const ShippingPolicy = () => {
               </h2>
               <p>
                 For further inquiries, formal requests, or detailed clarifications regarding this Shipping Policy, please email us at{' '}
-                <a href="mailto:shipping@lovito.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  shipping@lovito.com
+                <a href="mailto:shipping@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  shipping@nyftothcloth@gmail.com
                 </a>
                 .
               </p>

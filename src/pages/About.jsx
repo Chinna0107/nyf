@@ -13,9 +13,9 @@ const About = () => {
 
   const values = [
     { icon: <FiAward className="text-[#d4af37] w-6 h-6" />, title: 'Quality Standards', description: 'Fine fabrics and flawless tailoring in every garment drop.' },
-    { icon: <FiCompass className="text-[#d4af37] w-6 h-6" />, title: 'Creative Styling', description: 'Bespoke wear processes designed by Chinna to fit you gracefully.' },
+    { icon: <FiCompass className="text-[#d4af37] w-6 h-6" />, title: 'Creative Styling', description: 'Premium T-shirt designs crafted by Harsha Valeti for effortless style.' },
     { icon: <FiShield className="text-[#d4af37] w-6 h-6" />, title: 'Conscious Production', description: 'Small-batch manufacturing focusing on zero-waste and ethical standards.' },
-    { icon: <FiUsers className="text-[#d4af37] w-6 h-6" />, title: 'Lovito Community', description: 'Inspiring contemporary fashion and aesthetic street coordination.' }
+    { icon: <FiUsers className="text-[#d4af37] w-6 h-6" />, title: 'NYF TOTH Community', description: 'Building a community of T-shirt enthusiasts who value quality and style.' }
   ];
 
   const team = [
@@ -39,12 +39,12 @@ const About = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-[#0c0c0e]/80 via-[#0c0c0e]/60 to-[#0c0c0e]" />
         </div>
         <div className="max-w-3xl mx-auto relative z-10">
-          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-4 block">LOVITO ATELIER</span>
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-4 block">NYF TOTH</span>
           <h1 className="text-4xl md:text-7xl font-bold tracking-tight text-white mb-6">
-            About LOVITO
+            About NYF TOTH
           </h1>
           <p className="text-base md:text-xl text-gray-300 font-light max-w-xl mx-auto leading-relaxed">
-            Crafting premium modern garments since 2018. We believe in tailored structures, effortless drapes, and a vibrant community.
+            Crafting premium T-shirts since 2018. We believe in quality fabrics, bold designs, and a vibrant community.
           </p>
         </div>
       </section>
@@ -58,13 +58,13 @@ const About = () => {
               Our Story
             </h2>
             <p className="text-sm md:text-base text-gray-600 font-light leading-relaxed mb-4">
-              LOVITO started as a passion project in a small boutique studio. What began with a single sewing machine and a dream has grown into a thriving premium online apparel destination serving fashion-forward individuals worldwide.
+              NYF TOTH started as a passion for creating the perfect T-shirt. What began with a single design and a dream has grown into a thriving premium online T-shirt destination serving style-forward individuals worldwide.
             </p>
             <p className="text-sm md:text-base text-gray-600 font-light leading-relaxed mb-4">
-              We are dedicated to creating high-quality garments that tell your story. Every piece is crafted with micro-attention to detail and a commitment to silhouette excellence.
+              We are dedicated to creating high-quality T-shirts that tell your story. Every piece is crafted with micro-attention to detail and a commitment to fabric excellence.
             </p>
             <p className="text-sm md:text-base text-gray-600 font-light leading-relaxed">
-              Today, under the creative styling direction of Chinna, we continue to expand our fits while maintaining the same premium standards that started it all.
+              Today, under the creative direction of Harsha Valeti, we continue to expand our collections while maintaining the same premium standards that started it all.
             </p>
           </div>
           
@@ -90,7 +90,7 @@ const About = () => {
       {/* Our Values */}
       <section className="max-w-7xl mx-auto px-8 py-20 border-t border-gray-100">
         <div className="text-center mb-16">
-          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.2em] block mb-2">LOVITO CULTURE</span>
+          <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.2em] block mb-2">NYF TOTH VALUES</span>
           <h2 className="text-3xl md:text-4xl font-bold text-[#0c0c0e]">Our Values</h2>
         </div>
         <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-8`}>
@@ -123,7 +123,7 @@ const About = () => {
             "Simplicity is the keynote of all true elegance."
           </h2>
           <p className="text-sm md:text-base text-gray-300 font-light max-w-lg mx-auto leading-relaxed">
-            Under Chinna's creative direction, we curate pieces that emphasize shape, material composition, and comfort.
+            Under Harsha Valeti's creative direction, we curate T-shirts that emphasize shape, material composition, and comfort.
           </p>
         </div>
       </section>
@@ -175,11 +175,11 @@ const About = () => {
           Ready to Elevate Your Fit?
         </h2>
         <p className="text-sm md:text-base text-gray-500 font-light mb-8 max-w-md mx-auto">
-          Explore our seasonal drops curated directly under Chinna's custom wearing guides.
+          Explore our latest T-shirt collections for men, women, and oversized fits.
         </p>
         <Link to="/tshirts">
           <button className="px-8 py-3.5 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-full text-sm hover:shadow-lg transition-all duration-300">
-            Shop Lovito Now
+            Shop NYF TOTH Now
           </button>
         </Link>
       </section>

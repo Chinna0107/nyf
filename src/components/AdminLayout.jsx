@@ -11,7 +11,7 @@ import {
   FaUsers,
   FaUserTie,
 } from 'react-icons/fa';
-import logoUrl from '../assets/logo.png';
+import logoUrl from '../assets/logo1.jpeg';
 
 const AdminNavLink = ({ to, icon, label, active, sidebarOpen }) => (
   <Link
@@ -83,7 +83,7 @@ const AdminLayout = ({ children }) => {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <img
                 src={logoUrl}
-                alt="Lovito"
+                alt="NYF TOTH"
                 style={{
                   width: 38,
                   height: 38,
@@ -95,7 +95,7 @@ const AdminLayout = ({ children }) => {
               />
               <div>
                 <h2 style={{ margin: 0, fontSize: '18px', fontWeight: '800', color: '#fff', letterSpacing: '1px' }}>
-                  LOVITO
+                  NYF TOTH
                 </h2>
                 <p style={{ margin: '2px 0 0', color: '#d4af37', fontSize: '11px', fontWeight: 700, letterSpacing: '.12em' }}>
                   ADMIN SUITE

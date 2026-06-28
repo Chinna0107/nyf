@@ -16,9 +16,9 @@ function Footer() {
       {/* Footer Grid */}
       <div className={`max-w-7xl mx-auto px-8 py-16 grid ${isMobile ? 'grid-cols-1' : 'grid-cols-5'} gap-8 md:gap-12`}>
         
-        {/* Lovito Section */}
+        {/* NYF TOTH Section */}
         <div className="space-y-4">
-          <h3 className="text-xl font-bold tracking-[0.25em] text-white">LOVITO</h3>
+          <h3 className="text-xl font-bold tracking-[0.25em] text-white">NYF TOTH</h3>
           <p className="text-gray-400 text-sm font-light leading-relaxed">
             Premium luxury fashion and styling. Creating bespoke, structured garments designed to elevate daily street aesthetics.
           </p>
@@ -33,20 +33,14 @@ function Footer() {
         <div>
           <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-6">Shop</h3>
           <div className="flex flex-col gap-3 font-light text-sm">
-            <Link to="/tshirts" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
-              T-Shirts
+            <Link to="/tshirts?category=male" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
+              Male T-Shirts
             </Link>
-            <Link to="/shirts" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
-              Shirts
+            <Link to="/tshirts?category=female" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
+              Female T-Shirts
             </Link>
-            <Link to="/trackpants" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
-              Track Pants
-            </Link>
-            <Link to="/pants" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
-              Pants
-            </Link>
-            <Link to="/sweatshirts" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
-              Sweatshirts & Hoodies
+            <Link to="/tshirts?category=oversized" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
+              Oversized T-Shirts
             </Link>
           </div>
         </div>
@@ -62,7 +56,7 @@ function Footer() {
               About Us
             </Link>
             <Link to="/custom" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
-              Dress Up with Chinna
+              Dress Up with Harsha valeti
             </Link>
             <Link to="/contact" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
               Contact Concierge
@@ -95,15 +89,15 @@ function Footer() {
           <div className="flex flex-col gap-4 font-light text-sm text-gray-400">
             <div className="flex items-start gap-3">
               <FaMapMarkerAlt className="text-[#d4af37] mt-1 shrink-0" size={14} />
-              <span className="leading-relaxed">Plot 42, Jubilee Hills Road No. 36, Hyderabad, TS, 500033</span>
+              <span className="leading-relaxed">nyftothcloth@gmail.com</span>
             </div>
             <div className="flex items-center gap-3">
               <FaPhoneAlt className="text-[#d4af37] shrink-0" size={13} />
-              <a href="tel:+919000012345" className="hover:text-[#d4af37] transition-colors">+91 90000 12345</a>
+              <a href="tel:+918686265252" className="text-white hover:text-[#d4af37] no-underline transition-colors">8686265252</a>
             </div>
             <div className="flex items-center gap-3">
               <FaEnvelope className="text-[#d4af37] shrink-0" size={13} />
-              <a href="mailto:concierge@lovito.com" className="hover:text-[#d4af37] transition-colors">concierge@lovito.com</a>
+              <a href="mailto:tejaharsha233@gmail.com" className="text-white hover:text-[#d4af37] no-underline transition-colors">tejaharsha233@gmail.com</a>
             </div>
             <div className="flex items-start gap-3">
               <FaRegClock className="text-[#d4af37] mt-0.5 shrink-0" size={14} />
@@ -119,16 +113,16 @@ function Footer() {
       {/* Bottom Section */}
       <div className="border-t border-white/5 px-8 py-8 text-center bg-[#070708]">
         <p className="text-gray-500 text-xs font-light">
-          © {new Date().getFullYear()} LOVITO. All rights reserved.
+          © {new Date().getFullYear()} NYF TOTH. All rights reserved.
           <br />
           Developed with ❤️ by{" "}
           <a 
-            href="https://zewo.in/" 
+            href="https://codtechitsolutions.com/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-white hover:text-[#d4af37] font-semibold no-underline hover:underline"
           >
-            zewo
+            CODTECH IT SOLUTIONS
           </a>
         </p>
       </div>

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { FaSearch, FaTrash, FaWhatsapp } from 'react-icons/fa';
+import { FaPrint, FaSearch, FaTrash, FaWhatsapp } from 'react-icons/fa';
 import { useFetch } from '../../hooks/useFetch';
 import config from '../../config';
 import './admin.css';
@@ -20,6 +20,124 @@ const Orders = () => {
   const [message, setMessage] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [search, setSearch] = useState('');
+
+  const printInvoice = (order) => {
+    const items = parseOrderItems(order.items);
+    const customerName = getCustomerName(order);
+    const customerEmail = getCustomerEmail(order);
+    const customerPhone = getCustomerPhone(order);
+    const formattedDate = formatDate(order.created_at);
+
+    const invoiceWindow = window.open('', '_blank', 'width=800,height=900');
+    invoiceWindow.document.write(`
+      <html>
+        <head>
+          <title>Invoice #${order.id}</title>
+          <style>
+            body { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: #1e1e1e; margin: 0; padding: 40px; }
+            .header { display: flex; justify-content: space-between; border-bottom: 2px solid #eaeaea; padding-bottom: 20px; margin-bottom: 30px; }
+            .logo { font-size: 24px; font-weight: 800; letter-spacing: 2px; }
+            .invoice-details { text-align: right; }
+            .details-grid { display: grid; grid-template-cols: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+            .details-box h3 { margin-top: 0; font-size: 14px; text-transform: uppercase; color: #888; letter-spacing: 1px; }
+            .details-box p { margin: 5px 0; font-size: 15px; line-height: 1.5; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+            th { text-align: left; padding: 12px; border-bottom: 2px solid #eaeaea; color: #888; font-size: 12px; text-transform: uppercase; }
+            td { padding: 12px; border-bottom: 1px solid #f5f5f5; font-size: 14px; }
+            .text-right { text-align: right; }
+            .totals { display: flex; flex-direction: column; align-items: flex-end; }
+            .total-row { display: flex; justify-content: space-between; width: 250px; padding: 8px 0; font-size: 14px; }
+            .total-row.grand-total { font-size: 18px; font-weight: 800; border-top: 2px solid #1e1e1e; padding-top: 12px; margin-top: 8px; }
+            .footer { border-top: 1px solid #eaeaea; padding-top: 20px; margin-top: 60px; text-align: center; color: #888; font-size: 12px; }
+            @media print {
+              body { padding: 0; }
+              .no-print { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div>
+              <div class="logo">NYF TOTH</div>
+              <p style="margin: 5px 0 0 0; color: #666; font-size: 12px;">Premium Streetwear Atelier</p>
+            </div>
+            <div class="invoice-details">
+              <h2 style="margin: 0; font-size: 24px; font-weight: 800;">INVOICE</h2>
+              <p style="margin: 5px 0 0 0; font-size: 14px; font-weight: 600;">Order #${order.id}</p>
+              <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">Date: ${formattedDate}</p>
+            </div>
+          </div>
+
+          <div class="details-grid">
+            <div class="details-box">
+              <h3>Billed To</h3>
+              <p><strong>${customerName}</strong></p>
+              <p>${customerEmail}</p>
+              <p>${customerPhone || 'No phone number'}</p>
+            </div>
+            <div class="details-box">
+              <h3>Shipping Address</h3>
+              <p>${order.shipping_address ? order.shipping_address.replace(/\\n/g, '<br />') : 'Not provided'}</p>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Details</th>
+                <th class="text-right">Price</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items.map(item => {
+                const details = [
+                  item.size ? 'Size: ' + item.size : '',
+                  item.color ? 'Color: ' + item.color : ''
+                ].filter(Boolean).join(' | ');
+                return '<tr>' +
+                  '<td><strong>' + item.name + '</strong></td>' +
+                  '<td style="color: #666;">' + details + '</td>' +
+                  '<td class="text-right">' + formatCurrency(item.price) + '</td>' +
+                  '<td class="text-right">' + (item.quantity || 1) + '</td>' +
+                  '<td class="text-right">' + formatCurrency(Number(item.price) * Number(item.quantity || 1)) + '</td>' +
+                '</tr>';
+              }).join('')}
+            </tbody>
+          </table>
+
+          <div class="totals">
+            <div class="total-row">
+              <span>Subtotal</span>
+              <span>${formatCurrency(order.total)}</span>
+            </div>
+            <div class="total-row">
+              <span>Shipping</span>
+              <span>₹0.00</span>
+            </div>
+            <div class="total-row grand-total">
+              <span>Grand Total</span>
+              <span>${formatCurrency(order.total)}</span>
+            </div>
+          </div>
+
+          <div class="footer">
+            <p>Thank you for choosing NYF TOTH. Live premium.</p>
+            <p style="margin-top: 5px; color: #bbb;">If you have any questions, contact us at nyftothcloth@gmail.com</p>
+          </div>
+
+          <script>
+            window.onload = function() {
+              window.print();
+            }
+          </script>
+        </body>
+      </html>
+    `);
+    invoiceWindow.document.close();
+  };
 
   const updateStatus = async (id, status) => {
     try {
@@ -195,6 +313,9 @@ const Orders = () => {
                             >
                               <FaWhatsapp /> Notify
                             </a>
+                            <button onClick={() => printInvoice(order)} className="admin-btn" style={{ background: '#374151', color: 'white' }}>
+                              <FaPrint /> Print
+                            </button>
                             <button onClick={() => deleteOrder(order.id)} className="admin-btn admin-btn-danger">
                               <FaTrash />
                             </button>

@@ -215,7 +215,7 @@ const Login = () => {
       
       <div className="relative z-10">
         <a href="/" className="inline-block mb-16">
-          <span className="text-xl font-bold tracking-[0.25em] text-[#d4af37]">LOVITO</span>
+          <span className="text-xl font-bold tracking-[0.25em] text-[#d4af37]">NYF TOTH</span>
         </a>
         <h1 className="mb-4 text-5xl font-bold leading-tight tracking-tight text-white">
           Your fit,<br /><span className="text-[#d4af37]">curated elegantly.</span>
@@ -228,7 +228,7 @@ const Login = () => {
       <div className="relative z-10 space-y-6">
         {[
           { title: 'Premium Curation', desc: 'Expertly designed cuts & luxurious fits' },
-          { title: 'Chinna\'s Styling Guide', desc: 'Bespoke wear processes directly integrated' },
+          { title: 'Harsha valeti\'s Styling Guide', desc: 'Bespoke wear processes directly integrated' },
           { title: 'Secure Concierge Delivery', desc: 'Expedited tracking to your doorstep' },
         ].map(({ title, desc }) => (
           <div key={title} className="flex items-start gap-4">
@@ -243,14 +243,14 @@ const Login = () => {
 
       <div className="relative z-10 border-t border-white/10 pt-6">
         <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-widest">
-          © {new Date().getFullYear()} LOVITO ATELIER. All rights reserved.
+          © {new Date().getFullYear()} NYF TOTH ATELIER. All rights reserved.
         </p>
       </div>
     </div>
   );
 
   const stepLabel = step === STEPS.FORM ? 'Create Account' : step === STEPS.OTP ? 'Verify OTP' : 'Set Password';
-  const stepDesc = step === STEPS.FORM ? 'Join the Lovito community.' : step === STEPS.OTP ? `Enter the OTP sent to ${signupData.email}` : 'Choose a strong password.';
+  const stepDesc = step === STEPS.FORM ? 'Join the NYF TOTH community.' : step === STEPS.OTP ? `Enter the OTP sent to ${signupData.email}` : 'Choose a strong password.';
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#fbfbfc] p-4">
@@ -266,7 +266,7 @@ const Login = () => {
         <div className="flex flex-col justify-center bg-white p-8 md:p-14">
           {isMobile && (
             <div className="flex justify-center mb-8">
-              <span className="text-xl font-bold tracking-[0.25em] text-[#d4af37]">LOVITO</span>
+              <span className="text-xl font-bold tracking-[0.25em] text-[#d4af37]">NYF TOTH</span>
             </div>
           )}
 

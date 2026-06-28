@@ -7,7 +7,7 @@ const PrivacyPolicy = () => {
         {/* Page Header */}
         <div className="text-center mb-12">
           <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-3 block">
-            LOVITO CONCIERGE
+            NYF TOTH CONCIERGE
           </span>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#0c0c0e] mb-4">
             Privacy Policy
@@ -28,7 +28,7 @@ const PrivacyPolicy = () => {
                 Introduction
               </h2>
               <p>
-                <strong>Lovito</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) operates the Lovito digital storefront and styling platform. This document outlines our professional practices and policies regarding the collection, processing, and safeguarding of personal data when you interact with our website, order bespoke styling collections, or use our specialized services.
+                <strong>NYF TOTH</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) operates the NYF TOTH digital storefront and styling platform. This document outlines our professional practices and policies regarding the collection, processing, and safeguarding of personal data when you interact with our website, order bespoke styling collections, or use our specialized services.
               </p>
             </section>
 
@@ -76,12 +76,12 @@ const PrivacyPolicy = () => {
                 Use of Data
               </h2>
               <p className="mb-4">
-                Lovito uses your data in accordance with high privacy standards to achieve specific goals:
+                NYF TOTH uses your data in accordance with high privacy standards to achieve specific goals:
               </p>
               <ul className="space-y-3 pl-4">
                 <li className="flex items-start gap-3">
                   <span className="text-[#d4af37] mt-0.5">•</span>
-                  <span>To curate custom wardrobe recommendations and execute Chinna's expert style matching processes.</span>
+                  <span>To curate custom wardrobe recommendations and execute Harsha valeti's expert style matching processes.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-[#d4af37] mt-0.5">•</span>
@@ -116,9 +116,9 @@ const PrivacyPolicy = () => {
                 Your Rights
               </h2>
               <p>
-                As a valued member of the Lovito community, you retain full rights to access, amend, restrict, or purge your personal data. If you wish to retrieve your profile details or request removal from our servers, please coordinate directly with our legal desk at{' '}
-                <a href="mailto:privacy@lovito.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  privacy@lovito.com
+                As a valued member of the NYF TOTH community, you retain full rights to access, amend, restrict, or purge your personal data. If you wish to retrieve your profile details or request removal from our servers, please coordinate directly with our legal desk at{' '}
+                <a href="mailto:privacy@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  privacy@nyftothcloth@gmail.com
                 </a>.
               </p>
             </section>
@@ -131,8 +131,8 @@ const PrivacyPolicy = () => {
               </h2>
               <p>
                 For further inquiries, formal requests, or detailed clarifications regarding this Privacy Policy, please email us at{' '}
-                <a href="mailto:privacy@lovito.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  privacy@lovito.com
+                <a href="mailto:privacy@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  privacy@nyftothcloth@gmail.com
                 </a>
                 .
               </p>

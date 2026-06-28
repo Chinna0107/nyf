@@ -7,7 +7,7 @@ const RefundPolicy = () => {
         {/* Page Header */}
         <div className="text-center mb-12">
           <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-3 block">
-            LOVITO CONCIERGE
+            NYF TOTH CONCIERGE
           </span>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#0c0c0e] mb-4">
             Refund Policy
@@ -73,7 +73,7 @@ const RefundPolicy = () => {
                   <div>
                     <h4 className="font-bold text-[#0c0c0e] text-sm">Contact support</h4>
                     <p className="text-xs text-gray-500 font-light mt-1">
-                      Email our team at <a href="mailto:returns@lovito.com" className="text-[#d4af37] underline">returns@lovito.com</a> quoting your order reference.
+                      Email our team at <a href="mailto:returns@nyftothcloth@gmail.com" className="text-[#d4af37] underline">returns@nyftothcloth@gmail.com</a> quoting your order reference.
                     </p>
                   </div>
                 </div>
@@ -128,7 +128,7 @@ const RefundPolicy = () => {
                 Shipping Costs
               </h2>
               <p>
-                Original delivery costs are non-refundable. For returns due to style preference or size adjustment, return shipping expenses are the responsibility of the client. If an item is verified as defective or damaged upon delivery, Lovito will cover all shipping costs and supply a pre-paid shipping label.
+                Original delivery costs are non-refundable. For returns due to style preference or size adjustment, return shipping expenses are the responsibility of the client. If an item is verified as defective or damaged upon delivery, NYF TOTH will cover all shipping costs and supply a pre-paid shipping label.
               </p>
             </section>
 
@@ -139,7 +139,7 @@ const RefundPolicy = () => {
                 Defective or Damaged Items
               </h2>
               <p>
-                If you receive a flawed or damaged garment, please notify our styling concierge team immediately at <a href="mailto:returns@lovito.com" className="text-[#d4af37] underline hover:text-[#0c0c0e] transition-colors">returns@lovito.com</a> with photographs. We will prioritize dispatching a brand-new replacement item or executing a full refund.
+                If you receive a flawed or damaged garment, please notify our styling concierge team immediately at <a href="mailto:returns@nyftothcloth@gmail.com" className="text-[#d4af37] underline hover:text-[#0c0c0e] transition-colors">returns@nyftothcloth@gmail.com</a> with photographs. We will prioritize dispatching a brand-new replacement item or executing a full refund.
               </p>
             </section>
 
@@ -178,8 +178,8 @@ const RefundPolicy = () => {
               </h2>
               <p>
                 For further inquiries, formal requests, or detailed clarifications regarding this Refund Policy, please email us at{' '}
-                <a href="mailto:returns@lovito.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  returns@lovito.com
+                <a href="mailto:returns@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  returns@nyftothcloth@gmail.com
                 </a>
                 .
               </p>

@@ -45,7 +45,7 @@ const MyOrders = () => {
             <div>
               <h1 className="text-4xl font-bold tracking-tight text-[#0c0c0e] md:text-6xl">My Orders</h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-500">
-                Welcome back, {userName}. Review every Lovito order, track live status, and revisit the pieces you picked.
+                Welcome back, {userName}. Review every NYF TOTH order, track live status, and revisit the pieces you picked.
               </p>
             </div>
             <Link to="/order-tracking" className="inline-flex w-fit items-center gap-2 rounded-full bg-[#0c0c0e] px-5 py-3 text-sm font-bold text-white hover:bg-[#d4af37] hover:text-[#0c0c0e]">

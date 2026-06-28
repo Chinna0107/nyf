@@ -17,13 +17,13 @@ const OurStory = () => {
         <div className="bg-gray-900 p-8 md:p-12 rounded-xl border border-gray-800">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Who We Are</h2>
           <p className="text-gray-300 leading-relaxed mb-4 text-base md:text-lg">
-            Welcome to Meda - your premier destination for custom embroidery clothing. Founded in 2020, we started with a simple vision: to create high-quality, personalized apparel that tells your unique story.
+            Welcome to NYF TOTH - your premium destination for quality T-shirts. Founded by Harsha Valeti, we started with a simple vision: to create high-quality T-shirts for men, women, and oversized fits that make a statement.
           </p>
           <p className="text-gray-300 leading-relaxed mb-4 text-base md:text-lg">
-            What began as a small passion project in a garage has grown into a thriving business serving thousands of satisfied customers worldwide. We believe that clothing is more than just fabric - it's a form of self-expression, a way to celebrate achievements, and a means to create lasting memories.
+            What began as a small passion project has grown into a thriving business serving thousands of satisfied customers. We believe that a great T-shirt is more than just fabric - it's a form of self-expression, a way to celebrate individuality, and a means to create lasting impressions.
           </p>
           <p className="text-gray-300 leading-relaxed text-base md:text-lg">
-            Today, we continue to innovate and push the boundaries of what's possible in custom embroidery, always keeping our customers at the heart of everything we do.
+            Today, we continue to innovate and push the boundaries of what's possible in premium T-shirts, always keeping our customers at the heart of everything we do.
           </p>
         </div>
       </section>
@@ -33,13 +33,13 @@ const OurStory = () => {
         <div className="bg-gray-900 p-8 md:p-12 rounded-xl border border-gray-800">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">Our Mission</h2>
           <p className="text-gray-300 leading-relaxed mb-8 text-base md:text-lg">
-            Our mission is to provide premium quality custom embroidery clothing that exceeds expectations. We are committed to:
+            Our mission is to provide premium quality T-shirts that exceed expectations. We are committed to:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              'Delivering exceptional craftsmanship in every stitch',
-              'Using only the finest materials and sustainable practices',
-              'Offering personalized service and custom designs',
+              'Delivering exceptional craftsmanship in every T-shirt',
+              'Using only the finest heavy cotton and sustainable practices',
+              'Offering premium T-shirts for male, female, and oversized fits',
               'Creating products that bring joy and pride to our customers',
               'Building a community of satisfied, loyal customers',
               'Innovating and improving continuously'
@@ -78,10 +78,10 @@ const OurStory = () => {
         <div className="bg-gray-900 p-8 md:p-12 rounded-xl border border-gray-800">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Our Passionate Team</h2>
           <p className="text-gray-300 leading-relaxed mb-4 text-base md:text-lg">
-            Behind every beautiful piece is a dedicated team of skilled artisans, designers, and customer service professionals. Our team is passionate about what we do and committed to bringing your vision to life.
+            Behind every NYF TOTH T-shirt is a dedicated team of skilled designers and customer service professionals. Our team is passionate about what we do and committed to bringing your vision to life.
           </p>
           <p className="text-gray-300 leading-relaxed text-base md:text-lg">
-            With years of combined experience in embroidery, fashion, and customer service, we take pride in delivering products that exceed expectations and create lasting relationships with our customers. Every team member shares our commitment to excellence and customer satisfaction.
+            With years of combined experience in premium T-shirt design, fashion, and customer service, we take pride in delivering products that exceed expectations and create lasting relationships with our customers. Every team member shares our commitment to excellence and customer satisfaction.
           </p>
         </div>
       </section>

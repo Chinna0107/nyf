@@ -7,7 +7,7 @@ const TermsAndConditions = () => {
         {/* Page Header */}
         <div className="text-center mb-12">
           <span className="text-[#d4af37] text-xs font-bold uppercase tracking-[0.3em] mb-3 block">
-            LOVITO CONCIERGE
+            NYF TOTH CONCIERGE
           </span>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#0c0c0e] mb-4">
             Terms &amp; Conditions
@@ -28,7 +28,7 @@ const TermsAndConditions = () => {
                 1. Agreement to Terms
               </h2>
               <p>
-                By accessing, browsing, or using the <strong>Lovito</strong> website, custom digital showrooms, and bespoke styling services, you fully accept and agree to comply with and be bound by the comprehensive terms, conditions, and provisions outlined in this agreement. If you do not agree to abide by these terms of service, you are kindly advised to suspend your use of our platform immediately.
+                By accessing, browsing, or using the <strong>NYF TOTH</strong> website, custom digital showrooms, and bespoke styling services, you fully accept and agree to comply with and be bound by the comprehensive terms, conditions, and provisions outlined in this agreement. If you do not agree to abide by these terms of service, you are kindly advised to suspend your use of our platform immediately.
               </p>
             </section>
 
@@ -39,7 +39,7 @@ const TermsAndConditions = () => {
                 2. Use License
               </h2>
               <p className="mb-4">
-                Permission is granted to temporarily download one copy of the digital materials, product styling grids, or platform elements on Lovito&rsquo;s website for personal, non-commercial, and transitory viewing purposes only. Under this restricted license, you are prohibited from:
+                Permission is granted to temporarily download one copy of the digital materials, product styling grids, or platform elements on NYF TOTH&rsquo;s website for personal, non-commercial, and transitory viewing purposes only. Under this restricted license, you are prohibited from:
               </p>
               <ul className="space-y-3 pl-4">
                 <li className="flex items-start gap-3">
@@ -60,7 +60,7 @@ const TermsAndConditions = () => {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-[#d4af37] mt-0.5">•</span>
-                  <span>Transferring Lovito materials to another individual or &ldquo;mirroring&rdquo; the visual assets on independent servers.</span>
+                  <span>Transferring NYF TOTH materials to another individual or &ldquo;mirroring&rdquo; the visual assets on independent servers.</span>
                 </li>
               </ul>
             </section>
@@ -72,7 +72,7 @@ const TermsAndConditions = () => {
                 3. Disclaimer
               </h2>
               <p>
-                The materials, fabrics, descriptions, styling guides, and virtual showcases on Lovito&rsquo;s website are provided on an &ldquo;as is&rdquo; basis. Lovito makes no warranties, expressed or implied, and hereby disclaims all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular design coordinate, or non-infringement of intellectual property.
+                The materials, fabrics, descriptions, styling guides, and virtual showcases on NYF TOTH&rsquo;s website are provided on an &ldquo;as is&rdquo; basis. NYF TOTH makes no warranties, expressed or implied, and hereby disclaims all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular design coordinate, or non-infringement of intellectual property.
               </p>
             </section>
 
@@ -83,7 +83,7 @@ const TermsAndConditions = () => {
                 4. Limitations of Liability
               </h2>
               <p>
-                In no event shall Lovito, its parent designers, manufacturing partners, or specialized suppliers be held liable for any damages (including, without limitation, loss of business data, potential profits, or order interruption) arising out of the use, or the inability to use, the styling digital assets on Lovito&rsquo;s storefront.
+                In no event shall NYF TOTH, its parent designers, manufacturing partners, or specialized suppliers be held liable for any damages (including, without limitation, loss of business data, potential profits, or order interruption) arising out of the use, or the inability to use, the styling digital assets on NYF TOTH&rsquo;s storefront.
               </p>
             </section>
 
@@ -94,7 +94,7 @@ const TermsAndConditions = () => {
                 5. Accuracy of Materials
               </h2>
               <p>
-                The digital media appearing on Lovito&rsquo;s online platform could theoretically contain technical, typographical, or photographic variations. Lovito does not guarantee that all online catalog imagery or coordinates are perfectly matching live apparel down to exact weave tolerances. We reserve the right to revise materials at any given time without prior notice.
+                The digital media appearing on NYF TOTH&rsquo;s online platform could theoretically contain technical, typographical, or photographic variations. NYF TOTH does not guarantee that all online catalog imagery or coordinates are perfectly matching live apparel down to exact weave tolerances. We reserve the right to revise materials at any given time without prior notice.
               </p>
             </section>
 
@@ -105,7 +105,7 @@ const TermsAndConditions = () => {
                 6. Links &amp; Third Parties
               </h2>
               <p>
-                Lovito has not reviewed all external web environments linked to its styling domains and is not responsible for the contents of any such affiliated platform. The presence of any outgoing reference links does not imply active endorsement. Navigating external links is entirely at the client's own risk.
+                NYF TOTH has not reviewed all external web environments linked to its styling domains and is not responsible for the contents of any such affiliated platform. The presence of any outgoing reference links does not imply active endorsement. Navigating external links is entirely at the client's own risk.
               </p>
             </section>
 
@@ -116,7 +116,7 @@ const TermsAndConditions = () => {
                 7. Modifications to Service
               </h2>
               <p>
-                Lovito reserves the exclusive right to edit, update, or completely overhaul these terms of service for its storefront at any time without prior notifications. By continuing to interact with the platform, you agree to remain bound by the most recent active version of these terms.
+                NYF TOTH reserves the exclusive right to edit, update, or completely overhaul these terms of service for its storefront at any time without prior notifications. By continuing to interact with the platform, you agree to remain bound by the most recent active version of these terms.
               </p>
             </section>
 
@@ -139,8 +139,8 @@ const TermsAndConditions = () => {
               </h2>
               <p>
                 For further inquiries, formal requests, or detailed clarifications regarding these Terms and Conditions, please email us at{' '}
-                <a href="mailto:support@lovito.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
-                  support@lovito.com
+                <a href="mailto:support@nyftothcloth@gmail.com" className="text-[#d4af37] hover:text-[#0c0c0e] underline transition-colors font-medium">
+                  support@nyftothcloth@gmail.com
                 </a>
                 .
               </p>
