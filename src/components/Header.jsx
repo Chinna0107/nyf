@@ -305,12 +305,14 @@ const Header = () => {
           <div className="hidden md:block">
             <Link className="cart-link" to="/wishlist" aria-label="Wishlist">
               Wishlist
+              {wishlistCount > 0 && <span>{wishlistCount}</span>}
             </Link>
           </div>
 
           <Link className="cart-link" to="/cart" aria-label="Cart">
             <FiShoppingBag size={16} />
             <div className="hidden md:block">Cart</div>
+            {cartCount > 0 && <span>{cartCount}</span>}
           </Link>
 
           {isLoggedIn ? (
