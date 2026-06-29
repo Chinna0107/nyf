@@ -13,7 +13,7 @@ const PrivacyPolicy = () => {
             Privacy Policy
           </h1>
           <p className="text-gray-400 text-xs md:text-sm font-light tracking-wide">
-            Effective Date: May 22, 2026 • Premium Fashion & Styling Studio
+            Effective Date: JUNE 29, 2026 • Premium Fashion & Styling Studio
           </p>
         </div>
 

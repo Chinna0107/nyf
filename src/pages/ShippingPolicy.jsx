@@ -13,7 +13,7 @@ const ShippingPolicy = () => {
             Shipping Policy
           </h1>
           <p className="text-gray-400 text-xs md:text-sm font-light tracking-wide">
-            Effective Date: May 22, 2026 • Delivery &amp; Distribution Details
+            Effective Date: JUNE 29, 2026 • Delivery &amp; Distribution Details
           </p>
         </div>
 

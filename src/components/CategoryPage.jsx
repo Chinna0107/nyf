@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { getProductImage } from '../utils/productImages';
 
@@ -27,7 +27,26 @@ const ProductCard = ({ product }) => (
 
 const CategoryPage = ({ category, title }) => {
   const { data: all = [], loading } = useFetch('/admin/public/products');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSearch = searchParams.get('search') || '';
+  const [searchTerm, setSearchTerm] = useState(initialSearch);
+
+  useEffect(() => {
+    const q = searchParams.get('search') || '';
+    setSearchTerm(q);
+  }, [searchParams]);
+
+  const handleSearchChange = (value) => {
+    setSearchTerm(value);
+    setSearchParams(prev => {
+      if (value) {
+        prev.set('search', value);
+      } else {
+        prev.delete('search');
+      }
+      return prev;
+    }, { replace: true });
+  };
 
   const products = (all || []).filter(p => {
     const pCat = (p.category || '').toLowerCase();
@@ -70,7 +89,7 @@ const CategoryPage = ({ category, title }) => {
               type="text"
               placeholder={`Search ${title}...`}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               className="bg-transparent outline-none text-white text-sm w-full placeholder-gray-500"
             />
           </div>

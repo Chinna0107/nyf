@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -14,9 +15,8 @@ const Cart = () => {
   }, []);
 
   const subtotal = cart.reduce((total, item) => total + (parseFloat(item.price) * item.quantity), 0);
-  const tax = subtotal * 0.1;
-  const shipping = subtotal > 100 ? 0 : 10;
-  const total = subtotal + tax + shipping;
+  const shipping = subtotal > 999 ? 0 : 99;
+  const total = subtotal + shipping;
 
   if (cart.length === 0) {
     return (
@@ -38,7 +38,7 @@ const Cart = () => {
   return (
     <div className="bg-black min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-12">Shopping Bag</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-white mb-12 mt-12">Shopping Bag</h1>
 
         <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'} gap-6 md:gap-8`}>
           {/* Cart Items */}
@@ -186,10 +186,6 @@ const Cart = () => {
                 <span>₹{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm md:text-base text-gray-400">
-                <span>Tax (10%)</span>
-                <span>₹{tax.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-sm md:text-base text-gray-400">
                 <span>Shipping</span>
                 <span className={shipping === 0 ? 'text-green-500 font-bold' : 'text-gray-400'}>
                   {shipping === 0 ? 'FREE' : `₹${shipping.toFixed(2)}`}
@@ -203,7 +199,15 @@ const Cart = () => {
             </div>
 
             <button
-              onClick={() => navigate('/checkout')}
+              onClick={() => {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                if (!isLoggedIn) {
+                  toast.error("Please login to proceed to checkout.");
+                  navigate('/login');
+                } else {
+                  navigate('/checkout');
+                }
+              }}
               className="w-full bg-white text-black py-3 rounded-lg font-bold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 mb-3"
             >
               Proceed to Checkout
@@ -216,7 +220,7 @@ const Cart = () => {
               Continue Shopping
             </button>
 
-            {subtotal > 100 && (
+            {subtotal > 999 && (
               <div className="mt-4 p-3 bg-green-900 rounded-lg border border-green-600 text-green-400 text-xs md:text-sm text-center font-bold">
                 ✓ Free shipping on this order!
               </div>

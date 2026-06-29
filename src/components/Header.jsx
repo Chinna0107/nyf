@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import logoUrl from "../assets/logo1.jpeg";
+import logoUrl from "../assets/logo_new.png";
+import { useFetch } from "../hooks/useFetch";
+import { getProductImage } from "../utils/productImages";
 import {
   FiChevronDown,
   FiChevronRight,
@@ -30,8 +32,35 @@ const Header = () => {
   const [productsOpen, setProductsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true");
   const [accountOpen, setAccountOpen] = useState(false);
+  const [searchVal, setSearchVal] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const { cartItems } = useCart();
   const navigate = useNavigate();
+  const searchRef = useRef(null);
+
+  const { data: allProducts = [] } = useFetch('/admin/public/products');
+  const fallbackProductImage = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&q=75&w=600&h=760&fit=crop';
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchVal.trim()) {
+      navigate(`/tshirts?search=${encodeURIComponent(searchVal.trim())}`);
+      setSearchVal("");
+      setIsSearchFocused(false);
+      closeMenu();
+    }
+  };
+
+  const handleTagClick = (tag) => {
+    navigate(`/tshirts?search=${encodeURIComponent(tag)}`);
+    setIsSearchFocused(false);
+    setSearchVal("");
+    closeMenu();
+  };
+
+  const searchResults = searchVal.trim()
+    ? (allProducts || []).filter(p => p.name.toLowerCase().includes(searchVal.toLowerCase())).slice(0, 5)
+    : [];
   const mobileMenuRef = useRef(null);
   const menuBtnRef = useRef(null);
   const productsRef = useRef(null);
@@ -90,6 +119,10 @@ const Header = () => {
       if (accountRef.current && !accountRef.current.contains(event.target)) {
         setAccountOpen(false);
       }
+
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchFocused(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -136,7 +169,9 @@ const Header = () => {
       )}
 
       <div className="header-promo">
-        New stitched drops are live. <Link to="/tshirts">Shop T-Shirts</Link>
+        <div className="marquee-content">
+          New stitched drops are live. <Link to="/tshirts">Shop T-Shirts</Link>
+        </div>
       </div>
 
       <div className="header-shell">
@@ -154,7 +189,7 @@ const Header = () => {
           <img src={logoUrl} alt="NYF TOTH" className="brand-logo" />
           <div className="brand-copy">
             <span className="brand-name">NYF TOTH</span>
-            <span className="brand-tag">Premium Fashion & Styling</span>
+            <span className="brand-tag">ROYALTY MEETS ETERNITY</span>
           </div>
         </Link>
 
@@ -163,7 +198,7 @@ const Header = () => {
             Home
           </NavLink>
 
-          <div className="nav-dropdown" ref={productsRef}>
+          <div className="nav-dropdown" ref={productsRef} onMouseLeave={() => setProductsOpen(false)}>
             <button
               className="nav-link dropdown-trigger"
               type="button"
@@ -175,7 +210,6 @@ const Header = () => {
             </button>
             <div
               className={`dropdown-menu ${productsOpen ? "show" : ""}`}
-              onMouseLeave={() => setProductsOpen(false)}
             >
               {productLinks.map((item) => (
                 <Link key={item.href} to={item.href} onClick={closeMenu}>
@@ -190,7 +224,7 @@ const Header = () => {
             About Us
           </NavLink>
           <NavLink to="/custom" className="nav-link">
-            Dress up with Harsha valeti
+            LookBook
           </NavLink>
           <NavLink to="/contact" className="nav-link">
             Contact
@@ -198,6 +232,72 @@ const Header = () => {
         </nav>
 
         <div className="header-actions">
+          <form onSubmit={handleSearchSubmit} className="header-search-form" ref={searchRef}>
+            <div className="header-search-container">
+              <span className="search-icon">🔍</span>
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchVal}
+                onChange={(e) => setSearchVal(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                className="header-search-input"
+              />
+              {searchVal && (
+                <button type="button" onClick={() => setSearchVal("")} className="clear-search-btn">✕</button>
+              )}
+            </div>
+
+            {/* Live Autocomplete Search Dropdown */}
+            {isSearchFocused && (
+              <div className="live-search-dropdown">
+                {searchVal.trim() === "" ? (
+                  <div className="search-suggestions">
+                    <p className="suggestion-title">Trending Searches</p>
+                    <div className="suggestion-tags">
+                      <button type="button" onClick={() => handleTagClick("Oversized")}>Oversized</button>
+                      <button type="button" onClick={() => handleTagClick("Male")}>Male T-Shirts</button>
+                      <button type="button" onClick={() => handleTagClick("Female")}>Female T-Shirts</button>
+                    </div>
+                  </div>
+                ) : searchResults.length === 0 ? (
+                  <div className="no-search-results">
+                    No products found for "{searchVal}"
+                  </div>
+                ) : (
+                  <div className="search-results-list">
+                    <p className="suggestion-title">Products Found</p>
+                    {searchResults.map(p => (
+                      <Link 
+                        key={p.id} 
+                        to={`/product/${p.id}`} 
+                        onClick={() => {
+                          setIsSearchFocused(false);
+                          setSearchVal("");
+                        }}
+                        className="live-search-item"
+                      >
+                        <img 
+                          src={getProductImage(p) || fallbackProductImage} 
+                          alt={p.name} 
+                          className="live-search-thumb" 
+                          onError={(e) => { e.target.src = fallbackProductImage; }}
+                        />
+                        <div className="live-search-info">
+                          <span className="live-search-name">{p.name}</span>
+                          <span className="live-search-price">₹{p.price}</span>
+                        </div>
+                      </Link>
+                    ))}
+                    <button type="submit" className="view-all-results-btn">
+                      View all {allProducts.filter(p => p.name.toLowerCase().includes(searchVal.toLowerCase())).length} results →
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </form>
+
           <Link className="cart-link" to="/cart" aria-label="Cart">
             <FiShoppingBag size={16} />
             Bag
@@ -264,6 +364,22 @@ const Header = () => {
         </div>
 
         <div className="mobile-panel-body">
+          {/* Mobile Search */}
+          <div className="px-4 mb-6">
+            <form onSubmit={handleSearchSubmit}>
+              <div className="flex items-center bg-gray-100 border border-gray-200 rounded-full px-4 py-2 w-full">
+                <span className="mr-2 text-sm">🔍</span>
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchVal}
+                  onChange={(e) => setSearchVal(e.target.value)}
+                  className="bg-transparent outline-none text-sm w-full text-gray-850"
+                />
+              </div>
+            </form>
+          </div>
+
           {/* Section 1: Categories */}
           <div className="mobile-section">
             <h4 className="mobile-section-title">Shop Collection</h4>
@@ -301,7 +417,7 @@ const Header = () => {
               <NavLink to="/custom" onClick={closeMenu} className="mobile-drawer-link">
                 <span className="flex items-center gap-3">
                   <FiUser size={16} className="text-gray-400" />
-                  Dress up with Harsha valeti
+                  LookBook
                 </span>
                 <FiChevronRight size={14} className="link-arrow" />
               </NavLink>

@@ -56,7 +56,7 @@ function Footer() {
               About Us
             </Link>
             <Link to="/custom" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
-              Dress Up with Harsha valeti
+              LookBook
             </Link>
             <Link to="/contact" className="text-gray-400 no-underline hover:text-[#d4af37] transition-colors">
               Contact Concierge

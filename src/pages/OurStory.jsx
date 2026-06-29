@@ -87,7 +87,7 @@ const OurStory = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="max-w-6xl mx-auto px-4 py-16 md:py-24">
+      {/* <section className="max-w-6xl mx-auto px-4 py-16 md:py-24">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {[
             { number: '5000+', label: 'Happy Customers' },
@@ -101,7 +101,7 @@ const OurStory = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

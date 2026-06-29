@@ -44,7 +44,7 @@ const About = () => {
             About NYF TOTH
           </h1>
           <p className="text-base md:text-xl text-gray-300 font-light max-w-xl mx-auto leading-relaxed">
-            Crafting premium T-shirts since 2018. We believe in quality fabrics, bold designs, and a vibrant community.
+            Crafting premium T-shirts since 2026. We believe in quality fabrics, bold designs, and a vibrant community.
           </p>
         </div>
       </section>
@@ -77,8 +77,8 @@ const About = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0e]/90 via-[#0c0c0e]/40 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-8 text-white text-left z-10">
-              <span className="text-xs font-bold text-[#d4af37] uppercase tracking-wider block mb-1">ESTABLISHED 2018</span>
-              <h3 className="text-2xl font-bold mb-2">6+ Years of Tailoring</h3>
+              <span className="text-xs font-bold text-[#d4af37] uppercase tracking-wider block mb-1">ESTABLISHED 2026</span>
+              {/* <h3 className="text-2xl font-bold mb-2">6+ Years of Tailoring</h3> */}
               <p className="text-sm text-gray-300 font-light leading-relaxed">
                 Meticulous pattern making, high-density stitching, and premium finishing.
               </p>
@@ -129,7 +129,7 @@ const About = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-white py-16 border-y border-gray-100">
+      {/* <section className="bg-white py-16 border-y border-gray-100">
         <div className={`max-w-7xl mx-auto px-8 grid ${isMobile ? 'grid-cols-2 gap-8' : 'grid-cols-4'} gap-6 text-center`}>
           {[
             { value: '10K+', desc: 'Sophisticated Customers' },
@@ -143,7 +143,7 @@ const About = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Team Section */}
       <section className="max-w-7xl mx-auto px-8 py-20">

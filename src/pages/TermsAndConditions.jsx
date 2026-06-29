@@ -13,7 +13,7 @@ const TermsAndConditions = () => {
             Terms &amp; Conditions
           </h1>
           <p className="text-gray-400 text-xs md:text-sm font-light tracking-wide">
-            Effective Date: May 22, 2026 • Legal Terms of Service
+            Effective Date: JUNE 29, 2026 • Legal Terms of Service
           </p>
         </div>
 

@@ -13,7 +13,7 @@ const RefundPolicy = () => {
             Refund Policy
           </h1>
           <p className="text-gray-400 text-xs md:text-sm font-light tracking-wide">
-            Effective Date: May 22, 2026 • Return &amp; Exchange Guidelines
+            Effective Date: JUNE 29, 2026 • Return &amp; Exchange Guidelines
           </p>
         </div>
 

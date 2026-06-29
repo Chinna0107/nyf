@@ -1,4 +1,5 @@
 import React from 'react'
+import { Toaster } from 'react-hot-toast'
 import Header from './components/Header'
 import AdminLayout from './components/AdminLayout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -42,6 +43,7 @@ function App() {
 
   return (
     <CartProvider>
+      <Toaster position="top-center" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
       <Router>
         <ScrollToTop />
         {!isAdminRoute && !isUserRoute && <Header />}

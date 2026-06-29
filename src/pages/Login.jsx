@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import config from '../config';
+import toast from 'react-hot-toast';
 
 const API = config.apiUrl;
 
@@ -22,25 +23,25 @@ const InputField = ({ label, type, name, value, onChange, placeholder, error, ch
   </div>
 );
 
-// Signup steps: 'form' → 'otp' → 'password'
+// Modes
+const MODES = { LOGIN: 'login', SIGNUP: 'signup', FORGOT: 'forgot' };
+// Steps for multi-step flows
 const STEPS = { FORM: 'form', OTP: 'otp', PASSWORD: 'password' };
 
 const Login = () => {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [isLogin, setIsLogin] = useState(true);
+  const [mode, setMode] = useState(MODES.LOGIN); // 'login', 'signup', 'forgot'
+  const [step, setStep] = useState(STEPS.FORM);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ text: '', success: false });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Login form
+  // Form states
   const [loginData, setLoginData] = useState({ email: '', password: '' });
-
-  // Signup multi-step
-  const [step, setStep] = useState(STEPS.FORM);
   const [signupData, setSignupData] = useState({ firstName: '', lastName: '', email: '' });
+  const [forgotData, setForgotData] = useState({ email: '' });
   const [otp, setOtp] = useState('');
   const [passwords, setPasswords] = useState({ password: '', confirm: '' });
   const [otpTimer, setOtpTimer] = useState(0);
@@ -61,6 +62,14 @@ const Login = () => {
   const setError = (field, msg) => setErrors(prev => ({ ...prev, [field]: msg }));
   const clearError = (field) => setErrors(prev => ({ ...prev, [field]: '' }));
 
+  const switchMode = (newMode) => {
+    setMode(newMode);
+    setStep(STEPS.FORM);
+    setErrors({});
+    setOtp('');
+    setPasswords({ password: '', confirm: '' });
+  };
+
   // ── LOGIN ──
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -71,7 +80,6 @@ const Login = () => {
     if (Object.keys(errs).length) return setErrors(errs);
 
     setLoading(true);
-    setMessage({ text: '', success: false });
     try {
       const res = await fetch(`${API}/auth/login`, {
         method: 'POST',
@@ -89,20 +97,20 @@ const Login = () => {
       localStorage.setItem('userRole', data.user?.role || 'user');
       if (data.token) localStorage.setItem('authToken', data.token);
 
-      setMessage({ text: 'Welcome back! Redirecting...', success: true });
+      toast.success('Welcome back! Redirecting...');
       setTimeout(() => {
         window.dispatchEvent(new Event('auth-change'));
         navigate(data.user?.role === 'admin' ? '/admin' : '/');
       }, 1500);
     } catch (err) {
-      setMessage({ text: err.message, success: false });
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // ── SIGNUP STEP 1: Send OTP ──
-  const handleSendOtp = async (e) => {
+  // ── SIGNUP FLOW ──
+  const handleSendSignupOtp = async (e) => {
     e.preventDefault();
     const errs = {};
     if (!signupData.firstName.trim()) errs.firstName = 'Required';
@@ -112,7 +120,6 @@ const Login = () => {
     if (Object.keys(errs).length) return setErrors(errs);
 
     setLoading(true);
-    setMessage({ text: '', success: false });
     try {
       const res = await fetch(`${API}/auth/send-otp`, {
         method: 'POST',
@@ -122,21 +129,19 @@ const Login = () => {
       if (!res.ok) throw new Error((await res.json()).message || 'Failed to send OTP');
       setStep(STEPS.OTP);
       setOtpTimer(60);
-      setMessage({ text: `OTP sent to ${signupData.email}`, success: true });
+      toast.success(`OTP sent to ${signupData.email}`);
     } catch (err) {
-      setMessage({ text: err.message, success: false });
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // ── SIGNUP STEP 2: Verify OTP ──
-  const handleVerifyOtp = async (e) => {
+  const handleVerifySignupOtp = async (e) => {
     e.preventDefault();
     if (!otp.trim() || otp.length !== 6) return setError('otp', 'Enter the 6-digit OTP');
 
     setLoading(true);
-    setMessage({ text: '', success: false });
     try {
       const res = await fetch(`${API}/auth/verify-otp`, {
         method: 'POST',
@@ -145,15 +150,14 @@ const Login = () => {
       });
       if (!res.ok) throw new Error((await res.json()).message || 'Invalid OTP');
       setStep(STEPS.PASSWORD);
-      setMessage({ text: 'OTP verified! Set your password.', success: true });
+      toast.success('OTP verified! Set your password.');
     } catch (err) {
-      setMessage({ text: err.message, success: false });
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // ── SIGNUP STEP 3: Set Password & Register ──
   const handleRegister = async (e) => {
     e.preventDefault();
     const errs = {};
@@ -164,7 +168,6 @@ const Login = () => {
     if (Object.keys(errs).length) return setErrors(errs);
 
     setLoading(true);
-    setMessage({ text: '', success: false });
     try {
       const res = await fetch(`${API}/auth/register`, {
         method: 'POST',
@@ -187,26 +190,84 @@ const Login = () => {
       localStorage.setItem('userRole', data.user?.role || 'user');
       if (data.token) localStorage.setItem('authToken', data.token);
 
-      setMessage({ text: 'Account created! Redirecting...', success: true });
+      toast.success('Account created! Redirecting...');
       setTimeout(() => {
         window.dispatchEvent(new Event('auth-change'));
         navigate('/');
       }, 1500);
     } catch (err) {
-      setMessage({ text: err.message, success: false });
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const switchMode = () => {
-    setIsLogin(!isLogin);
-    setStep(STEPS.FORM);
-    setErrors({});
-    setMessage({ text: '', success: false });
-    setOtp('');
-    setPasswords({ password: '', confirm: '' });
+  // ── FORGOT PASSWORD FLOW ──
+  const handleSendForgotOtp = async (e) => {
+    e.preventDefault();
+    if (!forgotData.email.trim()) return setError('email', 'Email is required');
+    else if (!/^\S+@\S+\.\S+$/.test(forgotData.email)) return setError('email', 'Enter a valid email');
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${API}/auth/forgot-password-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotData.email.trim() }),
+      });
+      if (!res.ok) throw new Error((await res.json()).message || 'Failed to send OTP');
+      setStep(STEPS.OTP);
+      setOtpTimer(60);
+      toast.success(`Password reset OTP sent to ${forgotData.email}`);
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    const errs = {};
+    if (!otp.trim() || otp.length !== 6) errs.otp = 'Enter the 6-digit OTP';
+    if (!passwords.password) errs.password = 'New password is required';
+    else if (passwords.password.length < 6) errs.password = 'Minimum 6 characters';
+    if (!passwords.confirm) errs.confirm = 'Please confirm new password';
+    else if (passwords.password !== passwords.confirm) errs.confirm = 'Passwords do not match';
+    if (Object.keys(errs).length) return setErrors(errs);
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${API}/auth/reset-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotData.email.trim(), otp: otp.trim(), newPassword: passwords.password }),
+      });
+      if (!res.ok) throw new Error((await res.json()).message || 'Password reset failed');
+      
+      toast.success('Password successfully reset! Please sign in.');
+      switchMode(MODES.LOGIN);
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ── UI HELPERS ──
+  const getHeaderInfo = () => {
+    if (mode === MODES.LOGIN) return { title: 'Sign In', desc: 'Welcome back — enter your credentials.' };
+    if (mode === MODES.SIGNUP) {
+      if (step === STEPS.FORM) return { title: 'Create Account', desc: 'Join the NYF TOTH community.' };
+      if (step === STEPS.OTP) return { title: 'Verify OTP', desc: `Enter the OTP sent to ${signupData.email}` };
+      return { title: 'Set Password', desc: 'Choose a strong password.' };
+    }
+    if (mode === MODES.FORGOT) {
+      if (step === STEPS.FORM) return { title: 'Reset Password', desc: 'Enter your email to receive an OTP.' };
+      if (step === STEPS.OTP) return { title: 'Verify Reset OTP', desc: `Enter the OTP sent to ${forgotData.email} and your new password.` };
+    }
+  };
+  const { title, desc } = getHeaderInfo();
 
   const leftPanel = (
     <div className="relative flex flex-col justify-between overflow-hidden bg-[#0c0c0e] p-12 text-white">
@@ -230,12 +291,12 @@ const Login = () => {
           { title: 'Premium Curation', desc: 'Expertly designed cuts & luxurious fits' },
           { title: 'Harsha valeti\'s Styling Guide', desc: 'Bespoke wear processes directly integrated' },
           { title: 'Secure Concierge Delivery', desc: 'Expedited tracking to your doorstep' },
-        ].map(({ title, desc }) => (
-          <div key={title} className="flex items-start gap-4">
+        ].map((item) => (
+          <div key={item.title} className="flex items-start gap-4">
             <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#d4af37]" />
             <div>
-              <p className="font-bold text-sm text-white">{title}</p>
-              <p className="text-gray-400 text-xs font-light mt-0.5">{desc}</p>
+              <p className="font-bold text-sm text-white">{item.title}</p>
+              <p className="text-gray-400 text-xs font-light mt-0.5">{item.desc}</p>
             </div>
           </div>
         ))}
@@ -248,9 +309,6 @@ const Login = () => {
       </div>
     </div>
   );
-
-  const stepLabel = step === STEPS.FORM ? 'Create Account' : step === STEPS.OTP ? 'Verify OTP' : 'Set Password';
-  const stepDesc = step === STEPS.FORM ? 'Join the NYF TOTH community.' : step === STEPS.OTP ? `Enter the OTP sent to ${signupData.email}` : 'Choose a strong password.';
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#fbfbfc] p-4">
@@ -271,22 +329,12 @@ const Login = () => {
           )}
 
           <div className="mb-8">
-            <h2 className="mb-2 text-3xl font-bold tracking-tight text-[#0c0c0e]">
-              {isLogin ? 'Sign In' : stepLabel}
-            </h2>
-            <p className="text-sm text-gray-500 font-light">
-              {isLogin ? 'Welcome back — enter your credentials.' : stepDesc}
-            </p>
+            <h2 className="mb-2 text-3xl font-bold tracking-tight text-[#0c0c0e]">{title}</h2>
+            <p className="text-sm text-gray-500 font-light">{desc}</p>
           </div>
 
-          {message.text && (
-            <div className={`mb-6 rounded-xl border px-4 py-3 text-sm font-semibold text-center ${message.success ? 'border-emerald-150 bg-emerald-50 text-emerald-800' : 'border-red-150 bg-red-50 text-red-700'}`}>
-              {message.text}
-            </div>
-          )}
-
           {/* ── LOGIN FORM ── */}
-          {isLogin && (
+          {mode === MODES.LOGIN && (
             <form onSubmit={handleLogin} className="space-y-4">
               <InputField label="Email" type="email" name="email" value={loginData.email}
                 onChange={e => { setLoginData(p => ({ ...p, email: e.target.value })); clearError('email'); }}
@@ -300,6 +348,12 @@ const Login = () => {
                   {showPassword ? 'Hide' : 'Show'}
                 </button>
               </InputField>
+              
+              <div className="flex justify-end">
+                <button type="button" onClick={() => switchMode(MODES.FORGOT)} className="text-xs font-bold text-gray-500 hover:text-[#d4af37] transition-colors">
+                  Forgot Password?
+                </button>
+              </div>
 
               <button type="submit" disabled={loading}
                 className="mt-6 w-full py-4 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-lg disabled:opacity-50 flex items-center justify-center">
@@ -308,9 +362,9 @@ const Login = () => {
             </form>
           )}
 
-          {/* ── SIGNUP STEP 1: Details ── */}
-          {!isLogin && step === STEPS.FORM && (
-            <form onSubmit={handleSendOtp} className="space-y-4">
+          {/* ── SIGNUP FORMS ── */}
+          {mode === MODES.SIGNUP && step === STEPS.FORM && (
+            <form onSubmit={handleSendSignupOtp} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <InputField label="First Name" type="text" name="firstName" value={signupData.firstName}
                   onChange={e => { setSignupData(p => ({ ...p, firstName: e.target.value })); clearError('firstName'); }}
@@ -330,9 +384,8 @@ const Login = () => {
             </form>
           )}
 
-          {/* ── SIGNUP STEP 2: OTP ── */}
-          {!isLogin && step === STEPS.OTP && (
-            <form onSubmit={handleVerifyOtp} className="space-y-4">
+          {mode === MODES.SIGNUP && step === STEPS.OTP && (
+            <form onSubmit={handleVerifySignupOtp} className="space-y-4">
               <div className="mb-5">
                 <label className="block mb-2 text-xs font-semibold tracking-wider text-gray-500 uppercase">Enter OTP</label>
                 <input
@@ -351,7 +404,7 @@ const Login = () => {
                   {otpTimer > 0 ? `Resend in ${otpTimer}s` : ''}
                 </span>
                 {otpTimer === 0 && (
-                  <button type="button" onClick={handleSendOtp} className="font-bold text-[#d4af37] underline transition-colors hover:text-[#0c0c0e]">
+                  <button type="button" onClick={handleSendSignupOtp} className="font-bold text-[#d4af37] underline transition-colors hover:text-[#0c0c0e]">
                     Resend OTP
                   </button>
                 )}
@@ -364,8 +417,7 @@ const Login = () => {
             </form>
           )}
 
-          {/* ── SIGNUP STEP 3: Set Password ── */}
-          {!isLogin && step === STEPS.PASSWORD && (
+          {mode === MODES.SIGNUP && step === STEPS.PASSWORD && (
             <form onSubmit={handleRegister} className="space-y-4">
               <InputField label="Password" type={showPassword ? 'text' : 'password'} name="password" value={passwords.password}
                 onChange={e => { setPasswords(p => ({ ...p, password: e.target.value })); clearError('password'); }}
@@ -392,13 +444,79 @@ const Login = () => {
             </form>
           )}
 
+          {/* ── FORGOT PASSWORD FORMS ── */}
+          {mode === MODES.FORGOT && step === STEPS.FORM && (
+            <form onSubmit={handleSendForgotOtp} className="space-y-4">
+              <InputField label="Registered Email" type="email" name="email" value={forgotData.email}
+                onChange={e => { setForgotData(p => ({ ...p, email: e.target.value })); clearError('email'); }}
+                placeholder="you@example.com" error={errors.email} />
+
+              <button type="submit" disabled={loading}
+                className="mt-6 w-full py-4 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-lg disabled:opacity-50 flex items-center justify-center">
+                {loading ? 'Sending OTP...' : 'Send Reset OTP'}
+              </button>
+            </form>
+          )}
+
+          {mode === MODES.FORGOT && step === STEPS.OTP && (
+            <form onSubmit={handleResetPassword} className="space-y-4">
+              <div className="mb-5">
+                <label className="block mb-2 text-xs font-semibold tracking-wider text-gray-500 uppercase">Enter OTP</label>
+                <input
+                  type="text"
+                  maxLength={6}
+                  value={otp}
+                  onChange={e => { setOtp(e.target.value.replace(/\D/g, '')); clearError('otp'); }}
+                  placeholder="6-digit OTP"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-center text-sm font-bold tracking-[0.5em] text-[#0c0c0e] focus:border-[#d4af37] focus:outline-none focus:ring-4 focus:ring-[#d4af37]/5 transition-all duration-300"
+                />
+                {errors.otp && <p className="text-red-500 text-xs font-semibold mt-1.5">{errors.otp}</p>}
+              </div>
+
+              <div className="flex items-center justify-between mb-5 text-xs">
+                <span className="font-semibold text-gray-400">
+                  {otpTimer > 0 ? `Resend in ${otpTimer}s` : ''}
+                </span>
+                {otpTimer === 0 && (
+                  <button type="button" onClick={handleSendForgotOtp} className="font-bold text-[#d4af37] underline transition-colors hover:text-[#0c0c0e]">
+                    Resend OTP
+                  </button>
+                )}
+              </div>
+
+              <InputField label="New Password" type={showPassword ? 'text' : 'password'} name="password" value={passwords.password}
+                onChange={e => { setPasswords(p => ({ ...p, password: e.target.value })); clearError('password'); }}
+                placeholder="Min. 6 characters" error={errors.password}>
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-500 hover:text-[#d4af37] transition-colors">
+                  {showPassword ? 'Hide' : 'Show'}
+                </button>
+              </InputField>
+
+              <InputField label="Confirm New Password" type={showConfirm ? 'text' : 'password'} name="confirm" value={passwords.confirm}
+                onChange={e => { setPasswords(p => ({ ...p, confirm: e.target.value })); clearError('confirm'); }}
+                placeholder="Re-enter password" error={errors.confirm}>
+                <button type="button" onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-500 hover:text-[#d4af37] transition-colors">
+                  {showConfirm ? 'Hide' : 'Show'}
+                </button>
+              </InputField>
+
+              <button type="submit" disabled={loading}
+                className="mt-6 w-full py-4 bg-[#0c0c0e] hover:bg-[#d4af37] hover:text-[#0c0c0e] text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-lg disabled:opacity-50 flex items-center justify-center">
+                {loading ? 'Resetting Password...' : 'Reset Password'}
+              </button>
+            </form>
+          )}
+
+          {/* ── FOOTER TOGGLES ── */}
           <div className="mt-8 flex items-center justify-between border-t border-gray-100 pt-6">
             <p className="text-xs text-gray-500 font-light">
-              {isLogin ? "Don't have an account?" : 'Already have an account?'}
+              {mode === MODES.LOGIN ? "Don't have an account?" : 'Already have an account?'}
             </p>
-            <button onClick={switchMode}
+            <button onClick={() => switchMode(mode === MODES.LOGIN ? MODES.SIGNUP : MODES.LOGIN)}
               className="rounded-full border border-[#0c0c0e] hover:bg-[#0c0c0e] hover:text-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#0c0c0e] transition-all duration-300">
-              {isLogin ? 'Sign Up' : 'Sign In'}
+              {mode === MODES.LOGIN ? 'Sign Up' : 'Sign In'}
             </button>
           </div>
 

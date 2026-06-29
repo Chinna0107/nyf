@@ -1,11 +1,58 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useFetch } from '../hooks/useFetch';
 import { getProductImage } from '../utils/productImages';
+import toast from 'react-hot-toast';
 
 const FALLBACK_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+const colorMap = {
+  black: '#000000',
+  white: '#ffffff',
+  red: '#ff0000',
+  blue: '#0000ff',
+  green: '#00ff00',
+  yellow: '#ffff00',
+  purple: '#800080',
+  orange: '#ffa500',
+  pink: '#ffc0cb',
+  gray: '#808080',
+  grey: '#808080',
+  navy: '#000080',
+  beige: '#f5f5dc',
+  brown: '#a52a2a',
+  maroon: '#800000',
+  gold: '#ffd700',
+  silver: '#c0c0c0',
+  lavender: '#e6e6fa',
+  peach: '#ffdab9',
+  olive: '#808000',
+  teal: '#008080',
+  turquoise: '#40e0d0',
+  cream: '#fffdd0',
+  burgundy: '#800020',
+  charcoal: '#36454f',
+  mustard: '#ffdb58',
+  khaki: '#c3b091',
+  indigo: '#4b0082',
+  magenta: '#ff00ff',
+  tan: '#d2b48c',
+  violet: '#ee82ee',
+  mint: '#98ff98',
+};
+
+const getColorStyle = (colorName = '') => {
+  const normalized = colorName.toLowerCase().trim();
+  if (colorMap[normalized]) return colorMap[normalized];
+  if (normalized.startsWith('#')) return normalized;
+  const words = normalized.split(/\s+/);
+  for (const word of words) {
+    if (colorMap[word]) return colorMap[word];
+  }
+  return normalized;
+};
 
 const renderStars = (rating) => (
   <div className="flex items-center gap-1">
@@ -27,7 +74,16 @@ function Products() {
   ) || null;
 
   const relatedProducts = product
-    ? allProducts.filter(p => p.id !== product.id && p.category === product.category).slice(0, 4)
+    ? allProducts
+        .filter(p => p.id !== product.id)
+        .sort((a, b) => {
+          const aSame = a.category?.toLowerCase().trim() === product.category?.toLowerCase().trim();
+          const bSame = b.category?.toLowerCase().trim() === product.category?.toLowerCase().trim();
+          if (aSame && !bSame) return -1;
+          if (!aSame && bSame) return 1;
+          return 0;
+        })
+        .slice(0, 4)
     : [];
 
   const [selectedSize, setSelectedSize] = useState('');
@@ -72,7 +128,15 @@ function Products() {
     setCurrentImageIndex(0);
   };
 
+  const navigate = useNavigate();
+
   const handleAddToCart = () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      toast.error("Please login to add items to your cart.");
+      navigate('/login');
+      return;
+    }
     const images = getImagesForColor(selectedColor);
     const currentPrice = (product.size_prices && product.size_prices[selectedSize]) ? product.size_prices[selectedSize] : product.price;
     addToCart({
@@ -249,17 +313,33 @@ function Products() {
                 <h3 className="text-sm font-bold text-white mb-3">
                   Color: <span className="text-gray-400 font-normal">{selectedColor}</span>
                 </h3>
-                <div className="flex gap-2 flex-wrap">
-                  {colors.map(color => (
-                    <button key={color} onClick={() => handleColorChange(color)}
-                      className={`px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 ${
-                        selectedColor === color
-                          ? 'bg-white text-black border-2 border-white'
-                          : 'bg-gray-800 text-white border-2 border-gray-700 hover:border-white'
-                      }`}>
-                      {color}
-                    </button>
-                  ))}
+                <div className="flex gap-3 flex-wrap">
+                  {colors.map(color => {
+                    const bgStyle = getColorStyle(color);
+                    const isBlackColor = bgStyle.toLowerCase() === '#000000' || bgStyle.toLowerCase() === 'black' || bgStyle.toLowerCase() === '#0c0c0e';
+                    const isWhiteColor = bgStyle.toLowerCase() === '#ffffff' || bgStyle.toLowerCase() === 'white' || bgStyle.toLowerCase() === 'cream' || bgStyle.toLowerCase() === '#fffdd0';
+                    return (
+                      <button 
+                        key={color} 
+                        onClick={() => handleColorChange(color)}
+                        title={color}
+                        className={`w-9 h-9 rounded-full border-2 transition-all duration-200 relative ${
+                          selectedColor === color
+                            ? 'border-[#d4af37] scale-110 shadow-lg'
+                            : 'border-transparent hover:border-gray-500 hover:scale-105'
+                        }`}
+                        style={{ backgroundColor: bgStyle }}
+                        aria-label={color}
+                      >
+                        {isBlackColor && (
+                          <span className="absolute inset-0 rounded-full border border-gray-800" />
+                        )}
+                        {isWhiteColor && (
+                          <span className="absolute inset-0 rounded-full border border-gray-300" />
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -340,35 +420,41 @@ function Products() {
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <section className="border-t border-gray-800 pt-12">
-            <h2 className="text-2xl font-bold text-white mb-8">You May Also Like</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <h2 className="text-2xl font-bold text-white mb-8">People Also Bought</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {relatedProducts.map(p => {
                 const relDiscount = p.original_price && p.original_price > p.price
                   ? Math.round(((p.original_price - p.price) / p.original_price) * 100) : 0;
                 return (
-                  <Link key={p.id} to={`/product/${p.id}`} className="no-underline text-white group">
-                    <div className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-white transition-all duration-300">
-                      <div className="relative">
+                  <Link key={p.id} to={`/product/${p.id}`} className="no-underline text-white group block">
+                    <div className="bg-[#0c0c0e] rounded-2xl overflow-hidden border border-gray-900 hover:border-gray-800 transition-all duration-500 hover:shadow-[0_15px_30px_rgba(0,0,0,0.5)] relative flex flex-col h-full transform hover:-translate-y-1">
+                      <div className="aspect-[3/4] overflow-hidden bg-gray-950 relative">
                         <img
                           src={getProductImage(p) || ''}
                           alt={p.name}
-                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           onError={(e) => { e.target.style.display = 'none'; }}
                           loading="lazy"
                         />
                         {relDiscount > 0 && (
-                          <span className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded font-bold">
+                          <span className="absolute top-3 left-3 bg-[#d4af37] text-black text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-wider shadow-md">
                             -{relDiscount}%
                           </span>
                         )}
                       </div>
-                      <div className="p-3">
-                        <p className="font-bold text-sm line-clamp-1">{p.name}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <p className="text-white text-sm font-bold">₹{p.price}</p>
-                          {p.original_price && p.original_price > p.price && (
-                            <p className="text-gray-500 text-xs line-through">₹{p.original_price}</p>
-                          )}
+                      <div className="p-4 flex flex-col flex-grow justify-between bg-[#0c0c0e]">
+                        <div>
+                          <p className="text-[10px] font-bold text-[#d4af37] tracking-widest uppercase mb-1">{p.category || 'NYF TOTH'}</p>
+                          <p className="font-semibold text-sm line-clamp-2 min-h-[40px] text-gray-200 group-hover:text-[#d4af37] transition-colors duration-300">{p.name}</p>
+                        </div>
+                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-900">
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-white font-bold text-base">₹{p.price}</span>
+                            {p.original_price && p.original_price > p.price && (
+                              <span className="text-gray-500 text-xs line-through">₹{p.original_price}</span>
+                            )}
+                          </div>
+                          <span className="text-[#d4af37] text-xs font-semibold group-hover:underline">Explore →</span>
                         </div>
                       </div>
                     </div>

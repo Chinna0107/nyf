@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import config from '../../config';
+import toast from 'react-hot-toast';
 
 const API_BASE_URL = config.apiUrl;
 
@@ -95,10 +96,12 @@ const ProductForm = () => {
         const data = await res.json();
         handleColorImageChange(color, num, data.url);
       } else {
-        alert('Upload failed');
+        toast.error('Upload failed');
+        return;
       }
     } catch (err) {
-      alert('Upload error');
+      toast.error('Upload error');
+      return;
     }
   };
 
