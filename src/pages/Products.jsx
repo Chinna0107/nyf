@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useFetch } from '../hooks/useFetch';
 import { getProductImage } from '../utils/productImages';
 import toast from 'react-hot-toast';
@@ -65,6 +66,7 @@ const renderStars = (rating) => (
 function Products() {
   const { name } = useParams();
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const { data, loading } = useFetch('/admin/public/products');
   const allProducts = data || [];
 
@@ -91,7 +93,6 @@ function Products() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -153,6 +154,28 @@ function Products() {
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
+  const handleBuyNow = () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      toast.error("Please login to buy items.");
+      navigate('/login');
+      return;
+    }
+    const images = getImagesForColor(selectedColor);
+    const currentPrice = (product.size_prices && product.size_prices[selectedSize]) ? product.size_prices[selectedSize] : product.price;
+    addToCart({
+      id: `${product.id}-${selectedSize}-${selectedColor}`,
+      productId: product.id,
+      name: product.name,
+      price: currentPrice,
+      size: selectedSize,
+      color: selectedColor,
+      quantity,
+      image: images[0] || getProductImage(product)
+    });
+    navigate('/checkout');
+  };
+
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePos({
@@ -177,6 +200,7 @@ function Products() {
     </div>
   );
 
+  const isWishlisted = isInWishlist(product.id);
   const images = getImagesForColor(selectedColor);
   const currentImage = images[currentImageIndex] || getProductImage(product) || '';
   const sizes = product.sizes?.length > 0 ? product.sizes : FALLBACK_SIZES;
@@ -268,16 +292,12 @@ function Products() {
 
           {/* Details */}
           <div className="space-y-6">
-            {/* Title & Wishlist */}
+            {/* Title */}
             <div className="flex items-start justify-between">
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold text-white mb-1">{product.name}</h1>
                 <p className="text-gray-500 text-sm capitalize">{product.category}</p>
               </div>
-              <button onClick={() => setIsWishlisted(!isWishlisted)}
-                className="text-3xl transition-transform hover:scale-125 ml-4 flex-shrink-0">
-                {isWishlisted ? '❤️' : '🤍'}
-              </button>
             </div>
 
             {/* Rating & Stock */}
@@ -379,19 +399,43 @@ function Products() {
               </div>
             </div>
 
-            {/* Add to Cart */}
-            <button
-              onClick={handleAddToCart}
-              disabled={product.stock === 0}
-              className={`w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 ${
-                product.stock === 0
-                  ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                  : addedToCart
-                  ? 'bg-green-600 text-white'
-                  : 'bg-white text-black hover:bg-gray-100 hover:-translate-y-1 shadow-lg'
-              }`}>
-              {product.stock === 0 ? 'Out of Stock' : addedToCart ? '✓ Added to Bag' : '👜 Add to Bag'}
-            </button>
+            {/* Action Buttons */}
+            <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={product.stock === 0}
+                  className={`w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 ${
+                    product.stock === 0
+                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                      : addedToCart
+                      ? 'bg-green-600 text-white'
+                      : 'bg-white text-black hover:bg-gray-100 hover:-translate-y-1 shadow-lg'
+                  }`}>
+                  {product.stock === 0 ? 'Out of Stock' : addedToCart ? '✓ Added to Bag' : '👜 Add to Bag'}
+                </button>
+                <button
+                  onClick={handleBuyNow}
+                  disabled={product.stock === 0}
+                  className={`w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 ${
+                    product.stock === 0
+                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                      : 'bg-[#d4af37] text-black hover:bg-[#b5952f] hover:-translate-y-1 shadow-lg'
+                  }`}>
+                  Buy Now
+                </button>
+              </div>
+              <button
+                onClick={() => toggleWishlist(product)}
+                className={`w-full py-3 rounded-lg font-bold text-md border-2 transition-all duration-300 flex items-center justify-center gap-2 ${
+                  isWishlisted
+                    ? 'border-red-500 text-red-500'
+                    : 'border-gray-700 text-white hover:border-gray-500 hover:text-white'
+                }`}>
+                <span className="text-xl">{isWishlisted ? '❤️' : '🤍'}</span>
+                {isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
+              </button>
+            </div>
 
             {/* Features */}
             {features.length > 0 && (

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 import logoUrl from "../assets/logo_new.png";
 import { useFetch } from "../hooks/useFetch";
 import { getProductImage } from "../utils/productImages";
@@ -19,6 +20,7 @@ import {
   FiTag,
   FiUser,
   FiX,
+  FiHeart,
 } from "react-icons/fi";
 
 const productLinks = [
@@ -35,6 +37,7 @@ const Header = () => {
   const [searchVal, setSearchVal] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const { cartItems } = useCart();
+  const { wishlist } = useWishlist();
   const navigate = useNavigate();
   const searchRef = useRef(null);
 
@@ -152,6 +155,7 @@ const Header = () => {
   const userEmail = localStorage.getItem("userEmail") || "";
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
   const cartCount = cartItems.length;
+  const wishlistCount = wishlist.length;
   const accountLinks = [
     { label: "My Orders", href: "/my-orders", icon: <FiPackage size={16} /> },
     { label: "Order Tracking", href: "/order-tracking", icon: <FiMapPin size={16} /> },
@@ -232,7 +236,7 @@ const Header = () => {
         </nav>
 
         <div className="header-actions">
-          <form onSubmit={handleSearchSubmit} className="header-search-form" ref={searchRef}>
+          <form onSubmit={handleSearchSubmit} className="header-search-form hidden md:block" ref={searchRef}>
             <div className="header-search-container">
               <span className="search-icon">🔍</span>
               <input
@@ -298,10 +302,15 @@ const Header = () => {
             )}
           </form>
 
+          <div className="hidden md:block">
+            <Link className="cart-link" to="/wishlist" aria-label="Wishlist">
+              Wishlist
+            </Link>
+          </div>
+
           <Link className="cart-link" to="/cart" aria-label="Cart">
             <FiShoppingBag size={16} />
-            Bag
-            {cartCount > 0 && <span>{cartCount}</span>}
+            <div className="hidden md:block">Cart</div>
           </Link>
 
           {isLoggedIn ? (
@@ -407,6 +416,12 @@ const Header = () => {
                 </span>
                 <FiChevronRight size={14} className="link-arrow" />
               </NavLink>
+              <NavLink to="/wishlist" onClick={closeMenu} className="mobile-drawer-link">
+                <span className="flex items-center gap-3">
+                  Wishlist
+                </span>
+                <FiChevronRight size={14} className="link-arrow" />
+              </NavLink>
               <NavLink to="/about" onClick={closeMenu} className="mobile-drawer-link">
                 <span className="flex items-center gap-3">
                   <FiInfo size={16} className="text-gray-400" />
@@ -431,12 +446,8 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Section 3: Bag & Account */}
+          {/* Section 3: Account (Mobile Drawer) */}
           <div className="mobile-section mobile-footer-section">
-            <Link to="/cart" onClick={closeMenu} className="mobile-bag-pill">
-              <FiShoppingBag size={18} />
-              Bag {cartCount > 0 ? `(${cartCount})` : "(0)"}
-            </Link>
 
             {isLoggedIn ? (
               <div className="mobile-user-box">

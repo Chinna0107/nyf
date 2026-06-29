@@ -7,7 +7,7 @@ import { useFetch } from '../hooks/useFetch';
 import { getProductImage } from '../utils/productImages';
 
 const fallbackHeroImages = [
-  { url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&q=75&w=1600&h=800&fit=crop', title: 'Wear the CROWN . Live the LEGACY .', subtitle: 'Premium cotton tees for every occasion' },
+  { url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&q=75&w=1600&h=800&fit=crop', title: 'Wear the CROWN Live the LEGACY .', subtitle: 'Premium cotton tees for every occasion' },
   { url: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&q=75&w=1600&h=800&fit=crop', title: 'New Drops', subtitle: 'Explore NYF TOTH latest T-shirt designs' },
   { url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&q=75&w=1600&h=800&fit=crop', title: 'Oversized Essentials', subtitle: 'Bold fits designed for statement style' },
 ];
