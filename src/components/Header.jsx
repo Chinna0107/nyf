@@ -446,54 +446,7 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Section 3: Account (Mobile Drawer) */}
-          <div className="mobile-section mobile-footer-section">
 
-            {isLoggedIn ? (
-              <div className="mobile-user-box">
-                <div className="mobile-user-info">
-                  <span className="account-avatar">{userInitial}</span>
-                  <span>
-                    {userName}
-                    {userEmail && <small>{userEmail}</small>}
-                  </span>
-                </div>
-                <div className="mobile-account-links">
-                  {accountLinks.map((item) => (
-                    <Link key={item.href} to={item.href} onClick={closeMenu} className="mobile-drawer-link">
-                      <span className="flex items-center gap-3">
-                        {item.icon}
-                        {item.label}
-                      </span>
-                      <FiChevronRight size={14} className="link-arrow" />
-                    </Link>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  className="mobile-drawer-logout"
-                  onClick={() => {
-                    handleLogout();
-                    closeMenu();
-                  }}
-                >
-                  <FiLogOut size={16} />
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                className="mobile-drawer-login"
-                onClick={() => {
-                  navigate("/login");
-                  closeMenu();
-                }}
-              >
-                Login to Atelier
-              </button>
-            )}
-          </div>
         </div>
       </div>
     </header>

@@ -820,9 +820,7 @@ input::placeholder, textarea::placeholder {
   }
 
   .account-name,
-  .account-trigger-copy,
-  .account-chevron,
-  .login-button {
+  .account-trigger-copy {
     display: none;
   }
 

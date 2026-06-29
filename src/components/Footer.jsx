@@ -85,7 +85,7 @@ function Footer() {
 
         {/* Contact Atelier Section */}
         <div className="space-y-4">
-          <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-6">Contact Concierge</h3>
+          <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-6">Contact Us</h3>
           <div className="flex flex-col gap-4 font-light text-sm text-gray-400">
             <div className="flex items-start gap-3">
               <FaMapMarkerAlt className="text-[#d4af37] mt-1 shrink-0" size={14} />
@@ -104,10 +104,10 @@ function Footer() {
               <a href="mailto:nyftothcloth@gmail.com" className="text-white hover:text-[#d4af37] no-underline transition-colors">nyftothcloth@gmail.com</a>
             </div>
             <div className="flex items-start gap-3">
-              <FaRegClock className="text-[#d4af37] mt-0.5 shrink-0" size={14} />
+              {/* <FaRegClock className="text-[#d4af37] mt-0.5 shrink-0" size={14} /> */}
               <div>
-                <p className="text-gray-400 text-xs font-light">Mon - Sat: 10:00 AM - 7:00 PM</p>
-                <p className="text-gray-500 text-[10px] font-light mt-0.5">Sunday Closed</p>
+                {/* <p className="text-gray-400 text-xs font-light">Mon - Sun: 10:00 AM - 7:00 PM</p> */}
+                {/* <p className="text-gray-500 text-[10px] font-light mt-0.5">Sunday Closed</p> */}
               </div>
             </div>
           </div>
@@ -119,7 +119,7 @@ function Footer() {
         <p className="text-gray-500 text-xs font-light">
           © {new Date().getFullYear()} NYF TOTH. All rights reserved.
           <br />
-          Developed with ❤️ by{" "}
+          Developed with ❤️ by {" "}
           <a 
             href="https://codtechitsolutions.com/" 
             target="_blank" 

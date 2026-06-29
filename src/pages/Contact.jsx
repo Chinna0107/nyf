@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaInstagram } from "react-icons/fa";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -39,10 +40,25 @@ const Contact = () => {
   };
 
   const contactInfo = [
-    { icon: '📍', title: 'Address', content: 'Contact us via email or WhatsApp for any queries' },
+    { icon: '📍', title: 'Address', content: 'Contact us via insta or WhatsApp for any queries' },
     { icon: '📞', title: 'Phone', content: '+91 86862 65252' },
-    { icon: '✉️', title: 'Email', content: 'tejaharsha233@gmail.com' },
-    { icon: '🕐', title: 'Hours', content: 'Mon-Fri: 10AM-7PM, Sat: 11AM-5PM' }
+    { icon: '✉️', title: 'Email', content: 'nyftothcloth@gmail.com' },
+    // { icon: '🕐', title: 'Hours', content: 'Mon-Fri: 10AM-7PM, Sat: 11AM-5PM' }
+    // {icon: '🕐', title: 'Hours', content: 'Mon - Sun: 10:00 AM - 7:00 PM'}
+    {
+  icon: <FaInstagram className="text-pink-500 text-xl" />,
+  title: "Instagram",
+  content: (
+    <a
+      href="https://instagram.com/your_username"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-400 hover:underline"
+    >
+      @your_username
+    </a>
+  )
+}
   ];
 
   return (
