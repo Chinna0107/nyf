@@ -11,7 +11,10 @@ body {
   color: #0c0c0e;
   font-family: 'Space Grotesk', sans-serif;
   overflow-x: clip;
-  padding-top: 110px;
+}
+
+body.admin-or-user-mode {
+  padding-top: 0;
 }
 
 /* Global text colors */

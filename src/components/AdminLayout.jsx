@@ -10,45 +10,28 @@ import {
   FaTachometerAlt,
   FaUsers,
   FaUserTie,
+  FaTimes
 } from 'react-icons/fa';
 import logoUrl from '../assets/logo1.jpeg';
 
-const AdminNavLink = ({ to, icon, label, active, sidebarOpen }) => (
+const AdminNavLink = ({ to, icon, label, active, sidebarOpen, isMobile, setSidebarOpen }) => (
   <Link
     to={to}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '12px',
-      padding: '12px 16px',
-      color: active ? '#fff' : '#666',
-      textDecoration: 'none',
-      borderLeft: active ? '3px solid #d4af37' : '3px solid transparent',
-      background: active ? 'linear-gradient(90deg, rgba(212,175,55,.14), rgba(255,255,255,.03))' : 'transparent',
-      transition: 'all 0.2s ease',
-      cursor: 'pointer',
-      fontSize: '14px',
-      fontWeight: active ? '600' : '400',
-    }}
-    onMouseEnter={(e) => {
-      if (!active) {
-        e.currentTarget.style.background = '#111';
-        e.currentTarget.style.color = '#fff';
-      }
-    }}
-    onMouseLeave={(e) => {
-      if (!active) {
-        e.currentTarget.style.background = 'transparent';
-        e.currentTarget.style.color = '#666';
-      }
-    }}>
-    <span style={{ fontSize: '16px', color: active ? '#d4af37' : 'inherit' }}>{icon}</span>
+    onClick={() => isMobile && setSidebarOpen(false)}
+    className={`flex items-center gap-3 px-4 py-3 text-sm transition-all duration-200 border-l-[3px] ${
+      active 
+        ? 'text-white border-[#d4af37] font-semibold bg-gradient-to-r from-[#d4af37]/10 to-white/5' 
+        : 'text-gray-400 border-transparent hover:text-white hover:bg-[#111]'
+    }`}
+  >
+    <span className={`text-base ${active ? 'text-[#d4af37]' : 'text-inherit'}`}>{icon}</span>
     {sidebarOpen && <span>{label}</span>}
   </Link>
 );
 
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -60,109 +43,93 @@ const AdminLayout = ({ children }) => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#050506' }}>
+    <div className="flex h-screen bg-[#050506] overflow-hidden">
+      
+      {/* Mobile Header Bar */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-[60px] bg-[#0d0d10] border-b border-white/10 z-40 flex items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <img src={logoUrl} alt="NYF TOTH" className="w-8 h-8 rounded-full border border-[#d4af37]/30 object-cover" />
+          <h2 className="text-white font-bold text-sm tracking-widest">ADMIN</h2>
+        </div>
+        <button onClick={() => setMobileMenuOpen(true)} className="text-gray-400 hover:text-white p-2">
+          <FaBars size={20} />
+        </button>
+      </div>
+
+      {/* Mobile Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/70 z-40 backdrop-blur-sm"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div style={{
-        width: sidebarOpen ? '240px' : '72px',
-        background: 'linear-gradient(180deg, #0d0d10 0%, #050506 100%)',
-        borderRight: '1px solid rgba(255,255,255,.08)',
-        transition: 'width 0.3s ease',
-        display: 'flex',
-        flexDirection: 'column',
-        flexShrink: 0,
-      }}>
+      <div 
+        className={`fixed md:relative top-0 left-0 h-full bg-gradient-to-b from-[#0d0d10] to-[#050506] border-r border-white/10 flex flex-col z-50 transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? 'translate-x-0 w-64' : '-translate-x-full md:translate-x-0'
+        } ${sidebarOpen ? 'md:w-64' : 'md:w-[72px]'}`}
+      >
         {/* Header */}
-        <div style={{
-          padding: '20px 16px',
-          borderBottom: '1px solid #1a1a1a',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-          {sidebarOpen && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div className="p-4 border-b border-[#1a1a1a] flex items-center justify-between min-h-[72px]">
+          {(sidebarOpen || mobileMenuOpen) && (
+            <div className="flex items-center gap-3 overflow-hidden">
               <img
                 src={logoUrl}
                 alt="NYF TOTH"
-                style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  border: '1px solid rgba(212,175,55,.35)',
-                  boxShadow: '0 10px 28px rgba(212,175,55,.16)',
-                }}
+                className="w-9 h-9 rounded-full object-cover border border-[#d4af37]/30 shadow-[0_10px_28px_rgba(212,175,55,0.16)] flex-shrink-0"
               />
-              <div>
-                <h2 style={{ margin: 0, fontSize: '18px', fontWeight: '800', color: '#fff', letterSpacing: '1px' }}>
-                  NYF TOTH
-                </h2>
-                <p style={{ margin: '2px 0 0', color: '#d4af37', fontSize: '11px', fontWeight: 700, letterSpacing: '.12em' }}>
-                  ADMIN SUITE
-                </p>
+              <div className="flex-1 min-w-0">
+                <h2 className="m-0 text-base font-extrabold text-white tracking-wide truncate">NYF TOTH</h2>
+                <p className="m-0 text-[#d4af37] text-[10px] font-bold tracking-widest mt-0.5 truncate">ADMIN SUITE</p>
               </div>
             </div>
           )}
+          
+          {/* Desktop Toggle */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            style={{
-              background: 'none',
-              border: '1px solid #333',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              color: '#666',
-              padding: '7px 8px',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; e.currentTarget.style.color = '#fff'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.color = '#666'; }}
+            className="hidden md:flex bg-transparent border border-[#333] rounded-md p-2 text-gray-400 hover:text-white hover:border-white transition-all ml-auto flex-shrink-0"
           >
             <FaBars />
+          </button>
+          
+          {/* Mobile Close */}
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="md:hidden p-2 text-gray-400 hover:text-white flex-shrink-0 ml-auto"
+          >
+            <FaTimes />
           </button>
         </div>
 
         {/* Navigation */}
-        <nav style={{ flex: 1, overflowY: 'auto', padding: '8px 0' }}>
-          <AdminNavLink to="/admin"          icon={<FaTachometerAlt />} label="Dashboard" active={isActive('/admin')} sidebarOpen={sidebarOpen} />
-          <AdminNavLink to="/admin/orders"   icon={<FaClipboardList />} label="Orders" active={isActive('/admin/orders')} sidebarOpen={sidebarOpen} />
-          <AdminNavLink to="/admin/customers" icon={<FaUserTie />} label="Customers" active={isActive('/admin/customers')} sidebarOpen={sidebarOpen} />
-          <AdminNavLink to="/admin/reports"  icon={<FaChartLine />} label="Reports" active={isActive('/admin/reports')} sidebarOpen={sidebarOpen} />
-          <AdminNavLink to="/admin/products" icon={<FaBoxOpen />} label="Products" active={isActive('/admin/products')} sidebarOpen={sidebarOpen} />
-          <AdminNavLink to="/admin/banners"  icon={<FaImage />} label="Banners" active={isActive('/admin/banners')} sidebarOpen={sidebarOpen} />
-          <AdminNavLink to="/admin/users"    icon={<FaUsers />} label="Users" active={isActive('/admin/users')} sidebarOpen={sidebarOpen} />
+        <nav className="flex-1 overflow-y-auto py-4">
+          <AdminNavLink to="/admin" icon={<FaTachometerAlt />} label="Dashboard" active={isActive('/admin')} sidebarOpen={sidebarOpen || mobileMenuOpen} isMobile={mobileMenuOpen} setSidebarOpen={setMobileMenuOpen} />
+          <AdminNavLink to="/admin/orders" icon={<FaClipboardList />} label="Orders" active={isActive('/admin/orders')} sidebarOpen={sidebarOpen || mobileMenuOpen} isMobile={mobileMenuOpen} setSidebarOpen={setMobileMenuOpen} />
+          <AdminNavLink to="/admin/customers" icon={<FaUserTie />} label="Customers" active={isActive('/admin/customers')} sidebarOpen={sidebarOpen || mobileMenuOpen} isMobile={mobileMenuOpen} setSidebarOpen={setMobileMenuOpen} />
+          <AdminNavLink to="/admin/reports" icon={<FaChartLine />} label="Reports" active={isActive('/admin/reports')} sidebarOpen={sidebarOpen || mobileMenuOpen} isMobile={mobileMenuOpen} setSidebarOpen={setMobileMenuOpen} />
+          <AdminNavLink to="/admin/products" icon={<FaBoxOpen />} label="Products" active={isActive('/admin/products')} sidebarOpen={sidebarOpen || mobileMenuOpen} isMobile={mobileMenuOpen} setSidebarOpen={setMobileMenuOpen} />
+          <AdminNavLink to="/admin/banners" icon={<FaImage />} label="Banners" active={isActive('/admin/banners')} sidebarOpen={sidebarOpen || mobileMenuOpen} isMobile={mobileMenuOpen} setSidebarOpen={setMobileMenuOpen} />
+          <AdminNavLink to="/admin/users" icon={<FaUsers />} label="Users" active={isActive('/admin/users')} sidebarOpen={sidebarOpen || mobileMenuOpen} isMobile={mobileMenuOpen} setSidebarOpen={setMobileMenuOpen} />
         </nav>
 
         {/* Logout */}
-        <div style={{ borderTop: '1px solid #1a1a1a', padding: '12px' }}>
+        <div className="p-3 border-t border-[#1a1a1a]">
           <button
             onClick={handleLogout}
-            style={{
-              width: '100%',
-              padding: '10px 16px',
-              background: 'transparent',
-              color: '#ef4444',
-              border: '1px solid #7f1d1d',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: '600',
-              fontSize: '14px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: sidebarOpen ? 'flex-start' : 'center',
-              gap: '10px',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#7f1d1d'; e.currentTarget.style.color = '#fff'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#ef4444'; }}
+            className={`w-full flex items-center gap-3 p-2.5 rounded-lg border font-semibold text-sm transition-all ${
+              (sidebarOpen || mobileMenuOpen) ? 'justify-start' : 'justify-center'
+            } text-red-500 border-red-900/50 bg-transparent hover:bg-red-900 hover:text-white`}
           >
             <span><FaSignOutAlt /></span>
-            {sidebarOpen && <span>Logout</span>}
+            {(sidebarOpen || mobileMenuOpen) && <span>Logout</span>}
           </button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div style={{ flex: 1, overflowY: 'auto', background: '#050506' }}>
+      <div className="flex-1 overflow-y-auto bg-[#050506] pt-[60px] md:pt-0">
         {children}
       </div>
     </div>

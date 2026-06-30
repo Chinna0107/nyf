@@ -273,11 +273,11 @@ const Home = () => {
           <div className="relative">
             <Slider {...sliderSettings}>
               {heroBanners.map((slide, index) => (
-                <div key={index} className="relative h-[560px] md:h-[680px] outline-none">
+                <div key={index} className="relative h-[500px] md:h-[680px] w-full outline-none bg-[#0c0c0e]">
                   <img
                     src={slide.url}
                     alt={slide.title}
-                    className="h-full w-full object-cover opacity-85"
+                    className="h-full w-full object-contain md:object-cover opacity-85 object-center"
                     loading="eager"
                     fetchPriority="high"
                   />

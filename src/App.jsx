@@ -3,7 +3,7 @@ import { Toaster } from 'react-hot-toast'
 import Header from './components/Header'
 import AdminLayout from './components/AdminLayout'
 import ProtectedRoute from './components/ProtectedRoute'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop'
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
@@ -39,18 +39,29 @@ import AdminOrders from './pages/admin/Orders'
 import AdminReports from './pages/admin/Reports'
 import AdminCustomers from './pages/admin/Customers'
 
-function App() {
-  const isAdminRoute = window.location.pathname.startsWith('/admin');
-  const isUserRoute = window.location.pathname.startsWith('/user');
+function AppContent() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isUserRoute = location.pathname.startsWith('/user');
+  const isPublicRoute = !isAdminRoute && !isUserRoute;
+
+  // Add/remove a class to body based on route to handle global layout differences
+  React.useEffect(() => {
+    if (isAdminRoute || isUserRoute) {
+      document.body.classList.add('admin-or-user-mode');
+    } else {
+      document.body.classList.remove('admin-or-user-mode');
+    }
+  }, [isAdminRoute, isUserRoute]);
 
   return (
-    <WishlistProvider>
-      <CartProvider>
-        <Toaster position="top-center" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
-        <Router>
-          <ScrollToTop />
-          {!isAdminRoute && !isUserRoute && <Header />}
-          <Routes>
+    <>
+      <ScrollToTop />
+      {isPublicRoute && <Header />}
+      
+      {/* We use a main tag with padding only for public routes to fix the white space on admin */}
+      <main className={isPublicRoute ? 'pt-[110px]' : ''}>
+        <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/product/:name' element={<Products />} />
           <Route path='/cart' element={<Cart />} />
@@ -62,28 +73,42 @@ function App() {
           <Route path='/refund-policy' element={<RefundPolicy />} />
           <Route path='/shipping-policy' element={<ShippingPolicy />} />
           <Route path='/tshirts' element={<TShirts />} />
-
           <Route path='/custom' element={<CustomEmbroidery />} />
           <Route path='/our-story' element={<OurStory />} />
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
-        <Route path='/admin' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/banners' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminBanners /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/banners/add' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminBannerForm /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/banners/edit/:id' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminBannerForm /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/products' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminProducts /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/products/add' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminProductForm /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/products/edit/:id' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminProductForm /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/users' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminUsers /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/customers' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminCustomers /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/orders' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminOrders /></AdminLayout></ProtectedRoute>} />
-        <Route path='/admin/reports' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminReports /></AdminLayout></ProtectedRoute>} />
-        <Route path='/user/dashboard' element={<ProtectedRoute requiredRole='user'><UserDashboard /></ProtectedRoute>} />
-        <Route path='/my-orders' element={<ProtectedRoute requiredRole='user'><MyOrders /></ProtectedRoute>} />
-        <Route path='/order-tracking' element={<ProtectedRoute requiredRole='user'><OrderTracking /></ProtectedRoute>} />
-        <Route path='/profile' element={<ProtectedRoute requiredRole='user'><UserProfile /></ProtectedRoute>} />
-          </Routes>
-          {!isAdminRoute && !isUserRoute && <Footer />}
+          
+          <Route path='/admin' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/banners' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminBanners /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/banners/add' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminBannerForm /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/banners/edit/:id' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminBannerForm /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/products' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminProducts /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/products/add' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminProductForm /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/products/edit/:id' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminProductForm /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/users' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminUsers /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/customers' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminCustomers /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/orders' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminOrders /></AdminLayout></ProtectedRoute>} />
+          <Route path='/admin/reports' element={<ProtectedRoute requiredRole='admin'><AdminLayout><AdminReports /></AdminLayout></ProtectedRoute>} />
+          
+          <Route path='/user/dashboard' element={<ProtectedRoute requiredRole='user'><UserDashboard /></ProtectedRoute>} />
+          <Route path='/my-orders' element={<ProtectedRoute requiredRole='user'><MyOrders /></ProtectedRoute>} />
+          <Route path='/order-tracking' element={<ProtectedRoute requiredRole='user'><OrderTracking /></ProtectedRoute>} />
+          <Route path='/profile' element={<ProtectedRoute requiredRole='user'><UserProfile /></ProtectedRoute>} />
+        </Routes>
+      </main>
+      
+      {isPublicRoute && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <WishlistProvider>
+      <CartProvider>
+        <Toaster position="top-center" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
+        <Router>
+          <AppContent />
         </Router>
       </CartProvider>
     </WishlistProvider>

@@ -9,8 +9,40 @@ const BannerForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(!!id);
   const [submitting, setSubmitting] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({ title: '', image_url: '', link: '', active: true });
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    setMessage('');
+    
+    const token = localStorage.getItem('authToken');
+    const data = new FormData();
+    data.append("image", file); // Consistent with ProductForm 'image' field
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/upload`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: data,
+      });
+      const result = await res.json();
+      
+      if (res.ok && result.url) {
+        setFormData((prev) => ({ ...prev, image_url: result.url }));
+      } else {
+        setMessage("Image upload failed: " + (result.message || "Unknown error"));
+      }
+    } catch (err) {
+      setMessage("Error uploading image");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -76,10 +108,14 @@ const BannerForm = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-1">Image URL</label>
-            <input type="url" name="image_url" value={formData.image_url} onChange={handleChange} required
-              className="w-full px-4 py-2 bg-black border border-gray-700 text-white rounded-lg text-sm focus:outline-none focus:border-white placeholder-gray-600" placeholder="https://..." />
+            <label className="block text-sm font-semibold text-gray-300 mb-1">Image</label>
+            <div className="flex items-center gap-4">
+              <input type="file" accept="image/*" onChange={handleImageUpload} disabled={uploadingImage}
+                className="w-full px-4 py-2 bg-black border border-gray-700 text-white rounded-lg text-sm focus:outline-none focus:border-white placeholder-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-800 file:text-white hover:file:bg-gray-700" />
+              {uploadingImage && <span className="text-sm text-gray-400 whitespace-nowrap">Uploading...</span>}
+            </div>
             {formData.image_url && <img src={formData.image_url} alt="Preview" className="mt-3 w-full max-h-48 object-cover rounded-lg" />}
+            <input type="hidden" name="image_url" value={formData.image_url} required />
           </div>
 
           <div>
