@@ -115,10 +115,10 @@ function Footer() {
               <FaMapMarkerAlt className="text-[#d4af37] mt-1 shrink-0" size={14} />
               <span className="leading-relaxed">Kavali</span>
             </div>
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
               <FaPhoneAlt className="text-[#d4af37] shrink-0" size={13} />
               <a href="tel:+911234567899" className="text-white hover:text-[#d4af37] no-underline transition-colors">1234567899</a>
-            </div>
+            </div> */}
             <div className="flex items-center gap-3">
               <FaPhoneAlt className="text-[#d4af37] shrink-0" size={13} />
               <a href="tel:+918686265252" className="text-white hover:text-[#d4af37] no-underline transition-colors">8686265252</a>
