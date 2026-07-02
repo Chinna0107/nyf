@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiAward, FiCompass, FiShield, FiUsers } from 'react-icons/fi';
+import Founder from '../assets/founder.jpeg';
 
 const About = () => {
   const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
@@ -19,7 +20,7 @@ const About = () => {
   ];
 
   const team = [
-    { name: 'Harsha Valeti', role: 'Founder & Creative Director', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&q=75&w=300&h=300&fit=crop&crop=faces' },
+    { name: 'Harsha Valeti', role: 'Founder & Creative Director', image: Founder },
     // { name: 'Michael Chen', role: 'Head of Production', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&q=75&w=300&h=300&fit=crop&crop=faces' },
     // { name: 'Emma Davis', role: 'Customer Experience Lead', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&q=75&w=300&h=300&fit=crop&crop=faces' },
     // { name: 'James Wilson', role: 'Design Specialist', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&q=75&w=300&h=300&fit=crop&crop=faces' }

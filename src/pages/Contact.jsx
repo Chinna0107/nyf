@@ -50,12 +50,12 @@ const Contact = () => {
   title: "Instagram",
   content: (
     <a
-      href="https://instagram.com/your_username"
+      href="https://www.instagram.com/nyftoth?igsh=MWY0MWdxam1qdmEwbA%3D%3D&utm_source=ig_contact_invite"
       target="_blank"
       rel="noopener noreferrer"
       className="text-blue-400 hover:underline"
     >
-      @your_username
+      NYF TOTH
     </a>
   )
 }

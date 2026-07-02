@@ -22,11 +22,35 @@ function Footer() {
           <p className="text-gray-400 text-sm font-light leading-relaxed">
             Premium luxury fashion and styling. Creating bespoke, structured garments designed to elevate daily street aesthetics.
           </p>
-          <div className="flex gap-4 pt-2">
-            <FaInstagram className="text-gray-400 hover:text-[#d4af37] text-lg cursor-pointer hover:scale-110 transition-all duration-300" />
-            <FaFacebookF className="text-gray-400 hover:text-[#d4af37] text-lg cursor-pointer hover:scale-110 transition-all duration-300" />
-            <FaTwitter className="text-gray-400 hover:text-[#d4af37] text-lg cursor-pointer hover:scale-110 transition-all duration-300" />
-          </div>
+         
+<div className="flex gap-4 pt-2">
+  <a
+    href="https://www.instagram.com/nyftoth?igsh=MWY0MWdxam1qdmEwbA%3D%3D&utm_source=ig_contact_invite"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Instagram"
+  >
+    <FaInstagram className="text-gray-400 hover:text-[#d4af37] text-lg cursor-pointer hover:scale-110 transition-all duration-300" />
+  </a>
+
+  <a
+    href="https://www.facebook.com/your_page"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Facebook"
+  >
+    <FaFacebookF className="text-gray-400 hover:text-[#d4af37] text-lg cursor-pointer hover:scale-110 transition-all duration-300" />
+  </a>
+
+  {/* <a
+    href="https://twitter.com/your_username"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Twitter"
+  >
+    <FaTwitter className="text-gray-400 hover:text-[#d4af37] text-lg cursor-pointer hover:scale-110 transition-all duration-300" />
+  </a> */}
+</div>
         </div>
 
         {/* Shop Section */}
